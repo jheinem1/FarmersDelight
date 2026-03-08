@@ -30,7 +30,7 @@ public class FarmersDelight
 		modEventBus.addListener(CabinetBlockEntity::registerCapabilities);
 		modEventBus.addListener(CookingPotBlockEntity::registerCapabilities);
 		modEventBus.addListener(CuttingBoardBlockEntity::registerCapabilities);
-		if (FMLEnvironment.dist.isClient()) {
+		if (FMLEnvironment.getDist().isClient()) {
 			modEventBus.addListener(ClientSetupEvents::init);
 			modEventBus.addListener(ClientSetupEvents::registerCustomTooltipRenderers);
 			modEventBus.addListener(ClientSetupEvents::registerGuiLayers);

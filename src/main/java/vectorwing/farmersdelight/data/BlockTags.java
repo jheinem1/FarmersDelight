@@ -5,7 +5,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
@@ -16,8 +15,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 public class BlockTags extends BlockTagsProvider
 {
-	public BlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-		super(output, lookupProvider, FarmersDelight.MODID, existingFileHelper);
+	public BlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+		super(output, lookupProvider, FarmersDelight.MODID);
 	}
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
@@ -185,7 +184,6 @@ public class BlockTags extends BlockTagsProvider
 				ModBlocks.WILD_TOMATOES.get(),
 				ModBlocks.WILD_ONIONS.get()
 		);
-		tag(net.minecraft.tags.BlockTags.TALL_FLOWERS).add(ModBlocks.WILD_RICE.get());
 		tag(net.minecraft.tags.BlockTags.DIRT).add(
 				ModBlocks.RICH_SOIL.get());
 		tag(net.minecraft.tags.BlockTags.MAINTAINS_FARMLAND).add(
@@ -244,9 +242,7 @@ public class BlockTags extends BlockTagsProvider
 				ModBlocks.WILD_TOMATOES.get(),
 				ModBlocks.WILD_ONIONS.get(),
 				ModBlocks.WILD_RICE.get());
-		tag(ModTags.ROPES).add(ModBlocks.ROPE.get())
-				.addOptional(Identifier.parse("quark:rope"))
-				.addOptional(Identifier.parse("supplementaries:rope"));
+		tag(ModTags.ROPES).add(ModBlocks.ROPE.get());
 		tag(ModTags.TRAY_HEAT_SOURCES).add(
 						Blocks.LAVA)
 				.addTag(net.minecraft.tags.BlockTags.CAMPFIRES)
@@ -257,8 +253,7 @@ public class BlockTags extends BlockTagsProvider
 						ModBlocks.STOVE.get())
 				.addTag(ModTags.TRAY_HEAT_SOURCES);
 		tag(ModTags.HEAT_CONDUCTORS).add(
-						Blocks.HOPPER)
-				.addOptional(Identifier.parse("create:chute"));
+						Blocks.HOPPER);
 		tag(ModTags.COMPOST_ACTIVATORS).add(
 				Blocks.BROWN_MUSHROOM,
 				Blocks.RED_MUSHROOM,
@@ -284,8 +279,7 @@ public class BlockTags extends BlockTagsProvider
 						ModBlocks.SANDY_SHRUB.get(),
 						ModBlocks.BROWN_MUSHROOM_COLONY.get(),
 						ModBlocks.RED_MUSHROOM_COLONY.get())
-				.addTag(ModTags.WILD_CROPS)
-				.addTag(net.minecraft.tags.BlockTags.TALL_FLOWERS);
+				.addTag(ModTags.WILD_CROPS);
 		tag(ModTags.MUSHROOM_COLONY_GROWABLE_ON).add(ModBlocks.RICH_SOIL.get());
 		tag(ModTags.DROPS_CAKE_SLICE).add(
 				Blocks.CANDLE_CAKE,

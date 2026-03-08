@@ -13,7 +13,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -42,8 +42,8 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 	private final IDrawable icon;
 	public CookingRecipeCategory(IGuiHelper helper) {
 		title = TextUtils.getTranslation("jei.cooking");
-		Identifier widgetBackgroundImage = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/cooking_pot.png");
-		Identifier interfaceImage = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/cooking_pot.png");
+		ResourceLocation widgetBackgroundImage = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/cooking_pot.png");
+		ResourceLocation interfaceImage = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/cooking_pot.png");
 		background = helper.createDrawable(widgetBackgroundImage, 0, 0, 116, 56);
 		icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.COOKING_POT.get()));
 		heatIndicator = helper.createDrawable(interfaceImage, 176, 0, 17, 15);
@@ -80,7 +80,7 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 				int inputIndex = row * 3 + column;
 				if (inputIndex < recipeIngredients.size()) {
 					builder.addSlot(RecipeIngredientRole.INPUT, (column * borderSlotSize) + 1, (row * borderSlotSize) + 1)
-							.addItemStacks(Arrays.asList(recipeIngredients.get(inputIndex).getItems()));
+							.addItemStacks(recipeIngredients.get(inputIndex).items().map(itemHolder -> new ItemStack(itemHolder.value())).toList());
 				}
 			}
 		}

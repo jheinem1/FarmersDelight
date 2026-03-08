@@ -132,8 +132,8 @@ public class FoodValues
 
 	public static final FoodProperties POPSICLE = alwaysEdibleFastFood(3, 0.2F);
 	public static final FoodProperties COOKIES = fastFood(2, 0.1F);
-	public static final FoodProperties CAKE_SLICE = fastFoodWithEffect(2, 0.1F, new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 400, 0, false, false), 1.0F);
-	public static final FoodProperties PIE_SLICE = fastFoodWithEffect(3, 0.3F, new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600, 0, false, false), 1.0F);
+	public static final FoodProperties CAKE_SLICE = fastFoodWithEffect(2, 0.1F, new MobEffectInstance(MobEffects.SPEED, 400, 0, false, false), 1.0F);
+	public static final FoodProperties PIE_SLICE = fastFoodWithEffect(3, 0.3F, new MobEffectInstance(MobEffects.SPEED, 600, 0, false, false), 1.0F);
 	public static final FoodProperties FRUIT_SALAD = foodWithEffect(6, 0.6F, new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F);
 	public static final FoodProperties GLOW_BERRY_CUSTARD = withFoodConsumable(alwaysEdibleFood(7, 0.6F), builder -> builder.onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 0), 1.0F)));
 

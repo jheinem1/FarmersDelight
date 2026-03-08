@@ -1,16 +1,17 @@
 package vectorwing.farmersdelight.data;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import org.jetbrains.annotations.NotNull;
 import vectorwing.farmersdelight.FarmersDelight;
+import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.tag.CommonTags;
 import vectorwing.farmersdelight.common.tag.CompatibilityTags;
@@ -19,13 +20,13 @@ import org.jspecify.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 public class ItemTags extends ItemTagsProvider
 {
-	public ItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
-		super(output, provider, blockTagProvider, FarmersDelight.MODID, existingFileHelper);
+	public ItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider) {
+		super(output, provider, FarmersDelight.MODID);
 	}
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
-		copy(ModTags.WILD_CROPS, ModTags.WILD_CROPS_ITEM);
-		copy(BlockTags.SMALL_FLOWERS, net.minecraft.tags.ItemTags.SMALL_FLOWERS);
+		copyBlockTagItems(ModTags.WILD_CROPS_ITEM, ModItems.SANDY_SHRUB.get(), ModItems.WILD_BEETROOTS.get(), ModItems.WILD_CABBAGES.get(), ModItems.WILD_CARROTS.get(), ModItems.WILD_ONIONS.get(), ModItems.WILD_POTATOES.get(), ModItems.WILD_TOMATOES.get(), ModItems.WILD_RICE.get());
+		copyBlockTagItems(net.minecraft.tags.ItemTags.SMALL_FLOWERS, ModItems.WILD_BEETROOTS.get(), ModItems.WILD_CABBAGES.get(), ModItems.WILD_CARROTS.get(), ModItems.WILD_ONIONS.get(), ModItems.WILD_POTATOES.get(), ModItems.WILD_TOMATOES.get());
 		this.registerMinecraftTags();
 		this.registerModTags();
 		this.registerNeoForgeTags();
@@ -34,7 +35,6 @@ public class ItemTags extends ItemTagsProvider
 	}
 	private void registerMinecraftTags() {
 		tag(net.minecraft.tags.ItemTags.BREAKS_DECORATED_POTS).addTag(ModTags.KNIVES);
-		tag(net.minecraft.tags.ItemTags.TALL_FLOWERS).add(ModItems.WILD_RICE.get());
 		tag(net.minecraft.tags.ItemTags.PIGLIN_LOVED).add(ModItems.GOLDEN_KNIFE.get());
 		tag(net.minecraft.tags.ItemTags.SIGNS).addTag(ModTags.CANVAS_SIGNS);
 		tag(net.minecraft.tags.ItemTags.HANGING_SIGNS).addTag(ModTags.HANGING_CANVAS_SIGNS);
@@ -46,7 +46,6 @@ public class ItemTags extends ItemTagsProvider
 		tag(net.minecraft.tags.ItemTags.WEAPON_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
 		tag(net.minecraft.tags.ItemTags.SHARP_WEAPON_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
 		tag(net.minecraft.tags.ItemTags.FIRE_ASPECT_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
-		tag(net.minecraft.tags.ItemTags.SWORD_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
 		tag(net.minecraft.tags.ItemTags.MINING_ENCHANTABLE).addTag(ModTags.KNIVES);
 		tag(net.minecraft.tags.ItemTags.MINING_LOOT_ENCHANTABLE).addTag(ModTags.KNIVES);
 		tag(net.minecraft.tags.ItemTags.MEAT)
@@ -197,13 +196,9 @@ public class ItemTags extends ItemTagsProvider
 				.add(ModItems.CRIMSON_CABINET.get())
 				.add(ModItems.WARPED_CABINET.get());
 		tag(ModTags.CABINETS).addTag(ModTags.WOODEN_CABINETS);
-		tag(ModTags.OFFHAND_EQUIPMENT).addTag(Tags.Items.TOOLS_SHIELD)
-				.addOptional(Identifier.parse("create:extendo_grip"));
+		tag(ModTags.OFFHAND_EQUIPMENT).addTag(Tags.Items.TOOLS_SHIELD);
 		tag(ModTags.SERVING_CONTAINERS).add(Items.BOWL, Items.GLASS_BOTTLE, Items.BUCKET);
-		tag(ModTags.FLAT_ON_CUTTING_BOARD).add(Items.TRIDENT, Items.SPYGLASS)
-				.addOptional(Identifier.parse("supplementaries:quiver"))
-				.addOptional(Identifier.parse("autumnity:turkey"))
-				.addOptional(Identifier.parse("autumnity:cooked_turkey"));
+		tag(ModTags.FLAT_ON_CUTTING_BOARD).add(Items.TRIDENT, Items.SPYGLASS);
 	}
 	@SuppressWarnings("unchecked")
 	private void registerNeoForgeTags() {
@@ -274,6 +269,10 @@ public class ItemTags extends ItemTagsProvider
 				CommonTags.STORAGE_BLOCKS_ITEM_RICE_PANICLE,
 				CommonTags.STORAGE_BLOCKS_ITEM_STRAW
 		);
+	}
+	@SafeVarargs
+	private void copyBlockTagItems(TagKey<Item> target, Item... items) {
+		tag(target).add(items);
 	}
 	public void registerCommonTags() {
 		// TODO: Remove on 1.3

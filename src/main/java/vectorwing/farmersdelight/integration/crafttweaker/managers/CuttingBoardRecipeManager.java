@@ -10,8 +10,11 @@ import com.blamejared.crafttweaker.api.util.random.Percentaged;
 import com.blamejared.crafttweaker_annotations.annotations.Document;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.openzen.zencode.java.ZenCodeType;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
@@ -47,20 +50,23 @@ public class CuttingBoardRecipeManager implements IRecipeManager
      * @docParam sound "minecraft:block.gravel.break"
      */
     @ZenCodeType.Method
-    public void addRecipe(String name,
+	public void addRecipe(String name,
                           IIngredient input,
                           Percentaged<IItemStack>[] results,
                           IIngredient tool,
                           @ZenCodeType.OptionalString String sound) {
+        var soundEvent = sound == null || sound.isEmpty()
+                ? java.util.Optional.<net.minecraft.sounds.SoundEvent>empty()
+                : BuiltInRegistries.SOUND_EVENT.getOptional(Identifier.parse(sound));
         CraftTweakerAPI.apply(new ActionAddRecipe(this,
-                new RecipeHolder(CraftTweakerConstants.rl(name),
+                new RecipeHolder(ResourceKey.create(Registries.RECIPE, CraftTweakerConstants.rl(name).identifier()),
                 new CuttingBoardRecipe("",
                         input.asVanillaIngredient(),
                         tool.asVanillaIngredient(),
                         ListUtils.mapArrayIndexSet(results,
                                 (stack) -> new ChanceResult(stack.getData().getInternal(), (float) stack.getPercentage()),
                                 NonNullList.withSize(results.length, ChanceResult.EMPTY)),
-                        BuiltInRegistries.SOUND_EVENT.getOptional(Identifier.parse(sound)))),
+                        soundEvent)),
                 ""));
     }
     /**

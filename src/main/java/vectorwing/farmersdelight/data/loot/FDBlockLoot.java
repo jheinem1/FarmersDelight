@@ -6,6 +6,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -24,7 +25,7 @@ public class FDBlockLoot extends BlockLootSubProvider
 		dropSelf(ModBlocks.STOVE.get());
 		dropNamedContainer(ModBlocks.BASKET.get());
 		add(ModBlocks.COOKING_POT.get(), (block) -> LootTable.lootTable().withPool(this.applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(block)
-				.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+				.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 						.include(DataComponents.CUSTOM_NAME)
 						.include(ModDataComponents.MEAL.get())
 						.include(ModDataComponents.CONTAINER.get())
@@ -86,7 +87,7 @@ public class FDBlockLoot extends BlockLootSubProvider
 	@Override
 	protected void add(Block block, LootTable.Builder builder) {
 		this.generatedLootTables.add(block);
-		this.map.put(block.getLootTable(), builder);
+		block.getLootTable().ifPresent(key -> this.map.put(key, builder));
 	}
 	@Override
 	protected Iterable<Block> getKnownBlocks() {

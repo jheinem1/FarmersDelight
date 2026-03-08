@@ -29,14 +29,14 @@ public class CuttingBoardRecipeHandler implements IRecipeHandler<CuttingBoardRec
         return String.format(
                 "%s.addRecipe(%s, %s, %s, %s, %s);",
                 manager.getCommandString(),
-                StringUtil.quoteAndEscape(recipe.id()),
+                StringUtil.quoteAndEscape(recipe.id().identifier().toString()),
                 IIngredient.fromIngredient(recipe.value().getIngredients().get(0)).getCommandString(),
                 recipe.value().getResults().stream()
                         .map(MCItemStackMutable::new)
                         .map(MCItemStackMutable::getCommandString)
                         .collect(Collectors.joining(", ", "[", "]")),
                 IIngredient.fromIngredient(recipe.value().getTool()).getCommandString(),
-                recipe.value().getSoundEvent().map(BuiltInRegistries.SOUND_EVENT::getKey)
+                recipe.value().getSoundEvent().map(BuiltInRegistries.SOUND_EVENT::getKey).map(Object::toString).orElse("")
         );
     }
     @Override
@@ -49,7 +49,7 @@ public class CuttingBoardRecipeHandler implements IRecipeHandler<CuttingBoardRec
                 .builder()
                 .with(BuiltinRecipeComponents.Input.INGREDIENTS, recipe.getIngredients().stream().map(IIngredient::fromIngredient).toList())
                 .with(RecipeHandlerUtils.TOOL_COMPONENT, IIngredient.fromIngredient(recipe.getTool()))
-                .with(BuiltinRecipeComponents.Metadata.GROUP, recipe.getGroup())
+                .with(BuiltinRecipeComponents.Metadata.GROUP, recipe.group())
                 .with(BuiltinRecipeComponents.Output.CHANCED_ITEMS,
                         recipe.getRollableResults().stream()
                                 .map(chanceResult -> new MCItemStack(chanceResult.stack()).percent(

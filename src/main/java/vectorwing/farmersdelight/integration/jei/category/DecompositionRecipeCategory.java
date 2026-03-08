@@ -16,7 +16,7 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @NullMarked
 public class DecompositionRecipeCategory implements IRecipeCategory<DecompositionDummy>
 {
-	public static final Identifier UID = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "decomposition");
+	public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "decomposition");
 	private static final int slotSize = 22;
 	private final Component title;
 	private final IDrawable background;
@@ -46,7 +46,7 @@ public class DecompositionRecipeCategory implements IRecipeCategory<Decompositio
 	private final ItemStack richSoil;
 	public DecompositionRecipeCategory(IGuiHelper helper) {
 		title = TextUtils.getTranslation("jei.decomposition");
-		Identifier backgroundImage = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/decomposition.png");
+		ResourceLocation backgroundImage = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/decomposition.png");
 		background = helper.createDrawable(backgroundImage, 0, 0, 118, 80);
 		organicCompost = new ItemStack(ModBlocks.ORGANIC_COMPOST.get());
 		richSoil = new ItemStack(ModItems.RICH_SOIL.get());
@@ -72,7 +72,8 @@ public class DecompositionRecipeCategory implements IRecipeCategory<Decompositio
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, DecompositionDummy recipe, IFocusGroup focusGroup) {
 		List<ItemStack> accelerators = new ArrayList<>();
-		BuiltInRegistries.BLOCK.getTag(ModTags.COMPOST_ACTIVATORS).ifPresent(s -> s.forEach(f -> accelerators.add(new ItemStack(f.value()))));
+		BuiltInRegistries.BLOCK.getTagOrEmpty(ModTags.COMPOST_ACTIVATORS)
+				.forEach(holder -> accelerators.add(new ItemStack(holder.value())));
 		builder.addSlot(RecipeIngredientRole.INPUT, 9, 26).addItemStack(organicCompost);
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 93, 26).addItemStack(richSoil);
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 64, 54).addItemStacks(accelerators);

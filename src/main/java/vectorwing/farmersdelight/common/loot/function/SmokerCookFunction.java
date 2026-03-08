@@ -3,9 +3,11 @@ import org.jspecify.annotations.NullMarked;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.SmokingRecipe;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
@@ -32,10 +34,11 @@ public class SmokerCookFunction extends LootItemConditionalFunction
 		if (stack.isEmpty()) {
 			return stack;
 		} else {
-			Optional<RecipeHolder<SmokingRecipe>> recipe = context.getLevel().getRecipeManager().getAllRecipesFor(RecipeType.SMOKING).stream()
-					.filter(r -> r.value().getIngredients().get(0).test(stack)).findFirst();
+			Optional<RecipeHolder<SmokingRecipe>> recipe = context.getLevel() instanceof ServerLevel serverLevel
+					? serverLevel.recipeAccess().getRecipeFor(RecipeType.SMOKING, new SingleRecipeInput(stack), serverLevel)
+					: Optional.empty();
 			if (recipe.isPresent()) {
-				ItemStack result = recipe.get().value().getResultItem(context.getLevel().registryAccess()).copy();
+				ItemStack result = recipe.get().value().assemble(new SingleRecipeInput(stack), context.getLevel().registryAccess()).copy();
 				result.setCount(result.getCount() * stack.getCount());
 				return result;
 			} else {

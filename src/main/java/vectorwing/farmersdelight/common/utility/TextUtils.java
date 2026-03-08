@@ -36,10 +36,10 @@ public class TextUtils
 	 * An alternate version of PotionUtils.addPotionTooltip, that obtains the item's food-property potion effects instead.
 	 */
 	public static void addFoodEffectTooltip(ItemStack stack, Consumer<Component> tooltipAdder, float durationFactor, float tickRate) {
-		if (stack.getFoodProperties(null) == null) {
+		Consumable consumable = stack.get(DataComponents.CONSUMABLE);
+		if (consumable == null) {
 			return;
 		}
-		Consumable consumable = stack.get(DataComponents.CONSUMABLE);
 		List<ApplyStatusEffectsConsumeEffect> effectList = FoodValues.getStatusEffectEntries(consumable);
 		List<Pair<Holder<Attribute>, AttributeModifier>> attributeList = Lists.newArrayList();
 		MutableComponent mutableComponent;

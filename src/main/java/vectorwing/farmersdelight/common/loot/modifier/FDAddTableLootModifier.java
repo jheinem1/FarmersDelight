@@ -32,7 +32,7 @@ public class FDAddTableLootModifier extends AddTableLootModifier
 	@Override
 	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		if (Configuration.GENERATE_FD_CHEST_LOOT.get()) {
-			context.getResolver().get(Registries.LOOT_TABLE, this.lootTable).ifPresent((extraTable) -> {
+			context.getResolver().get(this.lootTable).ifPresent((extraTable) -> {
 				extraTable.value().getRandomItemsRaw(context, createStackSplitter(context.getLevel(), generatedLoot::add));
 			});
 		}

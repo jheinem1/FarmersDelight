@@ -2,6 +2,7 @@ package vectorwing.farmersdelight.common.utility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 public class RecipeUtils
@@ -14,6 +15,12 @@ public class RecipeUtils
 			throw new NullPointerException("level must not be null.");
 		}
 		RegistryAccess registryAccess = level.registryAccess();
-		return recipe.getResultItem(registryAccess);
+		if (recipe instanceof vectorwing.farmersdelight.common.crafting.CookingPotRecipe cookingPotRecipe) {
+			return cookingPotRecipe.getResultItem(registryAccess);
+		}
+		if (recipe instanceof vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe cuttingBoardRecipe) {
+			return cuttingBoardRecipe.getResultItem(registryAccess);
+		}
+		return recipe.display().isEmpty() ? ItemStack.EMPTY : recipe.display().getFirst().result().resolveForFirstStack(SlotDisplayContext.fromLevel(level));
 	}
 }

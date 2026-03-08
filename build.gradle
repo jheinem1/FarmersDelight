@@ -33,6 +33,13 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+sourceSets {
+    compatShim {
+        java.srcDir 'src/compatShim/java'
+        compileClasspath += sourceSets.main.compileClasspath
+    }
+}
+
 neoForge {
     version = project.neo_version
 
@@ -67,7 +74,7 @@ neoForge {
         }
 
         data {
-            data()
+            serverData()
 
             // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
             // gameDirectory = project.file('run-data')
@@ -111,15 +118,15 @@ dependencies {
     // compile against the JEI API but do not include it at runtime
     compileOnly "mezz.jei:jei-${jei_minecraft}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${jei_minecraft}-neoforge-api:${jei_version}"
-    // at runtime, use the full JEI jar for Forge
-    localRuntime "mezz.jei:jei-${jei_minecraft}-neoforge:${jei_version}"
+    // at runtime, use a local patched jar so the dev launch can target 1.21.11.
+    localRuntime files('runtime-libs/jei-1.21-neoforge-19.8.2.99-patched.jar')
 
     compileOnly "squeek.appleskin:appleskin-neoforge:${appleskin_version}:api"
     runtimeOnly "squeek.appleskin:appleskin-neoforge:${appleskin_version}"
 
     def ctDep = "com.blamejared.crafttweaker:CraftTweaker-neoforge-${crafttweaker_minecraft}:${crafttweaker_version}"
     compileOnly ctDep
-    runtimeOnly ctDep
+    runtimeOnly files('runtime-libs/CraftTweaker-neoforge-1.21.1-21.0.35-patched.jar')
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -158,6 +165,16 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+tasks.named('compileJava').configure {
+    dependsOn tasks.named('compileCompatShimJava')
+    classpath += sourceSets.compatShim.output
+}
+
+tasks.withType(JavaExec).configureEach {
+    dependsOn tasks.named('compileCompatShimJava')
+    jvmArgs "--patch-module=minecraft=${sourceSets.compatShim.output.classesDirs.asPath}"
 }
 
 idea {

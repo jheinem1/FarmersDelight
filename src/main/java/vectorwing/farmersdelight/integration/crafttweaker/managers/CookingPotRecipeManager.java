@@ -8,9 +8,12 @@ import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.recipe.manager.base.IRecipeManager;
 import com.blamejared.crafttweaker_annotations.annotations.Document;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.openzen.zencode.java.ZenCodeType;
 import vectorwing.farmersdelight.client.recipebook.CookingPotRecipeBookTab;
@@ -56,15 +59,17 @@ public class CookingPotRecipeManager implements IRecipeManager
                           @ZenCodeType.OptionalFloat float experience,
                           @ZenCodeType.OptionalInt(200) int cookTime) {
         if (!validateInputs(inputs)) return;
+        NonNullList<Ingredient> ingredientList = NonNullList.create();
+        for (IIngredient input : inputs) {
+            ingredientList.add(input.asVanillaIngredient());
+        }
         CraftTweakerAPI.apply(new ActionAddRecipe(this,
                 new RecipeHolder<>(
-                        CraftTweakerConstants.rl(name),
+                        ResourceKey.create(Registries.RECIPE, CraftTweakerConstants.rl(name).identifier()),
                         new CookingPotRecipe(
                                 "",
                                 cookingPotRecipeBookTab,
-                                ListUtils.mapArrayIndexSet(inputs,
-                                        IIngredient::asVanillaIngredient,
-                                        NonNullList.withSize(inputs.length, Ingredient.EMPTY)),
+                                ListUtils.mapArrayIndexSet(inputs, IIngredient::asVanillaIngredient, ingredientList),
                                 output.getInternal(),
                                 container == null ? ItemStack.EMPTY : container.getInternal(),
                                 experience,

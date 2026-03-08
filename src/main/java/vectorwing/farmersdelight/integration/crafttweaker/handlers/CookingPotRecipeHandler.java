@@ -26,7 +26,7 @@ public final class CookingPotRecipeHandler implements IRecipeHandler<CookingPotR
         return String.format(
                 "%s.addRecipe(%s, %s, %s, %s, %s, %s);",
                 manager.getCommandString(),
-                StringUtil.quoteAndEscape(recipe.id()),
+                StringUtil.quoteAndEscape(recipe.id().identifier().toString()),
                 IItemStack.of(recipe.value().getResultItem(registryAccess)).getCommandString(),
                 recipe.value().getIngredients().stream()
                         .map(IIngredient::fromIngredient)
@@ -47,7 +47,7 @@ public final class CookingPotRecipeHandler implements IRecipeHandler<CookingPotR
                 .with(BuiltinRecipeComponents.Output.ITEMS, IItemStack.of(AccessibleElementsProvider.get().registryAccess(recipe::getResultItem)))
                 .with(BuiltinRecipeComponents.Input.INGREDIENTS,  recipe.getIngredients().stream().map(IIngredient::fromIngredient).toList())
                 .with(BuiltinRecipeComponents.Processing.TIME, recipe.getCookTime())
-                .with(BuiltinRecipeComponents.Metadata.GROUP, recipe.getGroup())
+                .with(BuiltinRecipeComponents.Metadata.GROUP, recipe.group())
                 .with(RecipeHandlerUtils.CONTAINER_COMPONENT, new MCItemStackMutable(recipe.getOutputContainer()))
                 .with(BuiltinRecipeComponents.Output.EXPERIENCE, recipe.getExperience())
                 .build();

@@ -1,14 +1,18 @@
 package vectorwing.farmersdelight.data.builder;
 import org.jspecify.annotations.NullMarked;
 import net.minecraft.advancements.Criterion;
+import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
@@ -76,25 +80,25 @@ public class CuttingBoardRecipeBuilder implements RecipeBuilder
 	}
 	@Override
 	public Item getResult() {
-		return this.ingredient.getItems()[0].getItem();
+		return this.ingredient.items().findFirst().map(Holder::value).orElse(Items.AIR);
 	}
 	public void build(RecipeOutput output) {
 		Identifier location = BuiltInRegistries.ITEM.getKey(getResult());
-		save(output, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, location.getPath()));
+		save(output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, location.getPath())));
 	}
 	public void build(RecipeOutput outputIn, String save) {
 		Identifier resourcelocation = BuiltInRegistries.ITEM.getKey(getResult());
 		if ((Identifier.parse(save)).equals(resourcelocation)) {
 			throw new IllegalStateException("Cutting Recipe " + save + " should remove its 'save' argument");
 		} else {
-			this.build(outputIn, Identifier.parse(save));
+			this.build(outputIn, ResourceKey.create(Registries.RECIPE, Identifier.parse(save)));
 		}
 	}
-	public void build(RecipeOutput output, Identifier id) {
+	public void build(RecipeOutput output, ResourceKey<net.minecraft.world.item.crafting.Recipe<?>> id) {
 		save(output, id);
 	}
 	@Override
-	public void save(RecipeOutput output, Identifier id) {
+	public void save(RecipeOutput output, ResourceKey<net.minecraft.world.item.crafting.Recipe<?>> id) {
 		CuttingBoardRecipe recipe = new CuttingBoardRecipe(
 				"",
 				this.ingredient,
@@ -102,6 +106,6 @@ public class CuttingBoardRecipeBuilder implements RecipeBuilder
 				this.results,
 				this.soundEvent == null ? Optional.empty() : Optional.of(this.soundEvent)
 		);
-		output.accept(id.withPrefix("cutting/"), recipe, null);
+		output.accept(ResourceKey.create(Registries.RECIPE, id.identifier().withPrefix("cutting/")), recipe, null);
 	}
 }

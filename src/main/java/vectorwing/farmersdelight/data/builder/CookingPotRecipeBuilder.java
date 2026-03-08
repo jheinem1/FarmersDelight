@@ -9,9 +9,11 @@ import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -54,7 +56,7 @@ public class CookingPotRecipeBuilder implements RecipeBuilder
 		return new CookingPotRecipeBuilder(mainResult, count, cookingTime, experience, container);
 	}
 	public CookingPotRecipeBuilder addIngredient(TagKey<Item> tagIn) {
-		return addIngredient(Ingredient.of(tagIn));
+		return addIngredient(Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(tagIn)));
 	}
 	public CookingPotRecipeBuilder addIngredient(ItemLike itemIn) {
 		return addIngredient(itemIn, 1);
@@ -95,24 +97,24 @@ public class CookingPotRecipeBuilder implements RecipeBuilder
 		return unlockedBy(criterionName, InventoryChangeTrigger.TriggerInstance.hasItems(items));
 	}
 	public CookingPotRecipeBuilder unlockedByAnyIngredient(ItemLike... items) {
-		this.criteria.put("has_any_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(items).build()));
+		this.criteria.put("has_any_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(BuiltInRegistries.ITEM, items).build()));
 		return this;
 	}
 	public void build(RecipeOutput output) {
 		Identifier location = BuiltInRegistries.ITEM.getKey(result);
-		save(output, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, location.getPath()));
+		save(output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, location.getPath())));
 	}
 	public void build(RecipeOutput outputIn, String save) {
 		Identifier resourcelocation = BuiltInRegistries.ITEM.getKey(result);
 		if ((Identifier.parse(save)).equals(resourcelocation)) {
 			throw new IllegalStateException("Cooking Recipe " + save + " should remove its 'save' argument");
 		} else {
-			save(outputIn, Identifier.parse(save));
+			save(outputIn, ResourceKey.create(Registries.RECIPE, Identifier.parse(save)));
 		}
 	}
 	@Override
-	public void save(RecipeOutput output, Identifier id) {
-		Identifier recipeId = id.withPrefix("cooking/");
+	public void save(RecipeOutput output, ResourceKey<net.minecraft.world.item.crafting.Recipe<?>> id) {
+		ResourceKey<net.minecraft.world.item.crafting.Recipe<?>> recipeId = ResourceKey.create(Registries.RECIPE, id.identifier().withPrefix("cooking/"));
 		Advancement.Builder advancementBuilder = output.advancement()
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId))
@@ -127,6 +129,6 @@ public class CookingPotRecipeBuilder implements RecipeBuilder
 				this.experience,
 				this.cookingTime
 		);
-		output.accept(recipeId, recipe, advancementBuilder.build(id.withPrefix("recipes/cooking/")));
+		output.accept(recipeId, recipe, advancementBuilder.build(id.identifier().withPrefix("recipes/cooking/")));
 	}
 }
