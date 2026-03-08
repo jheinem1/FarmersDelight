@@ -33,7 +33,7 @@ public class BackstabbingEnchantment
 		float multiplier = ((level * 0.2F) + 1.2F);
 		return amount * multiplier;
 	}
-	@EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.GAME)
+	@EventBusSubscriber(modid = FarmersDelight.MODID)
 	public static class BackstabbingEvent
 	{
 		@SubscribeEvent

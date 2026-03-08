@@ -187,7 +187,7 @@ public class CuttingBoardBlock extends BaseEntityBlock implements SimpleWaterlog
 			}
 		}
 	}
-	@EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.GAME)
+	@EventBusSubscriber(modid = FarmersDelight.MODID)
 	public static class ToolCarvingEvent
 	{
 		@SubscribeEvent

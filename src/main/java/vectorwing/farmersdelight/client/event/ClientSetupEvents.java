@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import vectorwing.farmersdelight.FarmersDelight;
@@ -15,7 +14,6 @@ import vectorwing.farmersdelight.client.particle.StarParticle;
 import vectorwing.farmersdelight.client.particle.SteamParticle;
 import vectorwing.farmersdelight.client.renderer.*;
 import vectorwing.farmersdelight.common.registry.*;
-@EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientSetupEvents
 {
 	public static void init(final FMLClientSetupEvent event) {
@@ -43,8 +41,8 @@ public class ClientSetupEvents
 	}
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void registerParticles(RegisterParticleProvidersEvent event) {
-		Minecraft.getInstance().particleEngine.register(ModParticleTypes.STAR.get(), StarParticle.Factory::new);
-		Minecraft.getInstance().particleEngine.register(ModParticleTypes.STEAM.get(), SteamParticle.Factory::new);
+		event.registerSpriteSet(ModParticleTypes.STAR.get(), StarParticle.Factory::new);
+		event.registerSpriteSet(ModParticleTypes.STEAM.get(), SteamParticle.Factory::new);
 	}
 //	@SubscribeEvent
 //	public static void onModelRegister(ModelEvent.RegisterAdditional event) {

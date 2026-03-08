@@ -1,8 +1,8 @@
 package vectorwing.farmersdelight.client.gui;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
@@ -65,8 +65,7 @@ public class HUDOverlays
 		public void render(Minecraft minecraft, Player player, GuiGraphics guiGraphics, int left, int right, int top, int guiTicks) {
 			FoodData stats = player.getFoodData();
 			boolean isPlayerHealingWithSaturation =
-					player.level().getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION)
-							&& player.isHurt()
+					player.isHurt()
 							&& stats.getFoodLevel() >= 18;
 			if (player.getEffect(ModEffects.NOURISHMENT) != null) {
 				drawNourishmentOverlay(stats, minecraft, guiGraphics, right, top - foodIconsOffset, isPlayerHealingWithSaturation);
@@ -105,7 +104,6 @@ public class HUDOverlays
 		int ticks = minecraft.gui.getGuiTicks();
 		Random rand = new Random();
 		rand.setSeed(ticks * 312871);
-		RenderSystem.enableBlend();
 		for (int j = 0; j < 10; ++j) {
 			int x = right - j * 8 - 9;
 			int y = top;
@@ -113,16 +111,15 @@ public class HUDOverlays
 				y = top + (rand.nextInt(3) - 1);
 			}
 			// Background texture
-			graphics.blit(MOD_ICONS_TEXTURE, x, y, 0, 0, 9, 9);
+			graphics.blit(RenderPipelines.GUI_TEXTURED, MOD_ICONS_TEXTURE, x, y, 0.0F, 0.0F, 9, 9, 32, 18);
 			float effectiveHungerOfBar = (foodData.getFoodLevel()) / 2.0F - j;
 			int naturalHealingOffset = naturalHealing ? 18 : 0;
 			// Gilded hunger icons
 			if (effectiveHungerOfBar >= 1)
-				graphics.blit(MOD_ICONS_TEXTURE, x, y, 18 + naturalHealingOffset, 0, 9, 9);
+				graphics.blit(RenderPipelines.GUI_TEXTURED, MOD_ICONS_TEXTURE, x, y, 18.0F + naturalHealingOffset, 0.0F, 9, 9, 32, 18);
 			else if (effectiveHungerOfBar >= .5)
-				graphics.blit(MOD_ICONS_TEXTURE, x, y, 9 + naturalHealingOffset, 0, 9, 9);
+				graphics.blit(RenderPipelines.GUI_TEXTURED, MOD_ICONS_TEXTURE, x, y, 9.0F + naturalHealingOffset, 0.0F, 9, 9, 32, 18);
 		}
-		RenderSystem.disableBlend();
 	}
 	public static void drawComfortOverlay(Player player, Minecraft minecraft, GuiGraphics graphics, int left, int top) {
 		int ticks = minecraft.gui.getGuiTicks();
@@ -139,7 +136,6 @@ public class HUDOverlays
 		int comfortSheen = ticks % 50;
 		int comfortHeartFrame = comfortSheen % 2;
 		int[] textureWidth = {5, 9};
-		RenderSystem.enableBlend();
 		int healthMaxSingleRow = Mth.ceil(Math.min(healthMax, 20) / 2.0F);
 		int leftHeightOffset = ((healthRows - 1) * rowHeight); // This keeps the overlay on the bottommost row of hearts
 		for (int i = 0; i < healthMaxSingleRow; ++i) {
@@ -149,12 +145,11 @@ public class HUDOverlays
 			if (health <= 4) y += rand.nextInt(2);
 			if (i == regen) y -= 2;
 			if (column == comfortSheen / 2) {
-				graphics.blit(MOD_ICONS_TEXTURE, x, y, 0, 9, textureWidth[comfortHeartFrame], 9);
+				graphics.blit(RenderPipelines.GUI_TEXTURED, MOD_ICONS_TEXTURE, x, y, 0.0F, 9.0F, textureWidth[comfortHeartFrame], 9, 32, 18);
 			}
 			if (column == (comfortSheen / 2) - 1 && comfortHeartFrame == 0) {
-				graphics.blit(MOD_ICONS_TEXTURE, x + 5, y, 5, 9, 4, 9);
+				graphics.blit(RenderPipelines.GUI_TEXTURED, MOD_ICONS_TEXTURE, x + 5, y, 5.0F, 9.0F, 4, 9, 32, 18);
 			}
 		}
-		RenderSystem.disableBlend();
 	}
 }

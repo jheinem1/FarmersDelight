@@ -5,7 +5,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.EffectCures;
 import java.util.ArrayList;
 import java.util.Iterator;
 public class MilkBottleItem extends DrinkableItem
@@ -19,13 +18,13 @@ public class MilkBottleItem extends DrinkableItem
 		ArrayList<Holder<MobEffect>> compatibleEffects = new ArrayList<>();
 		while (itr.hasNext()) {
 			MobEffectInstance effect = itr.next();
-			if (effect.getCures().contains(EffectCures.MILK)) {
+			if (!effect.getEffect().value().isBeneficial()) {
 				compatibleEffects.add(effect.getEffect());
 			}
 		}
 		if (!compatibleEffects.isEmpty()) {
 			MobEffectInstance selectedEffect = consumer.getEffect(compatibleEffects.get(level.random.nextInt(compatibleEffects.size())));
-			if (selectedEffect != null && !net.neoforged.neoforge.event.EventHooks.onEffectRemoved(consumer, selectedEffect, EffectCures.MILK)) {
+			if (selectedEffect != null && !net.neoforged.neoforge.event.EventHooks.onEffectRemoved(consumer, selectedEffect)) {
 				consumer.removeEffect(selectedEffect.getEffect());
 			}
 		}

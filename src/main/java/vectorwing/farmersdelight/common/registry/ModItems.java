@@ -25,14 +25,22 @@ public class ModItems
 	public static Item.Properties basicItem() {
 		return new Item.Properties();
 	}
-	public static Item.Properties knifeItem(Tier tier) {
-		return new Item.Properties().attributes(KnifeItem.createAttributes(tier, 0.5F, -2.0F));
+	public static Item.Properties knifeItem(ToolMaterial material) {
+		return new Item.Properties();
+	}
+	public static Item.Properties skilletItem() {
+		return basicItem()
+				.stacksTo(1)
+				.durability(SkilletItem.SKILLET_TIER.durability())
+				.repairable(SkilletItem.SKILLET_TIER.repairItems())
+				.enchantable(SkilletItem.SKILLET_TIER.enchantmentValue())
+				.attributes(SkilletItem.createAttributes(SkilletItem.SKILLET_TIER, 5.0F, -3.1F));
 	}
 	public static Item.Properties foodItem(FoodProperties food) {
-		return new Item.Properties().food(food);
+		return FoodValues.applyConsumable(new Item.Properties(), food);
 	}
 	public static Item.Properties bowlFoodItem(FoodProperties food) {
-		return new Item.Properties().food(food).craftRemainder(Items.BOWL).stacksTo(16);
+		return FoodValues.applyConsumable(new Item.Properties(), food).craftRemainder(Items.BOWL).stacksTo(16);
 	}
 	public static Item.Properties drinkItem() {
 		return new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(16);
@@ -43,7 +51,7 @@ public class ModItems
 	public static final Supplier<Item> COOKING_POT = registerWithTab("cooking_pot",
 			() -> new CookingPotItem(ModBlocks.COOKING_POT.get(), basicItem().stacksTo(1)));
 	public static final Supplier<Item> SKILLET = registerWithTab("skillet",
-			() -> new SkilletItem(ModBlocks.SKILLET.get(), basicItem().stacksTo(1).attributes(SkilletItem.createAttributes(SkilletItem.SKILLET_TIER, 5.0F, -3.1F))));
+			() -> new SkilletItem(ModBlocks.SKILLET.get(), skilletItem()));
 	public static final Supplier<Item> CUTTING_BOARD = registerWithTab("cutting_board",
 			() -> new FuelBlockItem(ModBlocks.CUTTING_BOARD.get(), basicItem(), 200));
 	public static final Supplier<Item> BASKET = registerWithTab("basket",
@@ -179,13 +187,13 @@ public class ModItems
 	public static final Supplier<Item> FLINT_KNIFE = registerWithTab("flint_knife",
 			() -> new KnifeItem(ModMaterials.FLINT, knifeItem(ModMaterials.FLINT)));
 	public static final Supplier<Item> IRON_KNIFE = registerWithTab("iron_knife",
-			() -> new KnifeItem(Tiers.IRON, knifeItem(Tiers.IRON)));
+			() -> new KnifeItem(ToolMaterial.IRON, knifeItem(ToolMaterial.IRON)));
 	public static final Supplier<Item> DIAMOND_KNIFE = registerWithTab("diamond_knife",
-			() -> new KnifeItem(Tiers.DIAMOND, knifeItem(Tiers.DIAMOND)));
+			() -> new KnifeItem(ToolMaterial.DIAMOND, knifeItem(ToolMaterial.DIAMOND)));
 	public static final Supplier<Item> NETHERITE_KNIFE = registerWithTab("netherite_knife",
-			() -> new KnifeItem(Tiers.NETHERITE, knifeItem(Tiers.NETHERITE).fireResistant()));
+			() -> new KnifeItem(ToolMaterial.NETHERITE, knifeItem(ToolMaterial.NETHERITE).fireResistant()));
 	public static final Supplier<Item> GOLDEN_KNIFE = registerWithTab("golden_knife",
-			() -> new KnifeItem(Tiers.GOLD, knifeItem(Tiers.GOLD)));
+			() -> new KnifeItem(ToolMaterial.GOLD, knifeItem(ToolMaterial.GOLD)));
 	public static final Supplier<Item> STRAW = registerWithTab("straw", () -> new FuelItem(basicItem()));
 	public static final Supplier<Item> CANVAS = registerWithTab("canvas", () -> new FuelItem(basicItem(), 400));
 	public static final Supplier<Item> TREE_BARK = registerWithTab("tree_bark", () -> new FuelItem(basicItem(), 200));
@@ -216,22 +224,17 @@ public class ModItems
 	public static final Supplier<Item> TOMATO = registerWithTab("tomato",
 			() -> new Item(foodItem(FoodValues.TOMATO)));
 	public static final Supplier<Item> ONION = registerWithTab("onion",
-			() -> new ItemNameBlockItem(ModBlocks.ONION_CROP.get(), foodItem(FoodValues.ONION)));
+			() -> new BlockItem(ModBlocks.ONION_CROP.get(), foodItem(FoodValues.ONION).useBlockDescriptionPrefix()));
 	public static final Supplier<Item> RICE_PANICLE = registerWithTab("rice_panicle", () -> new Item(basicItem()));
 	public static final Supplier<Item> RICE = registerWithTab("rice",
 			() -> new RiceItem(ModBlocks.RICE_CROP.get(), basicItem()));
-	public static final Supplier<Item> CABBAGE_SEEDS = registerWithTab("cabbage_seeds", () -> new ItemNameBlockItem(ModBlocks.CABBAGE_CROP.get(), basicItem()));
-	public static final Supplier<Item> TOMATO_SEEDS = registerWithTab("tomato_seeds", () -> new ItemNameBlockItem(ModBlocks.BUDDING_TOMATO_CROP.get(), basicItem())
+	public static final Supplier<Item> CABBAGE_SEEDS = registerWithTab("cabbage_seeds", () -> new BlockItem(ModBlocks.CABBAGE_CROP.get(), basicItem().useBlockDescriptionPrefix()));
+	public static final Supplier<Item> TOMATO_SEEDS = registerWithTab("tomato_seeds", () -> new BlockItem(ModBlocks.BUDDING_TOMATO_CROP.get(), basicItem().useBlockDescriptionPrefix())
 	{
 		@Override
 		public void registerBlocks(Map<Block, Item> blockToItemMap, Item item) {
 			super.registerBlocks(blockToItemMap, item);
 			blockToItemMap.put(ModBlocks.TOMATO_CROP.get(), item);
-		}
-		@Override
-		public void removeFromBlockToItemMap(Map<Block, Item> blockToItemMap, Item itemIn) {
-			super.removeFromBlockToItemMap(blockToItemMap, itemIn);
-			blockToItemMap.remove(ModBlocks.TOMATO_CROP.get());
 		}
 	});
 	public static final Supplier<Item> ROTTEN_TOMATO = registerWithTab("rotten_tomato",
@@ -244,7 +247,7 @@ public class ModItems
 	public static final Supplier<Item> HOT_COCOA = registerWithTab("hot_cocoa",
 			() -> new HotCocoaItem(drinkItem()));
 	public static final Supplier<Item> APPLE_CIDER = registerWithTab("apple_cider",
-			() -> new DrinkableItem(drinkItem().food(FoodValues.APPLE_CIDER), true, false));
+			() -> new DrinkableItem(FoodValues.applyConsumable(drinkItem(), FoodValues.APPLE_CIDER), true, false));
 	public static final Supplier<Item> MELON_JUICE = registerWithTab("melon_juice",
 			() -> new MelonJuiceItem(drinkItem()));
 	public static final Supplier<Item> TOMATO_SAUCE = registerWithTab("tomato_sauce",

@@ -1,6 +1,7 @@
 package vectorwing.farmersdelight.client.gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
@@ -24,15 +25,19 @@ public class HangingCanvasSignEditScreen extends AbstractSignEditScreen
 		String dyeName = dye != null ? "_" + dye.getName() : "";
 		this.texture = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "canvas" + dyeName + ".png").withPrefix("textures/gui/hanging_signs/");
 	}
-	protected void offsetSign(GuiGraphics gui, BlockState state) {
-		gui.pose().translate((float) this.width / 2.0F, 125.0F, 50.0F);
-	}
+
 	@Override
-	protected void renderSignBackground(GuiGraphics gui, BlockState p_250054_) {
-		gui.pose().translate(0.0F, -13.0F, 0.0F);
-		gui.pose().scale(4.5F, 4.5F, 1.0F);
-		gui.blit(this.texture, -8, -8, 0.0F, 0.0F, 16, 16, 16, 16);
+	protected float getSignYOffset() {
+		return 125.0F;
 	}
+
+	@Override
+	protected void renderSignBackground(GuiGraphics gui) {
+		gui.pose().translate(0.0F, -13.0F);
+		gui.pose().scale(4.5F, 4.5F);
+		gui.blit(RenderPipelines.GUI_TEXTURED, this.texture, -8, -8, 0.0F, 0.0F, 16, 16, 16, 16);
+	}
+
 	@Override
 	protected Vector3f getSignTextScale() {
 		return TEXT_SCALE;

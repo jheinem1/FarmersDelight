@@ -5,13 +5,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.FoodValues;
-@EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class CommonModBusEvents
 {
 	@SubscribeEvent
@@ -26,7 +24,9 @@ public class CommonModBusEvents
 			});
 		}
 		if (Configuration.RABBIT_STEW_BUFF.get()) {
-			event.modify(Items.RABBIT_STEW, (builder) -> builder.set(DataComponents.FOOD, FoodValues.RABBIT_STEW_BUFF));
+			event.modify(Items.RABBIT_STEW, builder -> builder
+					.set(DataComponents.FOOD, FoodValues.RABBIT_STEW_BUFF)
+					.set(DataComponents.CONSUMABLE, FoodValues.RABBIT_STEW_BUFF_CONSUMABLE));
 		}
 	}
 }

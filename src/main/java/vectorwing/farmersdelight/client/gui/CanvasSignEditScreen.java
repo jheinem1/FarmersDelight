@@ -6,11 +6,8 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
-import org.jspecify.annotations.Nullable;
-
 public class CanvasSignEditScreen extends SignEditScreen
 {
-	@Nullable
 	protected Model.Simple signModel;
 
 	public CanvasSignEditScreen(SignBlockEntity signBlockEntity, boolean isFront, boolean isTextFilteringEnabled) {

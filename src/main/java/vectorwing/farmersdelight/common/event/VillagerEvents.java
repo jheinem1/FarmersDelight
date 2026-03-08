@@ -1,9 +1,8 @@
 package vectorwing.farmersdelight.common.event;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -25,10 +24,8 @@ public class VillagerEvents
 	public static void onVillagerTrades(VillagerTradesEvent event) {
 		if (!Configuration.FARMERS_BUY_FD_CROPS.get()) return;
 		Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-		VillagerProfession profession = event.getType();
-		Identifier professionKey = BuiltInRegistries.VILLAGER_PROFESSION.getKey(profession);
-		if (professionKey == null) return;
-		if (professionKey.getPath().equals("farmer")) {
+		ResourceKey<VillagerProfession> profession = event.getType();
+		if (profession.location().getPath().equals("farmer")) {
 			trades.get(1).add(emeraldForItemsTrade(ModItems.ONION.get(), 26, 16, 2));
 			trades.get(1).add(emeraldForItemsTrade(ModItems.TOMATO.get(), 26, 16, 2));
 			trades.get(2).add(emeraldForItemsTrade(ModItems.CABBAGE.get(), 16, 16, 5));

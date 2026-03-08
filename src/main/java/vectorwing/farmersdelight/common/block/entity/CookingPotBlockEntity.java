@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -53,7 +54,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import static java.util.Map.entry;
-@EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProvider, HeatableBlockEntity, Nameable, RecipeCraftingHolder
 {
 	public static final int MEAL_DISPLAY_SLOT = 6;
@@ -426,7 +426,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
 		return writeItems(new CompoundTag(), registries);
 	}
 	@Override
-	protected void applyImplicitComponents(BlockEntity.DataComponentInput componentInput) {
+	protected void applyImplicitComponents(DataComponentGetter componentInput) {
 		super.applyImplicitComponents(componentInput);
 		this.customName = componentInput.get(DataComponents.CUSTOM_NAME);
 		getInventory().setStackInSlot(MEAL_DISPLAY_SLOT, componentInput.getOrDefault(ModDataComponents.MEAL, ItemStackWrapper.EMPTY).getStack());

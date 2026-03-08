@@ -10,6 +10,11 @@ import org.apache.logging.log4j.Logger;
 import vectorwing.farmersdelight.client.event.ClientSetupEvents;
 import vectorwing.farmersdelight.common.CommonSetup;
 import vectorwing.farmersdelight.common.Configuration;
+import vectorwing.farmersdelight.common.block.entity.BasketBlockEntity;
+import vectorwing.farmersdelight.common.block.entity.CabinetBlockEntity;
+import vectorwing.farmersdelight.common.block.entity.CookingPotBlockEntity;
+import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
+import vectorwing.farmersdelight.common.event.CommonModBusEvents;
 import vectorwing.farmersdelight.common.registry.*;
 import vectorwing.farmersdelight.common.world.VillageStructures;
 import vectorwing.farmersdelight.common.world.WildCropGeneration;
@@ -20,8 +25,18 @@ public class FarmersDelight
 	public static final Logger LOGGER = LogManager.getLogger();
 	public FarmersDelight(IEventBus modEventBus, ModContainer modContainer) {
 		modEventBus.addListener(CommonSetup::init);
+		modEventBus.addListener(CommonModBusEvents::onModifyDefaultComponents);
+		modEventBus.addListener(BasketBlockEntity::registerCapabilities);
+		modEventBus.addListener(CabinetBlockEntity::registerCapabilities);
+		modEventBus.addListener(CookingPotBlockEntity::registerCapabilities);
+		modEventBus.addListener(CuttingBoardBlockEntity::registerCapabilities);
 		if (FMLEnvironment.dist.isClient()) {
 			modEventBus.addListener(ClientSetupEvents::init);
+			modEventBus.addListener(ClientSetupEvents::registerCustomTooltipRenderers);
+			modEventBus.addListener(ClientSetupEvents::registerGuiLayers);
+			modEventBus.addListener(ClientSetupEvents::onRegisterRenderers);
+			modEventBus.addListener(ClientSetupEvents::registerMenuScreens);
+			modEventBus.addListener(ClientSetupEvents::registerParticles);
 		}
 		modContainer.registerConfig(ModConfig.Type.COMMON, Configuration.COMMON_CONFIG);
 		modContainer.registerConfig(ModConfig.Type.CLIENT, Configuration.CLIENT_CONFIG);

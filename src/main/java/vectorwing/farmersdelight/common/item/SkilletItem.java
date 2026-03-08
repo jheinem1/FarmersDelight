@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -49,19 +48,18 @@ import java.util.Optional;
 @SuppressWarnings({"deprecation", "unused"})
 public class SkilletItem extends BlockItem
 {
-	public static final Tiers SKILLET_TIER = Tiers.IRON;
+	public static final ToolMaterial SKILLET_TIER = ToolMaterial.IRON;
 	protected static final Identifier FD_ATTACK_KNOCKBACK_UUID = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "base_attack_knockback");
 	public SkilletItem(Block block, Item.Properties properties) {
-		super(block, properties.durability(SKILLET_TIER.getUses()));
-		float attackDamage = 5.0F + SKILLET_TIER.getAttackDamageBonus();
+		super(block, properties);
 	}
-	public static ItemAttributeModifiers createAttributes(Tier tier, float attackDamage, float attackSpeed) {
+	public static ItemAttributeModifiers createAttributes(ToolMaterial tier, float attackDamage, float attackSpeed) {
 		return ItemAttributeModifiers.builder()
-				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.attackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 				.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 				.add(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(FD_ATTACK_KNOCKBACK_UUID, 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build();
 	}
-	@EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.GAME)
+	@EventBusSubscriber(modid = FarmersDelight.MODID)
 	public static class SkilletEvents
 	{
 		@SubscribeEvent
@@ -118,20 +116,20 @@ public class SkilletItem extends BlockItem
 		return SkilletBlock.getSkilletCookingTime(cookingTime, fireAspectLevel);
 	}
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack skilletStack = player.getItemInHand(hand);
 		if (isPlayerNearHeatSource(player, level)) {
 			InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
 			ItemStack cookingStack = player.getItemInHand(otherHand);
 			if (!skilletStack.getOrDefault(ModDataComponents.SKILLET_INGREDIENT, ItemStackWrapper.EMPTY).getStack().isEmpty()) {
 				player.startUsingItem(hand);
-				return InteractionResultHolder.pass(skilletStack);
+				return InteractionResult.CONSUME;
 			}
 			Optional<RecipeHolder<CampfireCookingRecipe>> recipe = getCookingRecipe(cookingStack, level);
 			if (recipe.isPresent()) {
 				if (player.isUnderWater()) {
 					player.displayClientMessage(TextUtils.getTranslation("item.skillet.underwater"), true);
-					return InteractionResultHolder.pass(skilletStack);
+					return InteractionResult.PASS;
 				}
 				ItemStack cookingStackCopy = cookingStack.copy();
 				ItemStack cookingStackUnit = cookingStackCopy.split(1);
@@ -139,12 +137,12 @@ public class SkilletItem extends BlockItem
 				skilletStack.set(ModDataComponents.COOKING_TIME_LENGTH, recipe.get().value().getCookingTime());
 				player.startUsingItem(hand);
 				player.setItemInHand(otherHand, cookingStackCopy);
-				return InteractionResultHolder.consume(skilletStack);
+				return InteractionResult.CONSUME;
 			} else {
 				player.displayClientMessage(TextUtils.getTranslation("item.skillet.how_to_cook"), true);
 			}
 		}
-		return InteractionResultHolder.pass(skilletStack);
+		return InteractionResult.PASS;
 	}
 	@Override
 	public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int count) {
@@ -210,7 +208,7 @@ public class SkilletItem extends BlockItem
 	}
 	@Override
 	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
-		return SKILLET_TIER.getRepairIngredient().test(repair) || super.isValidRepairItem(toRepair, repair);
+		return super.isValidRepairItem(toRepair, repair);
 	}
 	public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
 		if (!level.isClientSide && state.getDestroySpeed(level, pos) != 0.0F) {
@@ -242,6 +240,6 @@ public class SkilletItem extends BlockItem
 	}
 	@Override
 	public int getEnchantmentValue() {
-		return SKILLET_TIER.getEnchantmentValue();
+		return SKILLET_TIER.enchantmentValue();
 	}
 }

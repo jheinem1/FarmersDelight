@@ -65,6 +65,8 @@ public class ModTags
 	public static final TagKey<Item> OFFHAND_EQUIPMENT = modItemTag("offhand_equipment");
 	// Knife items for game logic.
 	public static final TagKey<Item> KNIVES = modItemTag("tools/knives");
+	// Items that repair Farmer's Delight flint tools.
+	public static final TagKey<Item> FLINT_TOOL_MATERIALS = modItemTag("flint_tool_materials");
 	// Canvas Signs items for crafting.
 	public static final TagKey<Item> CANVAS_SIGNS = modItemTag("canvas_signs");
 	// Canvas Signs items for crafting.

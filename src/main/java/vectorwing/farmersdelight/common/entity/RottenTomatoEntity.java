@@ -6,7 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,10 +24,10 @@ public class RottenTomatoEntity extends ThrowableItemProjectile
 		super(entityType, level);
 	}
 	public RottenTomatoEntity(Level level, LivingEntity entity) {
-		super(ModEntityTypes.ROTTEN_TOMATO.get(), entity, level);
+		super(ModEntityTypes.ROTTEN_TOMATO.get(), entity, level, new ItemStack(ModItems.ROTTEN_TOMATO.get()));
 	}
 	public RottenTomatoEntity(Level level, double x, double y, double z) {
-		super(ModEntityTypes.ROTTEN_TOMATO.get(), x, y, z, level);
+		super(ModEntityTypes.ROTTEN_TOMATO.get(), x, y, z, level, new ItemStack(ModItems.ROTTEN_TOMATO.get()));
 	}
 	@Override
 	protected Item getDefaultItem() {

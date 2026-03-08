@@ -1,15 +1,17 @@
 package vectorwing.farmersdelight.common.block;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.Consumable;
+import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -26,6 +28,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import vectorwing.farmersdelight.common.FoodValues;
 import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.common.utility.ItemUtils;
 import java.util.function.Supplier;
@@ -84,9 +87,10 @@ public class PieBlock extends Block
 			FoodProperties sliceFood = sliceStack.getItem().getFoodProperties(sliceStack, playerIn);
 			if (sliceFood != null) {
 				playerIn.getFoodData().eat(sliceFood);
-				for (FoodProperties.PossibleEffect effect : sliceFood.effects()) {
-					if (!level.isClientSide && effect != null && level.random.nextFloat() < effect.probability()) {
-						playerIn.addEffect(effect.effect());
+				Consumable consumable = sliceStack.get(DataComponents.CONSUMABLE);
+				if (!level.isClientSide) {
+					for (ApplyStatusEffectsConsumeEffect effect : FoodValues.getStatusEffectEntries(consumable)) {
+						effect.apply(level, sliceStack, playerIn);
 					}
 				}
 			}

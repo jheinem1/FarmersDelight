@@ -40,7 +40,6 @@ import vectorwing.farmersdelight.common.utility.TextUtils;
 import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
-@EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class CuttingBoardBlockEntity extends SyncedBlockEntity
 {
 	private final ItemStackHandler inventory;
