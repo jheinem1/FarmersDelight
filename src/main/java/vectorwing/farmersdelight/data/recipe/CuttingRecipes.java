@@ -1,7 +1,7 @@
 package vectorwing.farmersdelight.data.recipe;
 
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -92,7 +92,7 @@ public class CuttingRecipes
 
 	private static void cuttingFoods(RecipeOutput output) {
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(CommonTags.FOODS_DOUGH), Ingredient.of(CommonTags.TOOLS_KNIFE), ModItems.RAW_PASTA.get(), 1)
-				.build(output, ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "tag_dough"));
+				.build(output, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "tag_dough"));
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(ModItems.KELP_ROLL.get()), Ingredient.of(CommonTags.TOOLS_KNIFE), ModItems.KELP_ROLL_SLICE.get(), 3)
 				.build(output);
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(Items.CAKE), Ingredient.of(CommonTags.TOOLS_KNIFE), ModItems.CAKE_SLICE.get(), 7)

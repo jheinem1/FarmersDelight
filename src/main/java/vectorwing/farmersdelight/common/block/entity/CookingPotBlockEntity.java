@@ -12,7 +12,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -50,7 +50,7 @@ import vectorwing.farmersdelight.common.registry.*;
 import vectorwing.farmersdelight.common.utility.ItemUtils;
 import vectorwing.farmersdelight.common.utility.TextUtils;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -93,7 +93,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
 	private Component customName;
 
 	protected final ContainerData cookingPotData;
-	private final Object2IntOpenHashMap<ResourceLocation> usedRecipeTracker;
+	private final Object2IntOpenHashMap<Identifier> usedRecipeTracker;
 
 	private final RecipeManager.CachedCheck<RecipeWrapper, CookingPotRecipe> quickCheck;
 
@@ -159,7 +159,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
 		}
 		CompoundTag compoundRecipes = compound.getCompound("RecipesUsed");
 		for (String key : compoundRecipes.getAllKeys()) {
-			usedRecipeTracker.put(ResourceLocation.parse(key), compoundRecipes.getInt(key));
+			usedRecipeTracker.put(Identifier.parse(key), compoundRecipes.getInt(key));
 		}
 	}
 
@@ -343,7 +343,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
 	@Override
 	public void setRecipeUsed(@Nullable RecipeHolder<?> recipe) {
 		if (recipe != null) {
-			ResourceLocation recipeID = recipe.id();
+			Identifier recipeID = recipe.id();
 			usedRecipeTracker.addTo(recipeID, 1);
 		}
 	}
@@ -364,7 +364,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
 	public List<RecipeHolder<?>> getUsedRecipesAndPopExperience(Level level, Vec3 pos) {
 		List<RecipeHolder<?>> list = Lists.newArrayList();
 
-		for (Object2IntMap.Entry<ResourceLocation> entry : usedRecipeTracker.object2IntEntrySet()) {
+		for (Object2IntMap.Entry<Identifier> entry : usedRecipeTracker.object2IntEntrySet()) {
 			level.getRecipeManager().byKey(entry.getKey()).ifPresent((recipe) -> {
 				list.add(recipe);
 				splitAndSpawnExperience((ServerLevel) level, pos, entry.getIntValue(), ((CookingPotRecipe) recipe.value()).getExperience());

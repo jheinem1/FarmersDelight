@@ -1,7 +1,7 @@
 package vectorwing.farmersdelight.client.recipebook;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
 import net.minecraft.world.inventory.RecipeBookType;
 import net.neoforged.neoforge.client.event.RegisterRecipeBookCategoriesEvent;
 import vectorwing.farmersdelight.common.crafting.CookingPotRecipe;

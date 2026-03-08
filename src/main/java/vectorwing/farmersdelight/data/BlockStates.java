@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -21,7 +21,7 @@ import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.block.*;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,8 +40,8 @@ public class BlockStates extends BlockStateProvider
 		return BuiltInRegistries.BLOCK.getKey(block).getPath();
 	}
 
-	public ResourceLocation resourceBlock(String path) {
-		return ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "block/" + path);
+	public Identifier resourceBlock(String path) {
+		return Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "block/" + path);
 	}
 
 	public ModelFile existingModel(Block block) {
@@ -247,7 +247,7 @@ public class BlockStates extends BlockStateProvider
 	}
 
 	// I am not proud of this method... But hey, it's runData. Only I shall have to deal with it.
-	public void customStageBlock(Block block, @Nullable ResourceLocation parent, String textureKey, IntegerProperty ageProperty, List<Integer> suffixes, Property<?>... ignored) {
+	public void customStageBlock(Block block, @Nullable Identifier parent, String textureKey, IntegerProperty ageProperty, List<Integer> suffixes, Property<?>... ignored) {
 		getVariantBuilder(block)
 				.forAllStatesExcept(state -> {
 					int ageSuffix = state.getValue(ageProperty);

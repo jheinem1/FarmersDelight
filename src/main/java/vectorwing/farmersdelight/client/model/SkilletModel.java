@@ -12,7 +12,7 @@
 //import net.minecraft.core.Direction;
 //import net.minecraft.core.registries.BuiltInRegistries;
 //import net.minecraft.nbt.CompoundTag;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.util.RandomSource;
 //import net.minecraft.world.entity.LivingEntity;
 //import net.minecraft.world.item.Item;
@@ -26,7 +26,7 @@
 //import vectorwing.farmersdelight.common.registry.ModItems;
 //
 //import javax.annotation.Nonnull;
-//import javax.annotation.Nullable;
+//import org.jspecify.annotations.Nullable;
 //import java.util.*;
 //
 ///**
@@ -123,14 +123,14 @@
 //		public CompositeBakedModel(ModelBakery bakery, ItemStack ingredientStack, BakedModel skillet) {
 //			super(skillet);
 //
-//			ResourceLocation ingredientLocation = BuiltInRegistries.ITEM.getKey(ingredientStack.getItem());
+//			Identifier ingredientLocation = BuiltInRegistries.ITEM.getKey(ingredientStack.getItem());
 //			UnbakedModel ingredientUnbaked = bakery.getModel(new ModelResourceLocation(ingredientLocation, "inventory"));
 //			ModelState transform = new SimpleModelState(
 //					new Transformation(
 //							new Vector3f(0.0F, -0.4F, 0.0F),
 //							Axis.XP.rotationDegrees(270),
 //							new Vector3f(0.625F, 0.625F, 0.625F), null));
-//			ResourceLocation name = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "skillet_with_" + ingredientLocation.toString().replace(':', '_'));
+//			Identifier name = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "skillet_with_" + ingredientLocation.toString().replace(':', '_'));
 //
 //			ModelBaker baker = bakery.new ModelBakerImpl((modelLoc, material) -> material.sprite(), name);
 //

@@ -33,7 +33,7 @@ import net.neoforged.neoforge.common.CommonHooks;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.registry.ModItems;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
 public class RiceBlock extends BushBlock implements BonemealableBlock, LiquidBlockContainer

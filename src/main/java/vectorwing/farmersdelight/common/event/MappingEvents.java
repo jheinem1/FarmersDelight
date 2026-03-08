@@ -3,7 +3,7 @@
 //import com.google.common.collect.ImmutableMap;
 //import net.minecraft.core.registries.BuiltInRegistries;
 //import net.minecraft.core.registries.Registries;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.world.item.Item;
 //import net.minecraft.world.level.block.Block;
 //import net.neoforged.bus.api.SubscribeEvent;
@@ -21,14 +21,14 @@
 //@Mod.EventBusSubscriber(modid = FarmersDelight.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 //public class MappingEvents
 //{
-//	public static ResourceLocation mapping(String name) {
-//		return new ResourceLocation(FarmersDelight.MODID, name);
+//	public static Identifier mapping(String name) {
+//		return new Identifier(FarmersDelight.MODID, name);
 //	}
 //
 //	@SubscribeEvent
 //	public static void blockRemapping(FMLCommonSetupEvent event) {
 //		event.enqueueWork(() -> {
-//			Map<ResourceLocation, Supplier<Block>> blockRemapping = (new ImmutableMap.Builder<ResourceLocation, Supplier<Block>>())
+//			Map<Identifier, Supplier<Block>> blockRemapping = (new ImmutableMap.Builder<Identifier, Supplier<Block>>())
 //					.put(mapping("oak_pantry"), ModBlocks.OAK_CABINET)
 //					.put(mapping("birch_pantry"), ModBlocks.BIRCH_CABINET)
 //					.put(mapping("spruce_pantry"), ModBlocks.SPRUCE_CABINET)
@@ -41,7 +41,7 @@
 //					.put(mapping("rice_upper_crop"), ModBlocks.RICE_CROP_PANICLES)
 //					.build();
 //
-//			for (Map.Entry<ResourceLocation, Supplier<Block>> mapping : blockRemapping.entrySet()) {
+//			for (Map.Entry<Identifier, Supplier<Block>> mapping : blockRemapping.entrySet()) {
 //				Supplier<Block> blockSupplier = blockRemapping.get(mapping.getKey());
 //				if (blockSupplier != null) {
 //					Block block = blockSupplier.get();
@@ -57,7 +57,7 @@
 //	@SubscribeEvent
 //	public static void itemRemapping(FMLCommonSetupEvent event) {
 //		event.enqueueWork(() -> {
-//			Map<ResourceLocation, Supplier<Item>> itemRemapping = (new ImmutableMap.Builder<ResourceLocation, Supplier<Item>>())
+//			Map<Identifier, Supplier<Item>> itemRemapping = (new ImmutableMap.Builder<Identifier, Supplier<Item>>())
 //					.put(mapping("oak_pantry"), ModItems.OAK_CABINET)
 //					.put(mapping("birch_pantry"), ModItems.BIRCH_CABINET)
 //					.put(mapping("spruce_pantry"), ModItems.SPRUCE_CABINET)
@@ -68,7 +68,7 @@
 //					.put(mapping("warped_pantry"), ModItems.WARPED_CABINET)
 //					.build();
 //
-//			for (Map.Entry<ResourceLocation, Supplier<Item>> mapping : itemRemapping.entrySet()) {
+//			for (Map.Entry<Identifier, Supplier<Item>> mapping : itemRemapping.entrySet()) {
 //				Supplier<Item> itemSupplier = itemRemapping.get(mapping.getKey());
 //
 //				if (itemSupplier != null) {

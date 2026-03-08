@@ -11,7 +11,7 @@ import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import vectorwing.farmersdelight.common.registry.ModIngredientTypes;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.stream.Stream;
 

@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import vectorwing.farmersdelight.common.block.MushroomColonyBlock;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class MushroomColonyItem extends BlockItem
 {

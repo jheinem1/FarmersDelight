@@ -20,7 +20,7 @@ import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.common.utility.MathUtils;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class RichSoilFarmlandBlock extends FarmBlock
 {

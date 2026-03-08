@@ -23,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import vectorwing.farmersdelight.common.block.entity.CabinetBlockEntity;
 import vectorwing.farmersdelight.common.registry.ModBlockEntityTypes;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
 public class CabinetBlock extends BaseEntityBlock

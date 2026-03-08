@@ -1,7 +1,7 @@
 package vectorwing.farmersdelight.integration.jei.resource;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
@@ -22,7 +22,7 @@ public class DoughRecipeMaker
 		ItemStack output = new ItemStack(ModItems.WHEAT_DOUGH.get());
 		String path = FarmersDelight.MODID + ".dough";
 
-		ResourceLocation id = ResourceLocation.parse(path);
+		Identifier id = Identifier.parse(path);
 		return List.of(new RecipeHolder<>(id, new ShapelessRecipe(path, CraftingBookCategory.MISC, output, inputs)));
 	}
 }

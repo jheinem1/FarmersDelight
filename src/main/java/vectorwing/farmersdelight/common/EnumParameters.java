@@ -1,6 +1,6 @@
 package vectorwing.farmersdelight.common;
 
-import net.minecraft.client.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.common.asm.enumextension.EnumProxy;

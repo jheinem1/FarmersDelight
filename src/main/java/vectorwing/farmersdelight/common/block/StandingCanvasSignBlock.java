@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import vectorwing.farmersdelight.common.block.state.CanvasSign;
 import vectorwing.farmersdelight.common.registry.ModBlockEntityTypes;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class StandingCanvasSignBlock extends StandingSignBlock implements CanvasSign
 {

@@ -2,7 +2,7 @@ package vectorwing.farmersdelight.data;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -14,7 +14,7 @@ import vectorwing.farmersdelight.common.tag.CommonTags;
 import vectorwing.farmersdelight.common.tag.CompatibilityTags;
 import vectorwing.farmersdelight.common.tag.ModTags;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class BlockTags extends BlockTagsProvider
@@ -255,8 +255,8 @@ public class BlockTags extends BlockTagsProvider
 				ModBlocks.WILD_ONIONS.get(),
 				ModBlocks.WILD_RICE.get());
 		tag(ModTags.ROPES).add(ModBlocks.ROPE.get())
-				.addOptional(ResourceLocation.parse("quark:rope"))
-				.addOptional(ResourceLocation.parse("supplementaries:rope"));
+				.addOptional(Identifier.parse("quark:rope"))
+				.addOptional(Identifier.parse("supplementaries:rope"));
 		tag(ModTags.TRAY_HEAT_SOURCES).add(
 						Blocks.LAVA)
 				.addTag(net.minecraft.tags.BlockTags.CAMPFIRES)
@@ -268,7 +268,7 @@ public class BlockTags extends BlockTagsProvider
 				.addTag(ModTags.TRAY_HEAT_SOURCES);
 		tag(ModTags.HEAT_CONDUCTORS).add(
 						Blocks.HOPPER)
-				.addOptional(ResourceLocation.parse("create:chute"));
+				.addOptional(Identifier.parse("create:chute"));
 		tag(ModTags.COMPOST_ACTIVATORS).add(
 				Blocks.BROWN_MUSHROOM,
 				Blocks.RED_MUSHROOM,

@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -29,7 +29,7 @@ import vectorwing.farmersdelight.common.registry.*;
 public class ClientSetupEvents
 {
 	public static void init(final FMLClientSetupEvent event) {
-		event.enqueueWork(() -> ItemProperties.register(ModItems.SKILLET.get(), ResourceLocation.withDefaultNamespace("cooking"),
+		event.enqueueWork(() -> ItemProperties.register(ModItems.SKILLET.get(), Identifier.withDefaultNamespace("cooking"),
 				(stack, world, entity, s) -> stack.getOrDefault(ModDataComponents.SKILLET_INGREDIENT, ItemStackWrapper.EMPTY).getStack().isEmpty() ? 0 : 1)
 		);
 	}
@@ -85,7 +85,7 @@ public class ClientSetupEvents
 
 //	@SubscribeEvent
 //	public static void onModelRegister(ModelEvent.RegisterAdditional event) {
-//		event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "skillet_cooking"), "inventory"));
+//		event.register(new ModelResourceLocation(Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "skillet_cooking"), "inventory"));
 //	}
 
 	// TODO: I hate the skillet model so much...
@@ -93,9 +93,9 @@ public class ClientSetupEvents
 //	public static void onModelBake(ModelEvent.ModifyBakingResult event) {
 //		Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
 //
-//		ModelResourceLocation skilletLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "skillet"), "inventory");
+//		ModelResourceLocation skilletLocation = new ModelResourceLocation(Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "skillet"), "inventory");
 //		BakedModel skilletModel = modelRegistry.get(skilletLocation);
-//		ModelResourceLocation skilletCookingLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "skillet_cooking"), "inventory");
+//		ModelResourceLocation skilletCookingLocation = new ModelResourceLocation(Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "skillet_cooking"), "inventory");
 //		BakedModel skilletCookingModel = modelRegistry.get(skilletCookingLocation);
 //		modelRegistry.put(skilletLocation, new SkilletModel(event.getModelBakery(), skilletModel, skilletCookingModel));
 //	}

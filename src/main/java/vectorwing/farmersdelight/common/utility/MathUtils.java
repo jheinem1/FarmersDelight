@@ -3,7 +3,7 @@ package vectorwing.farmersdelight.common.utility;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.Random;
 
 /**

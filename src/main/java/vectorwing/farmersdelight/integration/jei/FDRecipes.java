@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
@@ -41,7 +41,7 @@ public class FDRecipes
 	}
 
 	public List<RecipeHolder<CraftingRecipe>> getSpecialWheatDoughRecipe() {
-		Optional<RecipeHolder<?>> specialRecipe = recipeManager.byKey(ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "wheat_dough_from_water"));
+		Optional<RecipeHolder<?>> specialRecipe = recipeManager.byKey(Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "wheat_dough_from_water"));
 		List<RecipeHolder<CraftingRecipe>> recipes = Lists.newArrayList();
 
 		specialRecipe.ifPresent((recipe) -> {
@@ -52,7 +52,7 @@ public class FDRecipes
 			);
 			ItemStack output = new ItemStack(ModItems.WHEAT_DOUGH.get());
 
-			ResourceLocation id = recipe.id();
+			Identifier id = recipe.id();
 			CraftingRecipe newRecipe = new ShapelessRecipe("fd_dough", CraftingBookCategory.MISC, output, inputs);
 			recipes.add(new RecipeHolder<>(id, newRecipe));
 		});

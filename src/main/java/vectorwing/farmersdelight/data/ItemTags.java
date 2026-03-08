@@ -4,7 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +17,7 @@ import vectorwing.farmersdelight.common.tag.CommonTags;
 import vectorwing.farmersdelight.common.tag.CompatibilityTags;
 import vectorwing.farmersdelight.common.tag.ModTags;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class ItemTags extends ItemTagsProvider
@@ -207,12 +207,12 @@ public class ItemTags extends ItemTagsProvider
 				.add(ModItems.WARPED_CABINET.get());
 		tag(ModTags.CABINETS).addTag(ModTags.WOODEN_CABINETS);
 		tag(ModTags.OFFHAND_EQUIPMENT).addTag(Tags.Items.TOOLS_SHIELD)
-				.addOptional(ResourceLocation.parse("create:extendo_grip"));
+				.addOptional(Identifier.parse("create:extendo_grip"));
 		tag(ModTags.SERVING_CONTAINERS).add(Items.BOWL, Items.GLASS_BOTTLE, Items.BUCKET);
 		tag(ModTags.FLAT_ON_CUTTING_BOARD).add(Items.TRIDENT, Items.SPYGLASS)
-				.addOptional(ResourceLocation.parse("supplementaries:quiver"))
-				.addOptional(ResourceLocation.parse("autumnity:turkey"))
-				.addOptional(ResourceLocation.parse("autumnity:cooked_turkey"));
+				.addOptional(Identifier.parse("supplementaries:quiver"))
+				.addOptional(Identifier.parse("autumnity:turkey"))
+				.addOptional(Identifier.parse("autumnity:cooked_turkey"));
 	}
 
 	@SuppressWarnings("unchecked")

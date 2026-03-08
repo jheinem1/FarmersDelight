@@ -3,7 +3,7 @@ package vectorwing.farmersdelight.common.block.entity.container;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
@@ -26,7 +26,7 @@ import java.util.Objects;
 
 public class CookingPotMenu extends RecipeBookMenu<RecipeWrapper, CookingPotRecipe>
 {
-	public static final ResourceLocation EMPTY_CONTAINER_SLOT_BOWL = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "item/empty_container_slot_bowl");
+	public static final Identifier EMPTY_CONTAINER_SLOT_BOWL = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "item/empty_container_slot_bowl");
 
 	public final CookingPotBlockEntity blockEntity;
 	public final ItemStackHandler inventory;
@@ -66,7 +66,7 @@ public class CookingPotMenu extends RecipeBookMenu<RecipeWrapper, CookingPotReci
 		// Bowl Input
 		this.addSlot(new SlotItemHandler(inventory, 7, 92, 55)
 		{
-			public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+			public Pair<Identifier, Identifier> getNoItemIcon() {
 				return Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_CONTAINER_SLOT_BOWL);
 			}
 		});
