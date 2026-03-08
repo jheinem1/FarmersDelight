@@ -46,12 +46,14 @@ public class ModItems
 	public static Item.Properties basicItem() {
 		return idProps(new Item.Properties());
 	}
+	public static Item.Properties blockItem() {
+		return basicItem().useBlockDescriptionPrefix();
+	}
 	public static Item.Properties knifeItem(ToolMaterial material) {
 		return idProps(new Item.Properties());
 	}
 	public static Item.Properties skilletItem() {
-		return basicItem()
-				.useBlockDescriptionPrefix()
+		return blockItem()
 				.stacksTo(1)
 				.durability(SkilletItem.SKILLET_TIER.durability())
 				.repairable(SkilletItem.SKILLET_TIER.repairItems())
@@ -69,142 +71,142 @@ public class ModItems
 	}
 	// Blocks
 	public static final Supplier<Item> STOVE = registerWithTab("stove",
-			() -> new BlockItem(ModBlocks.STOVE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.STOVE.get(), blockItem()));
 	public static final Supplier<Item> COOKING_POT = registerWithTab("cooking_pot",
-			() -> new CookingPotItem(ModBlocks.COOKING_POT.get(), basicItem().stacksTo(1)));
+			() -> new CookingPotItem(ModBlocks.COOKING_POT.get(), blockItem().stacksTo(1)));
 	public static final Supplier<Item> SKILLET = registerWithTab("skillet",
 			() -> new SkilletItem(ModBlocks.SKILLET.get(), skilletItem()));
 	public static final Supplier<Item> CUTTING_BOARD = registerWithTab("cutting_board",
-			() -> new FuelBlockItem(ModBlocks.CUTTING_BOARD.get(), basicItem(), 200));
+			() -> new FuelBlockItem(ModBlocks.CUTTING_BOARD.get(), blockItem(), 200));
 	public static final Supplier<Item> BASKET = registerWithTab("basket",
-			() -> new FuelBlockItem(ModBlocks.BASKET.get(), basicItem(), 300));
+			() -> new FuelBlockItem(ModBlocks.BASKET.get(), blockItem(), 300));
 	public static final Supplier<Item> CARROT_CRATE = registerWithTab("carrot_crate",
-			() -> new BlockItem(ModBlocks.CARROT_CRATE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.CARROT_CRATE.get(), blockItem()));
 	public static final Supplier<Item> POTATO_CRATE = registerWithTab("potato_crate",
-			() -> new BlockItem(ModBlocks.POTATO_CRATE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.POTATO_CRATE.get(), blockItem()));
 	public static final Supplier<Item> BEETROOT_CRATE = registerWithTab("beetroot_crate",
-			() -> new BlockItem(ModBlocks.BEETROOT_CRATE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.BEETROOT_CRATE.get(), blockItem()));
 	public static final Supplier<Item> CABBAGE_CRATE = registerWithTab("cabbage_crate",
-			() -> new BlockItem(ModBlocks.CABBAGE_CRATE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.CABBAGE_CRATE.get(), blockItem()));
 	public static final Supplier<Item> TOMATO_CRATE = registerWithTab("tomato_crate",
-			() -> new BlockItem(ModBlocks.TOMATO_CRATE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.TOMATO_CRATE.get(), blockItem()));
 	public static final Supplier<Item> ONION_CRATE = registerWithTab("onion_crate",
-			() -> new BlockItem(ModBlocks.ONION_CRATE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.ONION_CRATE.get(), blockItem()));
 	public static final Supplier<Item> RICE_BALE = registerWithTab("rice_bale",
-			() -> new BlockItem(ModBlocks.RICE_BALE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.RICE_BALE.get(), blockItem()));
 	public static final Supplier<Item> RICE_BAG = registerWithTab("rice_bag",
-			() -> new BlockItem(ModBlocks.RICE_BAG.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.RICE_BAG.get(), blockItem()));
 	public static final Supplier<Item> STRAW_BALE = registerWithTab("straw_bale",
-			() -> new BlockItem(ModBlocks.STRAW_BALE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.STRAW_BALE.get(), blockItem()));
 	public static final Supplier<Item> SAFETY_NET = registerWithTab("safety_net",
-			() -> new FuelBlockItem(ModBlocks.SAFETY_NET.get(), basicItem(), 200));
+			() -> new FuelBlockItem(ModBlocks.SAFETY_NET.get(), blockItem(), 200));
 	public static final Supplier<Item> OAK_CABINET = registerWithTab("oak_cabinet",
-			() -> new FuelBlockItem(ModBlocks.OAK_CABINET.get(), basicItem(), 300));
+			() -> new FuelBlockItem(ModBlocks.OAK_CABINET.get(), blockItem(), 300));
 	public static final Supplier<Item> SPRUCE_CABINET = registerWithTab("spruce_cabinet",
-			() -> new FuelBlockItem(ModBlocks.SPRUCE_CABINET.get(), basicItem(), 300));
+			() -> new FuelBlockItem(ModBlocks.SPRUCE_CABINET.get(), blockItem(), 300));
 	public static final Supplier<Item> BIRCH_CABINET = registerWithTab("birch_cabinet",
-			() -> new FuelBlockItem(ModBlocks.BIRCH_CABINET.get(), basicItem(), 300));
+			() -> new FuelBlockItem(ModBlocks.BIRCH_CABINET.get(), blockItem(), 300));
 	public static final Supplier<Item> JUNGLE_CABINET = registerWithTab("jungle_cabinet",
-			() -> new FuelBlockItem(ModBlocks.JUNGLE_CABINET.get(), basicItem(), 300));
+			() -> new FuelBlockItem(ModBlocks.JUNGLE_CABINET.get(), blockItem(), 300));
 	public static final Supplier<Item> ACACIA_CABINET = registerWithTab("acacia_cabinet",
-			() -> new FuelBlockItem(ModBlocks.ACACIA_CABINET.get(), basicItem(), 300));
+			() -> new FuelBlockItem(ModBlocks.ACACIA_CABINET.get(), blockItem(), 300));
 	public static final Supplier<Item> DARK_OAK_CABINET = registerWithTab("dark_oak_cabinet",
-			() -> new FuelBlockItem(ModBlocks.DARK_OAK_CABINET.get(), basicItem(), 300));
+			() -> new FuelBlockItem(ModBlocks.DARK_OAK_CABINET.get(), blockItem(), 300));
 	public static final Supplier<Item> MANGROVE_CABINET = registerWithTab("mangrove_cabinet",
-			() -> new FuelBlockItem(ModBlocks.MANGROVE_CABINET.get(), basicItem(), 300));
+			() -> new FuelBlockItem(ModBlocks.MANGROVE_CABINET.get(), blockItem(), 300));
 	public static final Supplier<Item> CHERRY_CABINET = registerWithTab("cherry_cabinet",
-			() -> new FuelBlockItem(ModBlocks.CHERRY_CABINET.get(), basicItem(), 300));
+			() -> new FuelBlockItem(ModBlocks.CHERRY_CABINET.get(), blockItem(), 300));
 	public static final Supplier<Item> BAMBOO_CABINET = registerWithTab("bamboo_cabinet",
-			() -> new FuelBlockItem(ModBlocks.BAMBOO_CABINET.get(), basicItem(), 300));
+			() -> new FuelBlockItem(ModBlocks.BAMBOO_CABINET.get(), blockItem(), 300));
 	public static final Supplier<Item> CRIMSON_CABINET = registerWithTab("crimson_cabinet",
-			() -> new BlockItem(ModBlocks.CRIMSON_CABINET.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.CRIMSON_CABINET.get(), blockItem()));
 	public static final Supplier<Item> WARPED_CABINET = registerWithTab("warped_cabinet",
-			() -> new BlockItem(ModBlocks.WARPED_CABINET.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.WARPED_CABINET.get(), blockItem()));
 	public static final Supplier<Item> TATAMI = registerWithTab("tatami",
-			() -> new FuelBlockItem(ModBlocks.TATAMI.get(), basicItem(), 400));
+			() -> new FuelBlockItem(ModBlocks.TATAMI.get(), blockItem(), 400));
 	public static final Supplier<Item> FULL_TATAMI_MAT = registerWithTab("full_tatami_mat",
-			() -> new FuelBlockItem(ModBlocks.FULL_TATAMI_MAT.get(), basicItem(), 200));
+			() -> new FuelBlockItem(ModBlocks.FULL_TATAMI_MAT.get(), blockItem(), 200));
 	public static final Supplier<Item> HALF_TATAMI_MAT = registerWithTab("half_tatami_mat",
-			() -> new FuelBlockItem(ModBlocks.HALF_TATAMI_MAT.get(), basicItem()));
+			() -> new FuelBlockItem(ModBlocks.HALF_TATAMI_MAT.get(), blockItem()));
 	public static final Supplier<Item> CANVAS_RUG = registerWithTab("canvas_rug",
-			() -> new FuelBlockItem(ModBlocks.CANVAS_RUG.get(), basicItem(), 200));
+			() -> new FuelBlockItem(ModBlocks.CANVAS_RUG.get(), blockItem(), 200));
 	public static final Supplier<Item> ORGANIC_COMPOST = registerWithTab("organic_compost",
-			() -> new BlockItem(ModBlocks.ORGANIC_COMPOST.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.ORGANIC_COMPOST.get(), blockItem()));
 	public static final Supplier<Item> RICH_SOIL = registerWithTab("rich_soil",
-			() -> new BlockItem(ModBlocks.RICH_SOIL.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.RICH_SOIL.get(), blockItem()));
 	public static final Supplier<Item> RICH_SOIL_FARMLAND = registerWithTab("rich_soil_farmland",
-			() -> new BlockItem(ModBlocks.RICH_SOIL_FARMLAND.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.RICH_SOIL_FARMLAND.get(), blockItem()));
 	public static final Supplier<Item> ROPE = registerWithTab("rope",
-			() -> new RopeItem(ModBlocks.ROPE.get(), basicItem()));
+			() -> new RopeItem(ModBlocks.ROPE.get(), blockItem()));
 	// Canvas Signs...
 	public static final Supplier<Item> CANVAS_SIGN = registerWithTab("canvas_sign",
-			() -> new SignItem(ModBlocks.CANVAS_SIGN.get(), ModBlocks.CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.CANVAS_SIGN.get(), ModBlocks.CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> HANGING_CANVAS_SIGN = registerWithTab("hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.HANGING_CANVAS_SIGN.get(), ModBlocks.HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.HANGING_CANVAS_SIGN.get(), ModBlocks.HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> WHITE_CANVAS_SIGN = registerWithTab("white_canvas_sign",
-			() -> new SignItem(ModBlocks.WHITE_CANVAS_SIGN.get(), ModBlocks.WHITE_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.WHITE_CANVAS_SIGN.get(), ModBlocks.WHITE_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> WHITE_HANGING_CANVAS_SIGN = registerWithTab("white_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.WHITE_HANGING_CANVAS_SIGN.get(), ModBlocks.WHITE_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.WHITE_HANGING_CANVAS_SIGN.get(), ModBlocks.WHITE_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> LIGHT_GRAY_CANVAS_SIGN = registerWithTab("light_gray_canvas_sign",
-			() -> new SignItem(ModBlocks.LIGHT_GRAY_CANVAS_SIGN.get(), ModBlocks.LIGHT_GRAY_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.LIGHT_GRAY_CANVAS_SIGN.get(), ModBlocks.LIGHT_GRAY_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> LIGHT_GRAY_HANGING_CANVAS_SIGN = registerWithTab("light_gray_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.LIGHT_GRAY_HANGING_CANVAS_SIGN.get(), ModBlocks.LIGHT_GRAY_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.LIGHT_GRAY_HANGING_CANVAS_SIGN.get(), ModBlocks.LIGHT_GRAY_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> GRAY_CANVAS_SIGN = registerWithTab("gray_canvas_sign",
-			() -> new SignItem(ModBlocks.GRAY_CANVAS_SIGN.get(), ModBlocks.GRAY_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.GRAY_CANVAS_SIGN.get(), ModBlocks.GRAY_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> GRAY_HANGING_CANVAS_SIGN = registerWithTab("gray_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.GRAY_HANGING_CANVAS_SIGN.get(), ModBlocks.GRAY_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.GRAY_HANGING_CANVAS_SIGN.get(), ModBlocks.GRAY_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> BLACK_CANVAS_SIGN = registerWithTab("black_canvas_sign",
-			() -> new SignItem(ModBlocks.BLACK_CANVAS_SIGN.get(), ModBlocks.BLACK_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.BLACK_CANVAS_SIGN.get(), ModBlocks.BLACK_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> BLACK_HANGING_CANVAS_SIGN = registerWithTab("black_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.BLACK_HANGING_CANVAS_SIGN.get(), ModBlocks.BLACK_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.BLACK_HANGING_CANVAS_SIGN.get(), ModBlocks.BLACK_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> BROWN_CANVAS_SIGN = registerWithTab("brown_canvas_sign",
-			() -> new SignItem(ModBlocks.BROWN_CANVAS_SIGN.get(), ModBlocks.BROWN_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.BROWN_CANVAS_SIGN.get(), ModBlocks.BROWN_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> BROWN_HANGING_CANVAS_SIGN = registerWithTab("brown_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.BROWN_HANGING_CANVAS_SIGN.get(), ModBlocks.BROWN_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.BROWN_HANGING_CANVAS_SIGN.get(), ModBlocks.BROWN_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> RED_CANVAS_SIGN = registerWithTab("red_canvas_sign",
-			() -> new SignItem(ModBlocks.RED_CANVAS_SIGN.get(), ModBlocks.RED_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.RED_CANVAS_SIGN.get(), ModBlocks.RED_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> RED_HANGING_CANVAS_SIGN = registerWithTab("red_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.RED_HANGING_CANVAS_SIGN.get(), ModBlocks.RED_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.RED_HANGING_CANVAS_SIGN.get(), ModBlocks.RED_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> ORANGE_CANVAS_SIGN = registerWithTab("orange_canvas_sign",
-			() -> new SignItem(ModBlocks.ORANGE_CANVAS_SIGN.get(), ModBlocks.ORANGE_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.ORANGE_CANVAS_SIGN.get(), ModBlocks.ORANGE_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> ORANGE_HANGING_CANVAS_SIGN = registerWithTab("orange_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.ORANGE_HANGING_CANVAS_SIGN.get(), ModBlocks.ORANGE_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.ORANGE_HANGING_CANVAS_SIGN.get(), ModBlocks.ORANGE_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> YELLOW_CANVAS_SIGN = registerWithTab("yellow_canvas_sign",
-			() -> new SignItem(ModBlocks.YELLOW_CANVAS_SIGN.get(), ModBlocks.YELLOW_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.YELLOW_CANVAS_SIGN.get(), ModBlocks.YELLOW_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> YELLOW_HANGING_CANVAS_SIGN = registerWithTab("yellow_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.YELLOW_HANGING_CANVAS_SIGN.get(), ModBlocks.YELLOW_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.YELLOW_HANGING_CANVAS_SIGN.get(), ModBlocks.YELLOW_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> LIME_CANVAS_SIGN = registerWithTab("lime_canvas_sign",
-			() -> new SignItem(ModBlocks.LIME_CANVAS_SIGN.get(), ModBlocks.LIME_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.LIME_CANVAS_SIGN.get(), ModBlocks.LIME_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> LIME_HANGING_CANVAS_SIGN = registerWithTab("lime_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.LIME_HANGING_CANVAS_SIGN.get(), ModBlocks.LIME_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.LIME_HANGING_CANVAS_SIGN.get(), ModBlocks.LIME_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> GREEN_CANVAS_SIGN = registerWithTab("green_canvas_sign",
-			() -> new SignItem(ModBlocks.GREEN_CANVAS_SIGN.get(), ModBlocks.GREEN_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.GREEN_CANVAS_SIGN.get(), ModBlocks.GREEN_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> GREEN_HANGING_CANVAS_SIGN = registerWithTab("green_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.GREEN_HANGING_CANVAS_SIGN.get(), ModBlocks.GREEN_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.GREEN_HANGING_CANVAS_SIGN.get(), ModBlocks.GREEN_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> CYAN_CANVAS_SIGN = registerWithTab("cyan_canvas_sign",
-			() -> new SignItem(ModBlocks.CYAN_CANVAS_SIGN.get(), ModBlocks.CYAN_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.CYAN_CANVAS_SIGN.get(), ModBlocks.CYAN_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> CYAN_HANGING_CANVAS_SIGN = registerWithTab("cyan_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.CYAN_HANGING_CANVAS_SIGN.get(), ModBlocks.CYAN_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.CYAN_HANGING_CANVAS_SIGN.get(), ModBlocks.CYAN_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> LIGHT_BLUE_CANVAS_SIGN = registerWithTab("light_blue_canvas_sign",
-			() -> new SignItem(ModBlocks.LIGHT_BLUE_CANVAS_SIGN.get(), ModBlocks.LIGHT_BLUE_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.LIGHT_BLUE_CANVAS_SIGN.get(), ModBlocks.LIGHT_BLUE_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> LIGHT_BLUE_HANGING_CANVAS_SIGN = registerWithTab("light_blue_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.LIGHT_BLUE_HANGING_CANVAS_SIGN.get(), ModBlocks.LIGHT_BLUE_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.LIGHT_BLUE_HANGING_CANVAS_SIGN.get(), ModBlocks.LIGHT_BLUE_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> BLUE_CANVAS_SIGN = registerWithTab("blue_canvas_sign",
-			() -> new SignItem(ModBlocks.BLUE_CANVAS_SIGN.get(), ModBlocks.BLUE_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.BLUE_CANVAS_SIGN.get(), ModBlocks.BLUE_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> BLUE_HANGING_CANVAS_SIGN = registerWithTab("blue_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.BLUE_HANGING_CANVAS_SIGN.get(), ModBlocks.BLUE_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.BLUE_HANGING_CANVAS_SIGN.get(), ModBlocks.BLUE_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> PURPLE_CANVAS_SIGN = registerWithTab("purple_canvas_sign",
-			() -> new SignItem(ModBlocks.PURPLE_CANVAS_SIGN.get(), ModBlocks.PURPLE_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.PURPLE_CANVAS_SIGN.get(), ModBlocks.PURPLE_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> PURPLE_HANGING_CANVAS_SIGN = registerWithTab("purple_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.PURPLE_HANGING_CANVAS_SIGN.get(), ModBlocks.PURPLE_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.PURPLE_HANGING_CANVAS_SIGN.get(), ModBlocks.PURPLE_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> MAGENTA_CANVAS_SIGN = registerWithTab("magenta_canvas_sign",
-			() -> new SignItem(ModBlocks.MAGENTA_CANVAS_SIGN.get(), ModBlocks.MAGENTA_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.MAGENTA_CANVAS_SIGN.get(), ModBlocks.MAGENTA_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> MAGENTA_HANGING_CANVAS_SIGN = registerWithTab("magenta_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.MAGENTA_HANGING_CANVAS_SIGN.get(), ModBlocks.MAGENTA_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.MAGENTA_HANGING_CANVAS_SIGN.get(), ModBlocks.MAGENTA_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> PINK_CANVAS_SIGN = registerWithTab("pink_canvas_sign",
-			() -> new SignItem(ModBlocks.PINK_CANVAS_SIGN.get(), ModBlocks.PINK_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new SignItem(ModBlocks.PINK_CANVAS_SIGN.get(), ModBlocks.PINK_CANVAS_WALL_SIGN.get(), blockItem()));
 	public static final Supplier<Item> PINK_HANGING_CANVAS_SIGN = registerWithTab("pink_hanging_canvas_sign",
-			() -> new HangingSignItem(ModBlocks.PINK_HANGING_CANVAS_SIGN.get(), ModBlocks.PINK_HANGING_CANVAS_WALL_SIGN.get(), basicItem()));
+			() -> new HangingSignItem(ModBlocks.PINK_HANGING_CANVAS_SIGN.get(), ModBlocks.PINK_HANGING_CANVAS_WALL_SIGN.get(), blockItem()));
 	// Tools
 	public static final Supplier<Item> FLINT_KNIFE = registerWithTab("flint_knife",
 			() -> new KnifeItem(ModMaterials.FLINT, knifeItem(ModMaterials.FLINT)));
@@ -221,37 +223,37 @@ public class ModItems
 	public static final Supplier<Item> TREE_BARK = registerWithTab("tree_bark", () -> new FuelItem(basicItem(), 200));
 	// Wild Crops
 	public static final Supplier<Item> SANDY_SHRUB = registerWithTab("sandy_shrub",
-			() -> new BlockItem(ModBlocks.SANDY_SHRUB.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.SANDY_SHRUB.get(), blockItem()));
 	public static final Supplier<Item> WILD_CABBAGES = registerWithTab("wild_cabbages",
-			() -> new BlockItem(ModBlocks.WILD_CABBAGES.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.WILD_CABBAGES.get(), blockItem()));
 	public static final Supplier<Item> WILD_ONIONS = registerWithTab("wild_onions",
-			() -> new BlockItem(ModBlocks.WILD_ONIONS.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.WILD_ONIONS.get(), blockItem()));
 	public static final Supplier<Item> WILD_TOMATOES = registerWithTab("wild_tomatoes",
-			() -> new BlockItem(ModBlocks.WILD_TOMATOES.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.WILD_TOMATOES.get(), blockItem()));
 	public static final Supplier<Item> WILD_CARROTS = registerWithTab("wild_carrots",
-			() -> new BlockItem(ModBlocks.WILD_CARROTS.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.WILD_CARROTS.get(), blockItem()));
 	public static final Supplier<Item> WILD_POTATOES = registerWithTab("wild_potatoes",
-			() -> new BlockItem(ModBlocks.WILD_POTATOES.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.WILD_POTATOES.get(), blockItem()));
 	public static final Supplier<Item> WILD_BEETROOTS = registerWithTab("wild_beetroots",
-			() -> new BlockItem(ModBlocks.WILD_BEETROOTS.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.WILD_BEETROOTS.get(), blockItem()));
 	public static final Supplier<Item> WILD_RICE = registerWithTab("wild_rice",
-			() -> new DoubleHighBlockItem(ModBlocks.WILD_RICE.get(), basicItem()));
+			() -> new DoubleHighBlockItem(ModBlocks.WILD_RICE.get(), blockItem()));
 	public static final Supplier<Item> BROWN_MUSHROOM_COLONY = registerWithTab("brown_mushroom_colony",
-			() -> new MushroomColonyItem(ModBlocks.BROWN_MUSHROOM_COLONY.get(), basicItem()));
+			() -> new MushroomColonyItem(ModBlocks.BROWN_MUSHROOM_COLONY.get(), blockItem()));
 	public static final Supplier<Item> RED_MUSHROOM_COLONY = registerWithTab("red_mushroom_colony",
-			() -> new MushroomColonyItem(ModBlocks.RED_MUSHROOM_COLONY.get(), basicItem()));
+			() -> new MushroomColonyItem(ModBlocks.RED_MUSHROOM_COLONY.get(), blockItem()));
 	// Basic Crops
 	public static final Supplier<Item> CABBAGE = registerWithTab("cabbage",
 			() -> new Item(foodItem(FoodValues.CABBAGE)));
 	public static final Supplier<Item> TOMATO = registerWithTab("tomato",
 			() -> new Item(foodItem(FoodValues.TOMATO)));
 	public static final Supplier<Item> ONION = registerWithTab("onion",
-			() -> new BlockItem(ModBlocks.ONION_CROP.get(), foodItem(FoodValues.ONION).useBlockDescriptionPrefix()));
+			() -> new BlockItem(ModBlocks.ONION_CROP.get(), foodItem(FoodValues.ONION)));
 	public static final Supplier<Item> RICE_PANICLE = registerWithTab("rice_panicle", () -> new Item(basicItem()));
 	public static final Supplier<Item> RICE = registerWithTab("rice",
 			() -> new RiceItem(ModBlocks.RICE_CROP.get(), basicItem()));
-	public static final Supplier<Item> CABBAGE_SEEDS = registerWithTab("cabbage_seeds", () -> new BlockItem(ModBlocks.CABBAGE_CROP.get(), basicItem().useBlockDescriptionPrefix()));
-	public static final Supplier<Item> TOMATO_SEEDS = registerWithTab("tomato_seeds", () -> new BlockItem(ModBlocks.BUDDING_TOMATO_CROP.get(), basicItem().useBlockDescriptionPrefix())
+	public static final Supplier<Item> CABBAGE_SEEDS = registerWithTab("cabbage_seeds", () -> new BlockItem(ModBlocks.CABBAGE_CROP.get(), basicItem()));
+	public static final Supplier<Item> TOMATO_SEEDS = registerWithTab("tomato_seeds", () -> new BlockItem(ModBlocks.BUDDING_TOMATO_CROP.get(), basicItem())
 	{
 		@Override
 		public void registerBlocks(Map<Block, Item> blockToItemMap, Item item) {
@@ -314,11 +316,11 @@ public class ModItems
 	public static final Supplier<Item> PIE_CRUST = registerWithTab("pie_crust",
 			() -> new Item(foodItem(FoodValues.PIE_CRUST)));
 	public static final Supplier<Item> APPLE_PIE = registerWithTab("apple_pie",
-			() -> new BlockItem(ModBlocks.APPLE_PIE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.APPLE_PIE.get(), blockItem()));
 	public static final Supplier<Item> SWEET_BERRY_CHEESECAKE = registerWithTab("sweet_berry_cheesecake",
-			() -> new BlockItem(ModBlocks.SWEET_BERRY_CHEESECAKE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.SWEET_BERRY_CHEESECAKE.get(), blockItem()));
 	public static final Supplier<Item> CHOCOLATE_PIE = registerWithTab("chocolate_pie",
-			() -> new BlockItem(ModBlocks.CHOCOLATE_PIE.get(), basicItem()));
+			() -> new BlockItem(ModBlocks.CHOCOLATE_PIE.get(), blockItem()));
 	public static final Supplier<Item> CAKE_SLICE = registerWithTab("cake_slice",
 			() -> new Item(foodItem(FoodValues.CAKE_SLICE)));
 	public static final Supplier<Item> APPLE_PIE_SLICE = registerWithTab("apple_pie_slice",
@@ -412,23 +414,23 @@ public class ModItems
 			() -> new ConsumableItem(bowlFoodItem(FoodValues.GRILLED_SALMON), true));
 	// Feasts
 	public static final Supplier<Item> ROAST_CHICKEN_BLOCK = registerWithTab("roast_chicken_block",
-			() -> new BlockItem(ModBlocks.ROAST_CHICKEN_BLOCK.get(), basicItem().stacksTo(1)));
+			() -> new BlockItem(ModBlocks.ROAST_CHICKEN_BLOCK.get(), blockItem().stacksTo(1)));
 	public static final Supplier<Item> ROAST_CHICKEN = registerWithTab("roast_chicken",
 			() -> new ConsumableItem(bowlFoodItem(FoodValues.ROAST_CHICKEN), true));
 	public static final Supplier<Item> STUFFED_PUMPKIN_BLOCK = registerWithTab("stuffed_pumpkin_block",
-			() -> new BlockItem(ModBlocks.STUFFED_PUMPKIN_BLOCK.get(), basicItem().stacksTo(1)));
+			() -> new BlockItem(ModBlocks.STUFFED_PUMPKIN_BLOCK.get(), blockItem().stacksTo(1)));
 	public static final Supplier<Item> STUFFED_PUMPKIN = registerWithTab("stuffed_pumpkin",
 			() -> new ConsumableItem(bowlFoodItem(FoodValues.STUFFED_PUMPKIN), true));
 	public static final Supplier<Item> HONEY_GLAZED_HAM_BLOCK = registerWithTab("honey_glazed_ham_block",
-			() -> new BlockItem(ModBlocks.HONEY_GLAZED_HAM_BLOCK.get(), basicItem().stacksTo(1)));
+			() -> new BlockItem(ModBlocks.HONEY_GLAZED_HAM_BLOCK.get(), blockItem().stacksTo(1)));
 	public static final Supplier<Item> HONEY_GLAZED_HAM = registerWithTab("honey_glazed_ham",
 			() -> new ConsumableItem(bowlFoodItem(FoodValues.HONEY_GLAZED_HAM), true));
 	public static final Supplier<Item> SHEPHERDS_PIE_BLOCK = registerWithTab("shepherds_pie_block",
-			() -> new BlockItem(ModBlocks.SHEPHERDS_PIE_BLOCK.get(), basicItem().stacksTo(1)));
+			() -> new BlockItem(ModBlocks.SHEPHERDS_PIE_BLOCK.get(), blockItem().stacksTo(1)));
 	public static final Supplier<Item> SHEPHERDS_PIE = registerWithTab("shepherds_pie",
 			() -> new ConsumableItem(bowlFoodItem(FoodValues.SHEPHERDS_PIE), true));
 	public static final Supplier<Item> RICE_ROLL_MEDLEY_BLOCK = registerWithTab("rice_roll_medley_block",
-			() -> new BlockItem(ModBlocks.RICE_ROLL_MEDLEY_BLOCK.get(), basicItem().stacksTo(1)));
+			() -> new BlockItem(ModBlocks.RICE_ROLL_MEDLEY_BLOCK.get(), blockItem().stacksTo(1)));
 	// Pet Foods
 	public static final Supplier<Item> DOG_FOOD = registerWithTab("dog_food",
 			() -> new DogFoodItem(bowlFoodItem(FoodValues.DOG_FOOD)));
