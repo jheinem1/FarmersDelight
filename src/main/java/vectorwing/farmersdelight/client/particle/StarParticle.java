@@ -1,14 +1,18 @@
 package vectorwing.farmersdelight.client.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
-public class StarParticle extends TextureSheetParticle
+public class StarParticle extends SingleQuadParticle
 {
-	protected StarParticle(ClientLevel level, double posX, double posY, double posZ) {
-		super(level, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
+	protected StarParticle(ClientLevel level, double posX, double posY, double posZ, SpriteSet spriteSet) {
+		super(level, posX, posY, posZ, 0.0D, 0.0D, 0.0D, spriteSet.first());
 		this.xd *= 0.01F;
 		this.yd *= 0.01F;
 		this.zd *= 0.01F;
@@ -19,8 +23,8 @@ public class StarParticle extends TextureSheetParticle
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+	public SingleQuadParticle.Layer getLayer() {
+		return SingleQuadParticle.Layer.OPAQUE;
 	}
 
 	@Override
@@ -49,7 +53,6 @@ public class StarParticle extends TextureSheetParticle
 				this.xd *= 0.7F;
 				this.zd *= 0.7F;
 			}
-
 		}
 	}
 
@@ -62,9 +65,9 @@ public class StarParticle extends TextureSheetParticle
 		}
 
 		@Override
-		public Particle createParticle(SimpleParticleType typeIn, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			StarParticle particle = new StarParticle(level, x, y + 0.3D, z);
-			particle.pickSprite(this.spriteSet);
+		public Particle createParticle(SimpleParticleType typeIn, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+			StarParticle particle = new StarParticle(level, x, y + 0.3D, z, this.spriteSet);
+			particle.setSprite(this.spriteSet.get(random));
 			particle.setColor(1.0F, 1.0F, 1.0F);
 			return particle;
 		}

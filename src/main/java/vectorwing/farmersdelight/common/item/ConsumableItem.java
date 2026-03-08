@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.item;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,15 +14,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.utility.TextUtils;
-
 import org.jspecify.annotations.Nullable;
 import java.util.List;
-
 public class ConsumableItem extends Item
 {
 	private final boolean hasFoodEffectTooltip;
 	private final boolean hasCustomTooltip;
-
 	/**
 	 * Items that can be consumed by an entity.
 	 * When consumed, they may affect the consumer somehow, and will give back containers if applicable, regardless of their stack size.
@@ -33,27 +29,22 @@ public class ConsumableItem extends Item
 		this.hasFoodEffectTooltip = false;
 		this.hasCustomTooltip = false;
 	}
-
 	public ConsumableItem(Properties properties, boolean hasFoodEffectTooltip) {
 		super(properties);
 		this.hasFoodEffectTooltip = hasFoodEffectTooltip;
 		this.hasCustomTooltip = false;
 	}
-
 	public ConsumableItem(Properties properties, boolean hasFoodEffectTooltip, boolean hasCustomTooltip) {
 		super(properties);
 		this.hasFoodEffectTooltip = hasFoodEffectTooltip;
 		this.hasCustomTooltip = hasCustomTooltip;
 	}
-
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity consumer) {
 		if (!level.isClientSide) {
 			this.affectConsumer(stack, level, consumer);
 		}
-
 		ItemStack containerStack = stack.getCraftingRemainingItem();
-
 		if (stack.getFoodProperties(consumer) != null) {
 			super.finishUsingItem(stack, level, consumer);
 		} else {
@@ -68,7 +59,6 @@ public class ConsumableItem extends Item
 				}
 			}
 		}
-
 		if (stack.isEmpty()) {
 			return containerStack;
 		} else {
@@ -80,13 +70,11 @@ public class ConsumableItem extends Item
 			return stack;
 		}
 	}
-
 	/**
 	 * Override this to apply changes to the consumer (e.g. curing effects).
 	 */
 	public void affectConsumer(ItemStack stack, Level level, LivingEntity consumer) {
 	}
-
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag isAdvanced) {
 		if (Configuration.FOOD_EFFECT_TOOLTIP.get()) {

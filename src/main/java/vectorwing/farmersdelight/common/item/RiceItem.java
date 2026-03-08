@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.item;
-
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
@@ -11,13 +10,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import vectorwing.farmersdelight.common.utility.TextUtils;
-
 public class RiceItem extends ItemNameBlockItem
 {
 	public RiceItem(Block block, Properties properties) {
 		super(block, properties);
 	}
-
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		InteractionResult result = this.place(new BlockPlaceContext(context));

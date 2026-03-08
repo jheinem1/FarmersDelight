@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.data.advancement;
-
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.criterion.*;
 import net.minecraft.core.HolderLookup;
@@ -19,10 +18,8 @@ import vectorwing.farmersdelight.common.registry.ModEffects;
 import vectorwing.farmersdelight.common.registry.ModEntityTypes;
 import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.utility.TextUtils;
-
 import java.util.Optional;
 import java.util.function.Consumer;
-
 public class FDAdvancementGenerator implements AdvancementProvider.AdvancementGenerator
 {
 	@Override
@@ -35,7 +32,6 @@ public class FDAdvancementGenerator implements AdvancementProvider.AdvancementGe
 						AdvancementType.TASK, false, false, false)
 				.addCriterion("seeds", InventoryChangeTrigger.TriggerInstance.hasItems(new ItemLike[]{}))
 				.save(consumer, getNameId("main/root"));
-
 		// Harvesting Branch
 		AdvancementHolder huntAndGather = getAdvancement(farmersDelight, ModItems.FLINT_KNIFE.get(), "craft_knife", AdvancementType.TASK, true, true, false)
 				.addCriterion("flint_knife", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.FLINT_KNIFE.get()))
@@ -45,34 +41,27 @@ public class FDAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("netherite_knife", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.NETHERITE_KNIFE.get()))
 				.requirements(AdvancementRequirements.Strategy.OR)
 				.save(consumer, getNameId("main/craft_knife"));
-
 		AdvancementHolder graspingAtStraws = getAdvancement(huntAndGather, ModItems.STRAW.get(), "harvest_straw", AdvancementType.TASK, true, false, false)
 				.addCriterion("harvest_straw", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.STRAW.get()))
 				.save(consumer, getNameId("main/harvest_straw"));
-
 		AdvancementHolder advancedComposting = getAdvancement(graspingAtStraws, ModItems.ORGANIC_COMPOST.get(), "place_organic_compost", AdvancementType.TASK, true, false, false)
 				.addCriterion("place_organic_compost", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(ModBlocks.ORGANIC_COMPOST.get()))
 				.save(consumer, getNameId("main/place_organic_compost"));
-
 		AdvancementHolder plantFood = getAdvancement(advancedComposting, ModItems.RICH_SOIL.get(), "get_rich_soil", AdvancementType.GOAL, true, true, false)
 				.addCriterion("get_rich_soil", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.RICH_SOIL.get()))
 				.save(consumer, getNameId("main/get_rich_soil"));
-
 		AdvancementHolder wildButcher = getAdvancement(huntAndGather, ModItems.HAM.get(), "get_ham", AdvancementType.TASK, true, false, false)
 				.addCriterion("ham", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.HAM.get()))
 				.addCriterion("smoked_ham", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.SMOKED_HAM.get()))
 				.requirements(AdvancementRequirements.Strategy.OR)
 				.save(consumer, getNameId("main/get_ham"));
-
 		AdvancementHolder watchYourFingers = getAdvancement(huntAndGather, ModItems.CUTTING_BOARD.get(), "use_cutting_board", AdvancementType.TASK, true, false, false)
 				.addCriterion("cutting_board", CuttingBoardTrigger.TriggerInstance.simple())
 				.save(consumer, getNameId("main/use_cutting_board"));
-
 		AdvancementHolder cantTakeTheHeat = getAdvancement(watchYourFingers, ModItems.NETHERITE_KNIFE.get(), "obtain_netherite_knife", AdvancementType.CHALLENGE, true, true, false)
 				.addCriterion("obtain_netherite_knife", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.NETHERITE_KNIFE.get()))
 				.rewards(AdvancementRewards.Builder.experience(200))
 				.save(consumer, getNameId("main/obtain_netherite_knife"));
-
 		// Farming Branch
 		AdvancementHolder cropsOfTheWild = getAdvancement(farmersDelight, ModItems.WILD_ONIONS.get(), "get_fd_seed", AdvancementType.TASK, true, true, false)
 				.addCriterion("cabbage_seeds", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.CABBAGE_SEEDS.get()))
@@ -81,17 +70,14 @@ public class FDAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("rice", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.RICE.get()))
 				.requirements(AdvancementRequirements.Strategy.OR)
 				.save(consumer, getNameId("main/get_fd_seed"));
-
 		AdvancementHolder fungusAmongUs = getAdvancement(cropsOfTheWild, ModItems.RED_MUSHROOM_COLONY.get(), "get_mushroom_colony", AdvancementType.TASK, true, false, false)
 				.addCriterion("brown_mushroom_colony", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.BROWN_MUSHROOM_COLONY.get()))
 				.addCriterion("red_mushroom_colony", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.RED_MUSHROOM_COLONY.get()))
 				.requirements(AdvancementRequirements.Strategy.OR)
 				.save(consumer, getNameId("main/get_mushroom_colony"));
-
 		AdvancementHolder dippingYourRoots = getAdvancement(cropsOfTheWild, ModItems.RICE.get(), "plant_rice", AdvancementType.TASK, true, false, false)
 				.addCriterion("plant_rice", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(ModBlocks.RICE_CROP.get()))
 				.save(consumer, getNameId("main/plant_rice"));
-
 		AdvancementHolder tallmato = getAdvancement(cropsOfTheWild, ModItems.TOMATO.get(), "harvest_ropelogged_tomato", AdvancementType.TASK, true, false, false)
 				.addCriterion("harvest_ropelogged_tomato", CriteriaTriggers.DEFAULT_BLOCK_USE.createCriterion(
 						new DefaultBlockInteractionTrigger.TriggerInstance(
@@ -110,14 +96,12 @@ public class FDAdvancementGenerator implements AdvancementProvider.AdvancementGe
 						)
 				))
 				.save(consumer, getNameId("main/harvest_ropelogged_tomato"));
-
 		AdvancementHolder booHiss = getAdvancement(tallmato, ModItems.ROTTEN_TOMATO.get(), "hit_raider_with_rotten_tomato", AdvancementType.TASK, true, true, false)
 				.addCriterion("hit_raider_with_rotten_tomato", PlayerHurtEntityTrigger.TriggerInstance.playerHurtEntity(
 						Optional.of(DamagePredicate.Builder.damageInstance()
 								.type(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_PROJECTILE)).direct(EntityPredicate.Builder.entity().of(ModEntityTypes.ROTTEN_TOMATO.get()))).build()),
 						Optional.of(EntityPredicate.Builder.entity().of(EntityTypeTags.RAIDERS).build())))
 				.save(consumer, getNameId("main/hit_raider_with_rotten_tomato"));
-
 		AdvancementHolder cropRotation = getAdvancement(dippingYourRoots, ModItems.CABBAGE.get(), "plant_all_crops", AdvancementType.CHALLENGE, true, true, false)
 				.addCriterion("wheat", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(Blocks.WHEAT))
 				.addCriterion("beetroot", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(Blocks.BEETROOTS))
@@ -140,34 +124,27 @@ public class FDAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("glow_berries", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(Blocks.CAVE_VINES))
 				.rewards(AdvancementRewards.Builder.experience(100))
 				.save(consumer, getNameId("main/plant_all_crops"));
-
 		// Cooking Branch
 		AdvancementHolder bonfireLit = getAdvancement(farmersDelight, Blocks.CAMPFIRE, "place_campfire", AdvancementType.TASK, true, true, false)
 				.addCriterion("campfire", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(Blocks.CAMPFIRE))
 				.addCriterion("soul_campfire", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(Blocks.SOUL_CAMPFIRE))
 				.requirements(AdvancementRequirements.Strategy.OR)
 				.save(consumer, getNameId("main/place_campfire"));
-
 		AdvancementHolder portableCooking = getAdvancement(bonfireLit, ModItems.SKILLET.get(), "use_skillet", AdvancementType.TASK, true, false, false)
 				.addCriterion("skillet", ConsumeItemTrigger.TriggerInstance.usedItem(ModItems.SKILLET.get()))
 				.save(consumer, getNameId("main/use_skillet"));
-
 		AdvancementHolder sizzlingHot = getAdvancement(portableCooking, ModItems.SKILLET.get(), "place_skillet", AdvancementType.TASK, true, false, false)
 				.addCriterion("skillet", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(ModBlocks.SKILLET.get()))
 				.save(consumer, getNameId("main/place_skillet"));
-
 		AdvancementHolder dinnerIsServed = getAdvancement(bonfireLit, ModItems.COOKING_POT.get(), "place_cooking_pot", AdvancementType.GOAL, true, true, false)
 				.addCriterion("cooking_pot", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(ModBlocks.COOKING_POT.get()))
 				.save(consumer, getNameId("main/place_cooking_pot"));
-
 		AdvancementHolder comforting = getAdvancement(dinnerIsServed, ModItems.BAKED_COD_STEW.get(), "eat_comfort_food", AdvancementType.TASK, true, false, false)
 				.addCriterion("comfort", EffectsChangedTrigger.TriggerInstance.hasEffects(MobEffectsPredicate.Builder.effects().and(ModEffects.COMFORT)))
 				.save(consumer, getNameId("main/eat_comfort_food"));
-
 		AdvancementHolder nourishing = getAdvancement(comforting, ModItems.STEAK_AND_POTATOES.get(), "eat_nourishing_food", AdvancementType.TASK, true, false, false)
 				.addCriterion("nourishment", EffectsChangedTrigger.TriggerInstance.hasEffects(MobEffectsPredicate.Builder.effects().and(ModEffects.NOURISHMENT)))
 				.save(consumer, getNameId("main/eat_nourishing_food"));
-
 		AdvancementHolder gloriousFeast = getAdvancement(nourishing, ModItems.ROAST_CHICKEN_BLOCK.get(), "place_feast", AdvancementType.TASK, true, true, false)
 				.addCriterion("roast_chicken", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(ModBlocks.ROAST_CHICKEN_BLOCK.get()))
 				.addCriterion("stuffed_pumpkin", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(ModBlocks.STUFFED_PUMPKIN_BLOCK.get()))
@@ -176,7 +153,6 @@ public class FDAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("rice_roll_medley", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(ModBlocks.RICE_ROLL_MEDLEY_BLOCK.get()))
 				.requirements(AdvancementRequirements.Strategy.OR)
 				.save(consumer, getNameId("main/place_feast"));
-
 		AdvancementHolder masterChef = getAdvancement(gloriousFeast, ModItems.HONEY_GLAZED_HAM.get(), "master_chef", AdvancementType.CHALLENGE, true, true, false)
 				.addCriterion("mixed_salad", ConsumeItemTrigger.TriggerInstance.usedItem(ModItems.MIXED_SALAD.get()))
 				.addCriterion("cooked_rice", ConsumeItemTrigger.TriggerInstance.usedItem(ModItems.COOKED_RICE.get()))
@@ -206,14 +182,12 @@ public class FDAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.rewards(AdvancementRewards.Builder.experience(200))
 				.save(consumer, getNameId("main/master_chef"));
 	}
-
 	protected static Advancement.Builder getAdvancement(AdvancementHolder parent, ItemLike display, String name, AdvancementType frame, boolean showToast, boolean announceToChat, boolean hidden) {
 		return Advancement.Builder.advancement().parent(parent).display(display,
 				TextUtils.getTranslation("advancement." + name),
 				TextUtils.getTranslation("advancement." + name + ".desc"),
 				null, frame, showToast, announceToChat, hidden);
 	}
-
 	private String getNameId(String id) {
 		return FarmersDelight.MODID + ":" + id;
 	}

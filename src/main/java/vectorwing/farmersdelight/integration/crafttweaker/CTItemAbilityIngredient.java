@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.integration.crafttweaker;
-
 import com.blamejared.crafttweaker.api.annotation.ZenRegister;
 import com.blamejared.crafttweaker.api.ingredient.IIngredient;
 import com.blamejared.crafttweaker.api.ingredient.condition.IngredientConditions;
@@ -12,7 +11,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.openzen.zencode.java.ZenCodeType;
 import vectorwing.farmersdelight.common.crafting.ingredient.ItemAbilityIngredient;
-
 @Document("mods/FarmersDelight/ItemAbilityIngredient")
 @ZenRegister
 @ZenCodeType.Name("mods.farmersdelight.ItemAbilityIngredient")
@@ -20,33 +18,26 @@ public class CTItemAbilityIngredient implements IIngredient
 {
 	public static final String PREFIX = "toolingredient";
 	private final ItemAbilityIngredient ingredient;
-
 	private final IngredientConditions conditions = new IngredientConditions();
 	private final IngredientTransformers transformers = new IngredientTransformers();
-
 	public CTItemAbilityIngredient(ItemAbility itemAbility) {
 		this(new ItemAbilityIngredient(itemAbility));
 	}
-
 	public CTItemAbilityIngredient(ItemAbilityIngredient ingredient) {
 		this.ingredient = ingredient;
 	}
-
 	@Override
 	public boolean matches(IItemStack stack) {
 		return ingredient.test(stack.getInternal());
 	}
-
 	@Override
 	public Ingredient asVanillaIngredient() {
 		return ingredient.toVanilla();
 	}
-
 	@Override
 	public String getCommandString() {
 		return "<" + PREFIX + ":" + ingredient.getItemAbility().name() + ">";
 	}
-
 	@Override
 	public IItemStack[] getItems() {
 		ItemStack[] stacks = (ItemStack[]) ingredient.getItems().toArray();
@@ -56,18 +47,14 @@ public class CTItemAbilityIngredient implements IIngredient
 		}
 		return out;
 	}
-
 	@Override
 	public IngredientTransformers transformers() {
 		return transformers;
 	}
-
 	@Override
 	public IngredientConditions conditions() {
 		return conditions;
 	}
-
-
 	@ZenCodeType.Expansion("crafttweaker.neoforge.api.item.ItemAbility")
 	@ZenRegister
 	public static class ExpandItemAbility

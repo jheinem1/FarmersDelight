@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common;
-
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -7,26 +6,21 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import vectorwing.farmersdelight.common.registry.ModEffects;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 public class FoodValues
 {
 	public static final int BRIEF_DURATION = 600;    // 30 seconds
 	public static final int SHORT_DURATION = 1200;    // 1 minute
 	public static final int MEDIUM_DURATION = 3600;    // 3 minutes
 	public static final int LONG_DURATION = 6000;    // 5 minutes
-
 	public static MobEffectInstance comfort(int duration) {
 		return new MobEffectInstance(ModEffects.COMFORT, duration, 0, false, false);
 	}
-
 	public static MobEffectInstance nourishment(int duration) {
 		return new MobEffectInstance(ModEffects.NOURISHMENT, duration, 0, false, false);
 	}
-
 	// Raw Crops
 	public static final FoodProperties CABBAGE = (new FoodProperties.Builder())
 			.nutrition(2).saturationModifier(0.4f).build();
@@ -34,11 +28,9 @@ public class FoodValues
 			.nutrition(1).saturationModifier(0.3f).build();
 	public static final FoodProperties ONION = (new FoodProperties.Builder())
 			.nutrition(2).saturationModifier(0.4f).build();
-
 	// Drinks (mostly for effects)
 	public static final FoodProperties APPLE_CIDER = (new FoodProperties.Builder())
 			.alwaysEdible().effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, 1200, 0), 1.0F).build();
-
 	// Basic Foods
 	public static final FoodProperties FRIED_EGG = (new FoodProperties.Builder())
 			.nutrition(4).saturationModifier(0.4f).build();
@@ -82,7 +74,6 @@ public class FoodValues
 			.nutrition(5).saturationModifier(0.3f).build();
 	public static final FoodProperties SMOKED_HAM = (new FoodProperties.Builder())
 			.nutrition(10).saturationModifier(0.8f).build();
-
 	// Sweets
 	public static final FoodProperties POPSICLE = (new FoodProperties.Builder())
 			.nutrition(3).saturationModifier(0.2f).fast().alwaysEdible().build();
@@ -100,7 +91,6 @@ public class FoodValues
 	public static final FoodProperties GLOW_BERRY_CUSTARD = (new FoodProperties.Builder())
 			.nutrition(7).saturationModifier(0.6f).alwaysEdible()
 			.effect(() -> new MobEffectInstance(MobEffects.GLOWING, 100, 0), 1.0F).build();
-
 	// Handheld Foods
 	public static final FoodProperties MIXED_SALAD = (new FoodProperties.Builder())
 			.nutrition(6).saturationModifier(0.6f)
@@ -133,7 +123,6 @@ public class FoodValues
 	public static final FoodProperties KELP_ROLL = new FoodProperties(12, 12, false, 2.4f, Optional.empty(), List.of());
 	public static final FoodProperties KELP_ROLL_SLICE = (new FoodProperties.Builder())
 			.nutrition(6).saturationModifier(0.5f).fast().build();
-
 	// Bowl Foods
 	public static final FoodProperties COOKED_RICE = (new FoodProperties.Builder())
 			.nutrition(6).saturationModifier(0.4f)
@@ -165,7 +154,6 @@ public class FoodValues
 	public static final FoodProperties NOODLE_SOUP = (new FoodProperties.Builder())
 			.nutrition(14).saturationModifier(0.75f)
 			.effect(() -> comfort(LONG_DURATION), 1.0F).build();
-
 	// Plated Foods
 	public static final FoodProperties BACON_AND_EGGS = (new FoodProperties.Builder())
 			.nutrition(10).saturationModifier(0.6f)
@@ -197,7 +185,6 @@ public class FoodValues
 	public static final FoodProperties GRILLED_SALMON = (new FoodProperties.Builder())
 			.nutrition(14).saturationModifier(0.75f)
 			.effect(() -> nourishment(MEDIUM_DURATION), 1.0F).build();
-
 	// Feast Portions
 	public static final FoodProperties ROAST_CHICKEN = (new FoodProperties.Builder())
 			.nutrition(14).saturationModifier(0.75f)
@@ -211,10 +198,8 @@ public class FoodValues
 	public static final FoodProperties SHEPHERDS_PIE = (new FoodProperties.Builder())
 			.nutrition(14).saturationModifier(0.75f)
 			.effect(() -> nourishment(LONG_DURATION), 1.0F).build();
-
 	public static final FoodProperties DOG_FOOD = (new FoodProperties.Builder())
 			.nutrition(4).saturationModifier(0.2f).build();
-
 	// Vanilla SoupItems
 	public static final Map<Item, FoodProperties> VANILLA_SOUP_EFFECTS = (new ImmutableMap.Builder<Item, FoodProperties>())
 			.put(Items.MUSHROOM_STEW, (new FoodProperties.Builder())
@@ -224,7 +209,6 @@ public class FoodValues
 			.put(Items.RABBIT_STEW, (new FoodProperties.Builder())
 					.effect(() -> comfort(LONG_DURATION), 1.0F).build())
 			.build();
-
 	public static final FoodProperties RABBIT_STEW_BUFF = (new FoodProperties.Builder())
 			.nutrition(14).saturationModifier(0.75f).effect(() -> comfort(LONG_DURATION), 1.0F).usingConvertsTo(Items.BOWL).build();
 }

@@ -1,8 +1,7 @@
 package vectorwing.farmersdelight.common.loot.function;
-
+import org.jspecify.annotations.NullMarked;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -14,12 +13,10 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.registry.ModLootFunctions;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Optional;
-
-@MethodsReturnNonnullByDefault
+@NullMarked
 @ParametersAreNonnullByDefault
 public class SmokerCookFunction extends LootItemConditionalFunction
 {
@@ -27,11 +24,9 @@ public class SmokerCookFunction extends LootItemConditionalFunction
 	public static final MapCodec<SmokerCookFunction> CODEC = RecordCodecBuilder.mapCodec(
 			p_298131_ -> commonFields(p_298131_).apply(p_298131_, SmokerCookFunction::new)
 	);
-
 	protected SmokerCookFunction(List<LootItemCondition> conditionsIn) {
 		super(conditionsIn);
 	}
-
 	@Override
 	protected ItemStack run(ItemStack stack, LootContext context) {
 		if (stack.isEmpty()) {
@@ -48,7 +43,6 @@ public class SmokerCookFunction extends LootItemConditionalFunction
 			}
 		}
 	}
-
 	@Override
 	public LootItemFunctionType<SmokerCookFunction> getType() {
 		return ModLootFunctions.SMOKER_COOK.get();

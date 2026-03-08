@@ -1,19 +1,15 @@
 package vectorwing.farmersdelight.common.item;
-
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import vectorwing.farmersdelight.common.block.MushroomColonyBlock;
-
 import org.jspecify.annotations.Nullable;
-
 public class MushroomColonyItem extends BlockItem
 {
 	public MushroomColonyItem(Block blockIn, Properties properties) {
 		super(blockIn, properties);
 	}
-
 	@Override
 	@Nullable
 	protected BlockState getPlacementState(BlockPlaceContext context) {
@@ -25,4 +21,3 @@ public class MushroomColonyItem extends BlockItem
 		return null;
 	}
 }
-

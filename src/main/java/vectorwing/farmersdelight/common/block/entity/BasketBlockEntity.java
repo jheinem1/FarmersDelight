@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.block.entity;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -23,19 +22,15 @@ import vectorwing.farmersdelight.common.block.BasketBlock;
 import vectorwing.farmersdelight.common.block.entity.inventory.BasketInvWrapper;
 import vectorwing.farmersdelight.common.registry.ModBlockEntityTypes;
 import vectorwing.farmersdelight.common.utility.TextUtils;
-
 import java.util.function.BooleanSupplier;
-
 @EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class BasketBlockEntity extends RandomizableContainerBlockEntity implements Basket
 {
 	private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
 	private int transferCooldown = -1;
-
 	public BasketBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntityTypes.BASKET.get(), pos, state);
 	}
-
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		event.registerBlockEntity(
@@ -44,7 +39,6 @@ public class BasketBlockEntity extends RandomizableContainerBlockEntity implemen
 				(be, context) -> new BasketInvWrapper(be)
 		);
 	}
-
 	@Override
 	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		super.loadAdditional(compound, registries);
@@ -54,28 +48,23 @@ public class BasketBlockEntity extends RandomizableContainerBlockEntity implemen
 		}
 		this.transferCooldown = compound.getInt("TransferCooldown");
 	}
-
 	@Override
 	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		super.saveAdditional(compound, registries);
 		if (!this.trySaveLootTable(compound)) {
 			ContainerHelper.saveAllItems(compound, this.items, registries);
 		}
-
 		compound.putInt("TransferCooldown", this.transferCooldown);
 	}
-
 	@Override
 	public int getContainerSize() {
 		return this.items.size();
 	}
-
 	@Override
 	public ItemStack removeItem(int index, int count) {
 		this.unpackLootTable(null);
 		return ContainerHelper.removeItem(this.getItems(), index, count);
 	}
-
 	@Override
 	public void setItem(int index, ItemStack stack) {
 		this.unpackLootTable(null);
@@ -84,42 +73,34 @@ public class BasketBlockEntity extends RandomizableContainerBlockEntity implemen
 			stack.setCount(this.getMaxStackSize());
 		}
 	}
-
 	@Override
 	protected Component getDefaultName() {
 		return TextUtils.getTranslation("container.basket");
 	}
-
 	// -- STANDARD INVENTORY STUFF --
 	@Override
 	protected NonNullList<ItemStack> getItems() {
 		return this.items;
 	}
-
 	@Override
 	protected void setItems(NonNullList<ItemStack> itemsIn) {
 		this.items = itemsIn;
 	}
-
 	@Override
 	protected AbstractContainerMenu createMenu(int id, Inventory player) {
 		return ChestMenu.threeRows(id, player, this);
 	}
-
 	@Override
 	public void setCooldown(int ticks) {
 		this.transferCooldown = ticks;
 	}
-
 	public boolean isOnCooldown() {
 		return this.transferCooldown > 0;
 	}
-
 	@Override
 	public boolean isOnCustomCooldown() {
 		return this.transferCooldown > 8;
 	}
-
 	@Override
 	public void tryTransfer(BooleanSupplier transfer) {
 		if (this.level != null && !this.level.isClientSide) {
@@ -128,7 +109,6 @@ public class BasketBlockEntity extends RandomizableContainerBlockEntity implemen
 				if (!this.isFull()) {
 					flag = transfer.getAsBoolean();
 				}
-
 				if (flag) {
 					this.setCooldown(8);
 					this.setChanged();
@@ -136,7 +116,6 @@ public class BasketBlockEntity extends RandomizableContainerBlockEntity implemen
 			}
 		}
 	}
-
 	protected boolean isFull() {
 		for (ItemStack itemstack : this.items) {
 			if (itemstack.isEmpty() || itemstack.getCount() != itemstack.getMaxStackSize()) {
@@ -145,22 +124,18 @@ public class BasketBlockEntity extends RandomizableContainerBlockEntity implemen
 		}
 		return true;
 	}
-
 	@Override
 	public double getLevelX() {
 		return (double) this.worldPosition.getX() + 0.5D;
 	}
-
 	@Override
 	public double getLevelY() {
 		return (double) this.worldPosition.getY() + 0.5D;
 	}
-
 	@Override
 	public double getLevelZ() {
 		return (double) this.worldPosition.getZ() + 0.5D;
 	}
-
 	public static void pushItemsTick(Level level, BlockPos pos, BlockState state, BasketBlockEntity blockEntity) {
 		--blockEntity.transferCooldown;
 		if (!blockEntity.isOnCooldown()) {

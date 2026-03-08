@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.block.entity;
-
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntitySelector;
@@ -8,11 +7,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
-
 public interface Basket extends Container
 {
 	VoxelShape[] COLLECTION_AREA_SHAPES = {
@@ -23,7 +20,6 @@ public interface Basket extends Container
 			Block.box(-16.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D),    // west
 			Block.box(0.0D, 0.0D, 0.0D, 32.0D, 16.0D, 16.0D)        // east
 	};
-
 	/**
 	 * Get the {@link VoxelShape area} for collecting in world {@link ItemEntity} for a specific facing direction.
 	 * @param facingIndex the the {@link Direction#get3DDataValue() index} of the facing direction.
@@ -32,46 +28,38 @@ public interface Basket extends Container
 	default VoxelShape getFacingCollectionArea(int facingIndex) {
 		return COLLECTION_AREA_SHAPES[facingIndex];
 	}
-
 	/**
 	 * Gets the world X position for this basket entity.
 	 */
 	double getLevelX();
-
 	/**
 	 * Gets the world Y position for this basket entity.
 	 */
 	double getLevelY();
-
 	/**
 	 * Gets the world Z position for this basket entity.
 	 */
 	double getLevelZ();
-
 	/**
 	 * Sets the transfer cooldown for the basket entity.
 	 * @param ticks cooldown ticks
 	 */
 	void setCooldown(int ticks);
-
 	/**
 	 * @return if the basket is currently on cooldown,
 	 * cooldown should only be set when the basket is not on cooldown.
 	 */
 	boolean isOnCooldown();
-
 	/**
 	 * @return if the basket's current cooldown exceeds default cooldown,
 	 * and should be respected when updating cooldown with default.
 	 */
 	boolean isOnCustomCooldown();
-
 	/**
 	 * Updates the transfer cooldown upon a transfer attempt.
 	 * @param transfer the transfer attempt, returning
 	 */
 	void tryTransfer(BooleanSupplier transfer);
-
 	/**
 	 * Collect items from the {@link #getFacingCollectionArea(int) collection area}.
 	 * @param level the {@link Level} of the basket
@@ -86,7 +74,6 @@ public interface Basket extends Container
 		}
 		return false;
 	}
-
 	/**
 	 * @param level the {@link Level} of the basket
 	 * @param facingIndex the {@link Direction#get3DDataValue() index} of the facing direction.
@@ -102,7 +89,6 @@ public interface Basket extends Container
 				).stream())
 				.collect(Collectors.toList());
 	}
-
 	/**
 	 * Collect a single {@link ItemEntity item entity}.
 	 * @param itemEntity the {@link ItemEntity item entity} to be collected.
@@ -120,7 +106,6 @@ public interface Basket extends Container
 		}
 		return flag;
 	}
-
 	/**
 	 * Attempt to insert an {@link ItemStack} to all available slots of the basket.
 	 * @param stack the {@link ItemStack} to insert.
@@ -133,7 +118,6 @@ public interface Basket extends Container
 		}
 		return stack;
 	}
-
 	/**
 	 * Attempt to insert an {@link ItemStack} to one of the basket slots.
 	 * @param slot the slot to insert into.
@@ -164,7 +148,6 @@ public interface Basket extends Container
 		}
 		return stack;
 	}
-
 	/**
 	 * Helper method for checking if two {@link ItemStack} can be merged (with remainders).
 	 * @param stack1 the first {@link ItemStack}.

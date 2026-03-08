@@ -1,6 +1,5 @@
 package vectorwing.farmersdelight.common.block.entity.dispenser;
-
-import net.minecraft.MethodsReturnNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
@@ -14,25 +13,21 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import vectorwing.farmersdelight.common.block.CuttingBoardBlock;
 import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
-
 /**
  * Uses the given item as a tool when facing a Cutting Board.
  */
-@MethodsReturnNonnullByDefault
+@NullMarked
 @ParametersAreNonnullByDefault
 public class CuttingBoardDispenseBehavior extends OptionalDispenseItemBehavior
 {
 	private static final HashMap<Item, DispenseItemBehavior> DISPENSE_ITEM_BEHAVIOR_HASH_MAP = new HashMap<>();
 	public static final CuttingBoardDispenseBehavior INSTANCE = new CuttingBoardDispenseBehavior();
-
 	public static void registerBehaviour(Item item, CuttingBoardDispenseBehavior behavior) {
 		DISPENSE_ITEM_BEHAVIOR_HASH_MAP.put(item, DispenserBlock.DISPENSER_REGISTRY.get(item)); // Save the old behaviours so they can be used later
 		DispenserBlock.registerBehavior(item, behavior);
 	}
-
 	@Override
 	public final ItemStack dispense(BlockSource source, ItemStack stack) {
 		if (tryDispenseStackOnCuttingBoard(source, stack)) {
@@ -42,7 +37,6 @@ public class CuttingBoardDispenseBehavior extends OptionalDispenseItemBehavior
 		}
 		return DISPENSE_ITEM_BEHAVIOR_HASH_MAP.get(stack.getItem()).dispense(source, stack); // Not targetted on cutting board, use vanilla/other mods behaviour
 	}
-
 	public boolean tryDispenseStackOnCuttingBoard(BlockSource source, ItemStack stack) {
 		setSuccess(false);
 		Level level = source.level();

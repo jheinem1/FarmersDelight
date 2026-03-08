@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.mixin;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -12,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
-
 @Mixin(BlockRenderDispatcher.class)
 public abstract class HideBlockBreakProgressMixin
 {

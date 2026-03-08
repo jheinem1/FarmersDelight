@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.data.recipe;
-
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
@@ -13,7 +12,6 @@ import vectorwing.farmersdelight.common.crafting.ingredient.ItemAbilityIngredien
 import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.tag.CommonTags;
 import vectorwing.farmersdelight.data.builder.CuttingBoardRecipeBuilder;
-
 public class CuttingRecipes
 {
 	public static void register(RecipeOutput output) {
@@ -22,21 +20,16 @@ public class CuttingRecipes
 		cuttingVegetables(output);
 		cuttingFoods(output);
 		cuttingFlowers(output);
-
 		// Pickaxe
 		salvagingMinerals(output);
-
 		// Axe
 		strippingWood(output);
 		salvagingWoodenFurniture(output);
-
 		// Shovel
 		diggingSediments(output);
-
 		// Shears
 		salvagingUsingShears(output);
 	}
-
 	private static void cuttingAnimalItems(RecipeOutput output) {
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(Items.BEEF), Ingredient.of(CommonTags.TOOLS_KNIFE), ModItems.MINCED_BEEF.get(), 2)
 				.build(output);
@@ -73,7 +66,6 @@ public class CuttingRecipes
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(Items.INK_SAC), Ingredient.of(CommonTags.TOOLS_KNIFE), Items.BLACK_DYE, 2)
 				.build(output);
 	}
-
 	private static void cuttingVegetables(RecipeOutput output) {
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(ModItems.CABBAGE.get()), Ingredient.of(CommonTags.TOOLS_KNIFE), ModItems.CABBAGE_LEAF.get(), 2)
 				.build(output);
@@ -89,7 +81,6 @@ public class CuttingRecipes
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(ModItems.RED_MUSHROOM_COLONY.get()), Ingredient.of(CommonTags.TOOLS_KNIFE), Items.RED_MUSHROOM, 5)
 				.build(output);
 	}
-
 	private static void cuttingFoods(RecipeOutput output) {
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(CommonTags.FOODS_DOUGH), Ingredient.of(CommonTags.TOOLS_KNIFE), ModItems.RAW_PASTA.get(), 1)
 				.build(output, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "tag_dough"));
@@ -104,7 +95,6 @@ public class CuttingRecipes
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(ModItems.CHOCOLATE_PIE.get()), Ingredient.of(CommonTags.TOOLS_KNIFE), ModItems.CHOCOLATE_PIE_SLICE.get(), 4)
 				.build(output);
 	}
-
 	private static void cuttingFlowers(RecipeOutput output) {
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(Items.WITHER_ROSE), Ingredient.of(CommonTags.TOOLS_KNIFE), Items.BLACK_DYE, 2)
 				.build(output);
@@ -158,7 +148,6 @@ public class CuttingRecipes
 				.addResultWithChance(Items.GREEN_DYE, 0.1F)
 				.build(output);
 	}
-
 	private static void salvagingMinerals(RecipeOutput output) {
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(Items.BRICKS), new ItemAbilityIngredient(ItemAbilities.PICKAXE_DIG).toVanilla(), Items.BRICK, 4)
 				.build(output);
@@ -173,7 +162,6 @@ public class CuttingRecipes
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(Items.AMETHYST_BLOCK), new ItemAbilityIngredient(ItemAbilities.PICKAXE_DIG).toVanilla(), Items.AMETHYST_SHARD, 4)
 				.build(output);
 	}
-
 	private static void strippingWood(RecipeOutput output) {
 		stripLogForBark(output, Items.OAK_LOG, Items.STRIPPED_OAK_LOG);
 		stripLogForBark(output, Items.OAK_WOOD, Items.STRIPPED_OAK_WOOD);
@@ -199,7 +187,6 @@ public class CuttingRecipes
 		stripLogForBark(output, Items.WARPED_STEM, Items.STRIPPED_WARPED_STEM);
 		stripLogForBark(output, Items.WARPED_HYPHAE, Items.STRIPPED_WARPED_HYPHAE);
 	}
-
 	private static void salvagingWoodenFurniture(RecipeOutput output) {
 		salvagePlankFromFurniture(output, Items.OAK_PLANKS, Items.OAK_DOOR, Items.OAK_TRAPDOOR, Items.OAK_SIGN, Items.OAK_HANGING_SIGN);
 		salvagePlankFromFurniture(output, Items.SPRUCE_PLANKS, Items.SPRUCE_DOOR, Items.SPRUCE_TRAPDOOR, Items.SPRUCE_SIGN, Items.SPRUCE_HANGING_SIGN);
@@ -213,7 +200,6 @@ public class CuttingRecipes
 		salvagePlankFromFurniture(output, Items.CRIMSON_PLANKS, Items.CRIMSON_DOOR, Items.CRIMSON_TRAPDOOR, Items.CRIMSON_SIGN, Items.CRIMSON_HANGING_SIGN);
 		salvagePlankFromFurniture(output, Items.WARPED_PLANKS, Items.WARPED_DOOR, Items.WARPED_TRAPDOOR, Items.WARPED_SIGN, Items.WARPED_HANGING_SIGN);
 	}
-
 	private static void diggingSediments(RecipeOutput output) {
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(Items.CLAY), new ItemAbilityIngredient(ItemAbilities.SHOVEL_DIG).toVanilla(), Items.CLAY_BALL, 4)
 				.build(output);
@@ -221,7 +207,6 @@ public class CuttingRecipes
 				.addResultWithChance(Items.FLINT, 0.1F)
 				.build(output);
 	}
-
 	private static void salvagingUsingShears(RecipeOutput output) {
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(Items.SADDLE), Ingredient.of(Tags.Items.TOOLS_SHEAR), Items.LEATHER, 2)
 				.addResultWithChance(Items.IRON_NUGGET, 0.5F, 2)
@@ -237,8 +222,6 @@ public class CuttingRecipes
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(Items.LEATHER_BOOTS), Ingredient.of(Tags.Items.TOOLS_SHEAR), Items.LEATHER, 1)
 				.build(output);
 	}
-
-
 	/**
 	 * Generates an axe-cutting recipe for each furniture, resulting in one plank of the given type.
 	 */
@@ -248,7 +231,6 @@ public class CuttingRecipes
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(sign), new ItemAbilityIngredient(ItemAbilities.AXE_DIG).toVanilla(), plank).build(output);
 		CuttingBoardRecipeBuilder.cuttingRecipe(Ingredient.of(hangingSign), new ItemAbilityIngredient(ItemAbilities.AXE_DIG).toVanilla(), plank).build(output);
 	}
-
 	/**
 	 * Generates an axe-stripping recipe for the pair of given logs, with custom sound and a Tree Bark result attached.
 	 */

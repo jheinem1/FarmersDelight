@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.integration.crafttweaker.handlers;
-
 import com.blamejared.crafttweaker.api.ingredient.IIngredient;
 import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStackMutable;
@@ -16,11 +15,9 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import vectorwing.farmersdelight.client.recipebook.CookingPotRecipeBookTab;
 import vectorwing.farmersdelight.common.crafting.CookingPotRecipe;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 @IRecipeHandler.For(CookingPotRecipe.class)
 public final class CookingPotRecipeHandler implements IRecipeHandler<CookingPotRecipe>
 {
@@ -40,12 +37,10 @@ public final class CookingPotRecipeHandler implements IRecipeHandler<CookingPotR
                 recipe.value().getCookTime()
         );
     }
-
     @Override
     public <U extends Recipe<?>> boolean doesConflict(IRecipeManager<? super CookingPotRecipe> manager, CookingPotRecipe firstRecipe, U secondRecipe) {
         return firstRecipe.equals(secondRecipe);
     }
-
     @Override
     public Optional<IDecomposedRecipe> decompose(IRecipeManager<? super CookingPotRecipe> manager, RegistryAccess registryAccess, CookingPotRecipe recipe) {
         final IDecomposedRecipe decomposedRecipe = IDecomposedRecipe.builder()
@@ -61,7 +56,6 @@ public final class CookingPotRecipeHandler implements IRecipeHandler<CookingPotR
         }
         return Optional.of(decomposedRecipe);
     }
-
     @Override
     public Optional<CookingPotRecipe> recompose(IRecipeManager<? super CookingPotRecipe> manager, RegistryAccess registryAccess, IDecomposedRecipe recipe) {
         final IItemStack output = recipe.getOrThrowSingle(BuiltinRecipeComponents.Output.ITEMS);

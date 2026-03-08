@@ -1,8 +1,6 @@
 package vectorwing.farmersdelight.common.utility;
-
 import java.util.List;
 import java.util.function.Function;
-
 /**
  * Util for manipulating lists.
  */

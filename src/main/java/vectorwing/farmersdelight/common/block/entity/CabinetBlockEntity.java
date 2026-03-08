@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.block.entity;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -29,7 +28,6 @@ import vectorwing.farmersdelight.common.block.CabinetBlock;
 import vectorwing.farmersdelight.common.registry.ModBlockEntityTypes;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.utility.TextUtils;
-
 @EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class CabinetBlockEntity extends RandomizableContainerBlockEntity
 {
@@ -40,15 +38,12 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity
 			CabinetBlockEntity.this.playSound(state, ModSounds.BLOCK_CABINET_OPEN.get());
 			CabinetBlockEntity.this.updateBlockState(state, true);
 		}
-
 		protected void onClose(Level level, BlockPos pos, BlockState state) {
 			CabinetBlockEntity.this.playSound(state, ModSounds.BLOCK_CABINET_CLOSE.get());
 			CabinetBlockEntity.this.updateBlockState(state, false);
 		}
-
 		protected void openerCountChanged(Level level, BlockPos pos, BlockState sta, int arg1, int arg2) {
 		}
-
 		protected boolean isOwnContainer(Player p_155060_) {
 			if (p_155060_.containerMenu instanceof ChestMenu) {
 				Container container = ((ChestMenu) p_155060_.containerMenu).getContainer();
@@ -58,11 +53,9 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity
 			}
 		}
 	};
-
 	public CabinetBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntityTypes.CABINET.get(), pos, state);
 	}
-
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		event.registerBlockEntity(
@@ -71,7 +64,6 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity
 				(be, context) -> new InvWrapper(be)
 		);
 	}
-
 	@Override
 	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		super.saveAdditional(compound, registries);
@@ -79,7 +71,6 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity
 			ContainerHelper.saveAllItems(compound, contents, registries);
 		}
 	}
-
 	@Override
 	public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
 		super.loadAdditional(compound, registries);
@@ -88,59 +79,48 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity
 			ContainerHelper.loadAllItems(compound, contents, registries);
 		}
 	}
-
 	@Override
 	public int getContainerSize() {
 		return 27;
 	}
-
 	@Override
 	protected NonNullList<ItemStack> getItems() {
 		return contents;
 	}
-
 	@Override
 	protected void setItems(NonNullList<ItemStack> itemsIn) {
 		contents = itemsIn;
 	}
-
 	@Override
 	protected Component getDefaultName() {
 		return TextUtils.getTranslation("container.cabinet");
 	}
-
 	@Override
 	protected AbstractContainerMenu createMenu(int id, Inventory player) {
 		return ChestMenu.threeRows(id, player, this);
 	}
-
 	public void startOpen(Player pPlayer) {
 		if (level != null && !this.remove && !pPlayer.isSpectator()) {
 			this.openersCounter.incrementOpeners(pPlayer, level, this.getBlockPos(), this.getBlockState());
 		}
 	}
-
 	public void stopOpen(Player pPlayer) {
 		if (level != null && !this.remove && !pPlayer.isSpectator()) {
 			this.openersCounter.decrementOpeners(pPlayer, level, this.getBlockPos(), this.getBlockState());
 		}
 	}
-
 	public void recheckOpen() {
 		if (level != null && !this.remove) {
 			this.openersCounter.recheckOpeners(level, this.getBlockPos(), this.getBlockState());
 		}
 	}
-
 	void updateBlockState(BlockState state, boolean open) {
 		if (level != null) {
 			this.level.setBlock(this.getBlockPos(), state.setValue(CabinetBlock.OPEN, open), 3);
 		}
 	}
-
 	private void playSound(BlockState state, SoundEvent sound) {
 		if (level == null) return;
-
 		Vec3i cabinetFacingVector = state.getValue(CabinetBlock.FACING).getNormal();
 		double x = (double) worldPosition.getX() + 0.5D + (double) cabinetFacingVector.getX() / 2.0D;
 		double y = (double) worldPosition.getY() + 0.5D + (double) cabinetFacingVector.getY() / 2.0D;

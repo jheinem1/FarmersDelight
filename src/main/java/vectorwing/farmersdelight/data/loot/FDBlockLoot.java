@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.data.loot;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -12,18 +11,14 @@ import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.registry.ModDataComponents;
-
 import java.util.HashSet;
 import java.util.Set;
-
 public class FDBlockLoot extends BlockLootSubProvider
 {
 	private final Set<Block> generatedLootTables = new HashSet<>();
-
 	public FDBlockLoot(HolderLookup.Provider holder) {
 		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), holder);
 	}
-
 	@Override
 	protected void generate() {
 		dropSelf(ModBlocks.STOVE.get());
@@ -36,7 +31,6 @@ public class FDBlockLoot extends BlockLootSubProvider
 				)))));
 //		dropSelf(ModBlocks.SKILLET.get());			has special functions
 		dropSelf(ModBlocks.CUTTING_BOARD.get());
-
 		dropSelf(ModBlocks.CARROT_CRATE.get());
 		dropSelf(ModBlocks.POTATO_CRATE.get());
 		dropSelf(ModBlocks.BEETROOT_CRATE.get());
@@ -46,10 +40,8 @@ public class FDBlockLoot extends BlockLootSubProvider
 		dropSelf(ModBlocks.RICE_BALE.get());
 		dropSelf(ModBlocks.RICE_BAG.get());
 		dropSelf(ModBlocks.STRAW_BALE.get());
-
 		dropSelf(ModBlocks.ROPE.get());
 		dropSelf(ModBlocks.SAFETY_NET.get());
-
 		dropSelf(ModBlocks.HANGING_CANVAS_SIGN.get());
 		dropSelf(ModBlocks.WHITE_HANGING_CANVAS_SIGN.get());
 		dropSelf(ModBlocks.ORANGE_HANGING_CANVAS_SIGN.get());
@@ -67,7 +59,6 @@ public class FDBlockLoot extends BlockLootSubProvider
 		dropSelf(ModBlocks.GREEN_HANGING_CANVAS_SIGN.get());
 		dropSelf(ModBlocks.RED_HANGING_CANVAS_SIGN.get());
 		dropSelf(ModBlocks.BLACK_HANGING_CANVAS_SIGN.get());
-
 		dropNamedContainer(ModBlocks.OAK_CABINET.get());
 		dropNamedContainer(ModBlocks.SPRUCE_CABINET.get());
 		dropNamedContainer(ModBlocks.BIRCH_CABINET.get());
@@ -79,32 +70,24 @@ public class FDBlockLoot extends BlockLootSubProvider
 		dropNamedContainer(ModBlocks.CHERRY_CABINET.get());
 		dropNamedContainer(ModBlocks.CRIMSON_CABINET.get());
 		dropNamedContainer(ModBlocks.WARPED_CABINET.get());
-
 		dropSelf(ModBlocks.CANVAS_RUG.get());
 		dropSelf(ModBlocks.TATAMI.get());
 //		dropSelf(ModBlocks.FULL_TATAMI_MAT.get());		Drops only from "head" side
 		dropSelf(ModBlocks.HALF_TATAMI_MAT.get());
-
 		// Canvas Signs only need it for the standard block; wall blocks inherit it.
-
 		// Mushroom Colonies are rather complex...
 		dropSelf(ModBlocks.ORGANIC_COMPOST.get());
 		dropSelf(ModBlocks.RICH_SOIL.get());
 		dropOther(ModBlocks.RICH_SOIL_FARMLAND.get(), ModBlocks.RICH_SOIL.get());
-
-
 	}
-
 	protected void dropNamedContainer(Block block) {
 		add(block, this::createNameableBlockEntityTable);
 	}
-
 	@Override
 	protected void add(Block block, LootTable.Builder builder) {
 		this.generatedLootTables.add(block);
 		this.map.put(block.getLootTable(), builder);
 	}
-
 	@Override
 	protected Iterable<Block> getKnownBlocks() {
 		return generatedLootTables;

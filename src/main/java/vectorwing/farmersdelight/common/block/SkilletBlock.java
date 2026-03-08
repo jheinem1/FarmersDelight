@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.block;
-
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,7 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -41,36 +40,28 @@ import vectorwing.farmersdelight.common.block.entity.SkilletBlockEntity;
 import vectorwing.farmersdelight.common.registry.ModBlockEntityTypes;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.tag.ModTags;
-
 import org.jspecify.annotations.Nullable;
 import java.util.Optional;
-
 @SuppressWarnings("deprecation")
 public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBlock
 {
 	public static final MapCodec<SkilletBlock> CODEC = simpleCodec(SkilletBlock::new);
-
 	public static final int MINIMUM_COOKING_TIME = 60;
-
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty SUPPORT = BooleanProperty.create("support");
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-
 	protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 4.0D, 15.0D);
 	protected static final VoxelShape SHAPE_WITH_TRAY = Shapes.or(SHAPE, Block.box(0.0D, -1.0D, 0.0D, 16.0D, 0.0D, 16.0D));
-
 	public SkilletBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(SUPPORT, false).setValue(WATERLOGGED, false));
 	}
-
 	@Override
 	protected MapCodec<? extends BaseEntityBlock> codec() {
 		return CODEC;
 	}
-
 	@Override
-	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		BlockEntity tileEntity = level.getBlockEntity(pos);
 		if (tileEntity instanceof SkilletBlockEntity skilletEntity) {
 			if (!level.isClientSide) {
@@ -81,7 +72,7 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 					if (!player.isCreative()) {
 						player.setItemSlot(heldSlot, extractedStack);
 					}
-					return ItemInteractionResult.SUCCESS;
+					return InteractionResult.SUCCESS;
 				} else {
 					ItemStack remainderStack = skilletEntity.addItemToCook(heldStack, player);
 					if (remainderStack.getCount() != heldStack.getCount()) {
@@ -89,20 +80,18 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 							player.setItemSlot(heldSlot, remainderStack);
 						}
 						level.playSound(null, pos, SoundEvents.LANTERN_PLACE, SoundSource.BLOCKS, 0.7F, 1.0F);
-						return ItemInteractionResult.SUCCESS;
+						return InteractionResult.SUCCESS;
 					}
 				}
 			}
-			return ItemInteractionResult.CONSUME;
+			return InteractionResult.CONSUME;
 		}
-		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		return InteractionResult.PASS;
 	}
-
 	@Override
 	public RenderShape getRenderShape(BlockState pState) {
 		return RenderShape.MODEL;
 	}
-
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
@@ -110,32 +99,26 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 			if (tileEntity instanceof SkilletBlockEntity) {
 				Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), ((SkilletBlockEntity) tileEntity).getInventory().getStackInSlot(0));
 			}
-
 			super.onRemove(state, level, pos, newState, isMoving);
 		}
 	}
-
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return SHAPE;
 	}
-
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return state.getValue(SUPPORT).equals(true) ? SHAPE_WITH_TRAY : SHAPE;
 	}
-
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Level level = context.getLevel();
 		FluidState fluid = level.getFluidState(context.getClickedPos());
-
 		return this.defaultBlockState()
 				.setValue(FACING, context.getHorizontalDirection())
 				.setValue(WATERLOGGED, fluid.getType() == Fluids.WATER)
 				.setValue(SUPPORT, getTrayState(context.getLevel(), context.getClickedPos()));
 	}
-
 	@Override
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED)) {
@@ -146,21 +129,17 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 		}
 		return state;
 	}
-
 	@Override
 	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		if (level.getBlockEntity(pos) instanceof SkilletBlockEntity skillet) {
 			return skillet.getSkilletAsItem();
 		}
-
 		return super.getCloneItemStack(level, pos, state);
 	}
-
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, SUPPORT, WATERLOGGED);
 	}
-
 	@Override
 	public void animateTick(BlockState stateIn, Level level, BlockPos pos, RandomSource rand) {
 		BlockEntity tileEntity = level.getBlockEntity(pos);
@@ -175,18 +154,15 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 			}
 		}
 	}
-
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
-
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return ModBlockEntityTypes.SKILLET.get().create(pos, state);
 	}
-
 	@Nullable
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntity) {
 		if (level.isClientSide) {
@@ -195,11 +171,9 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 			return createTickerHelper(blockEntity, ModBlockEntityTypes.SKILLET.get(), SkilletBlockEntity::cookingTick);
 		}
 	}
-
 	private boolean getTrayState(LevelAccessor world, BlockPos pos) {
 		return world.getBlockState(pos.below()).is(ModTags.TRAY_HEAT_SOURCES);
 	}
-
 	/**
 	 * Calculates the total cooking time for the Skillet, affected by Fire Aspect.
 	 * Assuming a default of 30 seconds (600 ticks), the time is divided by 5, then reduced further per level of Fire Aspect, to a minimum of 3 seconds.
@@ -209,13 +183,10 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 		int cookingTime = originalCookingTime > 0 ? originalCookingTime : 600;
 		int cookingSeconds = cookingTime / 20;
 		float cookingTimeReduction = 0.2F;
-
 		if (fireAspectLevel > 0) {
 			cookingTimeReduction -= fireAspectLevel * 0.05;
 		}
-
 		int result = (int) (cookingSeconds * cookingTimeReduction) * 20;
-
 		return Mth.clamp(result, MINIMUM_COOKING_TIME, originalCookingTime);
 	}
 }

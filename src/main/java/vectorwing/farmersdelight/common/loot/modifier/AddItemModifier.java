@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.loot.modifier;
-
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -12,10 +11,8 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
-
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
-
 public class AddItemModifier extends LootModifier
 {
 	public static final Supplier<MapCodec<AddItemModifier>> CODEC = Suppliers.memoize(() ->
@@ -26,10 +23,8 @@ public class AddItemModifier extends LootModifier
 							)
 					)
 					.apply(inst, AddItemModifier::new)));
-
 	private final Item addedItem;
 	private final int count;
-
 	/**
 	 * This loot modifier adds an item to the loot table, given the conditions specified.
 	 */
@@ -38,17 +33,14 @@ public class AddItemModifier extends LootModifier
 		this.addedItem = addedItemIn;
 		this.count = count;
 	}
-
 	@Nonnull
 	@Override
 	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		ItemStack addedStack = new ItemStack(addedItem, count);
-
 		if (addedStack.getCount() < addedStack.getMaxStackSize()) {
 			generatedLoot.add(addedStack);
 		} else {
 			int i = addedStack.getCount();
-
 			while (i > 0) {
 				ItemStack subStack = addedStack.copy();
 				subStack.setCount(Math.min(addedStack.getMaxStackSize(), i));
@@ -56,10 +48,8 @@ public class AddItemModifier extends LootModifier
 				generatedLoot.add(subStack);
 			}
 		}
-
 		return generatedLoot;
 	}
-
 	@Override
 	public MapCodec<? extends IGlobalLootModifier> codec() {
 		return CODEC.get();

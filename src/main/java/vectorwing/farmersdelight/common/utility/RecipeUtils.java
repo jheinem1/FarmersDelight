@@ -1,11 +1,9 @@
 package vectorwing.farmersdelight.common.utility;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
-
 public class RecipeUtils
 {
 	// Copyright (c) 2014-2015 mezz

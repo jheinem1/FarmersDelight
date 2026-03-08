@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.mixin;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -13,14 +12,12 @@ import vectorwing.farmersdelight.client.gui.CanvasSignEditScreen;
 import vectorwing.farmersdelight.client.gui.HangingCanvasSignEditScreen;
 import vectorwing.farmersdelight.common.block.entity.CanvasSignBlockEntity;
 import vectorwing.farmersdelight.common.block.entity.HangingCanvasSignBlockEntity;
-
 @Mixin(LocalPlayer.class)
 public class CanvasSignEditScreenMixin
 {
 	@Shadow
 	@Final
 	protected Minecraft minecraft;
-
 	@Inject(at = @At(value = "HEAD"), method = "openTextEdit", cancellable = true)
 	private void openCanvasSignEditScreen(SignBlockEntity signBlockEntity, boolean isFront, CallbackInfo ci) {
 		if (signBlockEntity instanceof CanvasSignBlockEntity) {

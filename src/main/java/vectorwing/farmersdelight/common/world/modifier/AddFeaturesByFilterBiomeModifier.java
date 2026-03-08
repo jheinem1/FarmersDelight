@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.world.modifier;
-
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -10,9 +9,7 @@ import net.neoforged.neoforge.common.world.BiomeGenerationSettingsBuilder;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
 import vectorwing.farmersdelight.common.registry.ModBiomeModifiers;
-
 import java.util.Optional;
-
 public record AddFeaturesByFilterBiomeModifier(
 		HolderSet<Biome> allowedBiomes,
 		Optional<HolderSet<Biome>> deniedBiomes,
@@ -22,7 +19,6 @@ public record AddFeaturesByFilterBiomeModifier(
 		GenerationStep.Decoration step
 ) implements BiomeModifier
 {
-
 	@Override
 	public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
 		if (phase == Phase.ADD && this.allowedBiomes.contains(biome)) {
@@ -39,7 +35,6 @@ public record AddFeaturesByFilterBiomeModifier(
 			this.features.forEach(holder -> generationSettings.addFeature(this.step, holder));
 		}
 	}
-
 	@Override
 	public MapCodec<? extends BiomeModifier> codec() {
 		return ModBiomeModifiers.ADD_FEATURES_BY_FILTER.get();

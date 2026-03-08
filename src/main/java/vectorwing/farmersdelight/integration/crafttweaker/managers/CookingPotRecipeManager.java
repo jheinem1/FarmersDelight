@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.integration.crafttweaker.managers;
-
 import com.blamejared.crafttweaker.api.CraftTweakerAPI;
 import com.blamejared.crafttweaker.api.CraftTweakerConstants;
 import com.blamejared.crafttweaker.api.action.recipe.ActionAddRecipe;
@@ -19,7 +18,6 @@ import vectorwing.farmersdelight.common.crafting.CookingPotRecipe;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 import vectorwing.farmersdelight.common.utility.ListUtils;
 import vectorwing.farmersdelight.integration.crafttweaker.FarmersDelightCrTPlugin;
-
 /**
  * Farmer's Delight Cooking Pot recipes.
  *
@@ -58,7 +56,6 @@ public class CookingPotRecipeManager implements IRecipeManager
                           @ZenCodeType.OptionalFloat float experience,
                           @ZenCodeType.OptionalInt(200) int cookTime) {
         if (!validateInputs(inputs)) return;
-
         CraftTweakerAPI.apply(new ActionAddRecipe(this,
                 new RecipeHolder<>(
                         CraftTweakerConstants.rl(name),
@@ -74,7 +71,6 @@ public class CookingPotRecipeManager implements IRecipeManager
                                 cookTime)
                 ), ""));
     }
-
     private boolean validateInputs(IIngredient[] inputs) {
         if (inputs.length == 0) {
             FarmersDelightCrTPlugin.LOGGER_CT.error("No ingredients for cooking recipe");
@@ -85,7 +81,6 @@ public class CookingPotRecipeManager implements IRecipeManager
         }
         return true;
     }
-
     @Override
     public RecipeType<CookingPotRecipe> getRecipeType() {
         return ModRecipeTypes.COOKING.get();

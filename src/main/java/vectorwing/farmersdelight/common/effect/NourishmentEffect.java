@@ -1,12 +1,10 @@
 package vectorwing.farmersdelight.common.effect;
-
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.level.gamerules.GameRules;
-
 public class NourishmentEffect extends MobEffect
 {
 	/**
@@ -17,7 +15,6 @@ public class NourishmentEffect extends MobEffect
 	public NourishmentEffect() {
 		super(MobEffectCategory.BENEFICIAL, 15971072);
 	}
-
 	public boolean applyEffectTick(LivingEntity entity, int amplifier) {
 		if (!entity.getCommandSenderWorld().isClientSide && entity instanceof Player player) {
 			FoodData foodData = player.getFoodData();
@@ -33,10 +30,8 @@ public class NourishmentEffect extends MobEffect
 				}
 			}
 		}
-
 		return true;
 	}
-
 	@Override
 	public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
 		return true;

@@ -1,10 +1,7 @@
 package vectorwing.farmersdelight.common.block.state;
-
 import net.minecraft.world.item.DyeColor;
 import vectorwing.farmersdelight.common.Configuration;
-
 import org.jspecify.annotations.Nullable;
-
 public interface CanvasSign
 {
 	/**
@@ -12,7 +9,6 @@ public interface CanvasSign
 	 */
 	@Nullable
 	DyeColor getBackgroundColor();
-
 	/**
 	 * Checks a config to determine if the background color is considered "dark".
 	 */

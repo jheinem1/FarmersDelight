@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.data.recipe;
-
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.Identifier;
@@ -18,7 +17,6 @@ import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.tag.CommonTags;
 import vectorwing.farmersdelight.common.tag.ModTags;
-
 public class CraftingRecipes
 {
 	public static void register(RecipeOutput output) {
@@ -33,7 +31,6 @@ public class CraftingRecipes
 		SpecialRecipeBuilder.special(FoodServingRecipe::new).save(output, FarmersDelight.MODID + ":food_serving");
 		SpecialRecipeBuilder.special(DoughRecipe::new).save(output, FarmersDelight.MODID + ":wheat_dough_from_water");
 	}
-
 	public static void canvasSignDyeing(RecipeOutput output, ItemLike canvasSign, ItemLike hangingCanvasSign, TagKey<Item> dyeTag) {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, canvasSign, 1)
 				.requires(ModTags.CANVAS_SIGNS)
@@ -48,7 +45,6 @@ public class CraftingRecipes
 				.group("fd_hanging_canvas_sign")
 				.save(output);
 	}
-
 	/**
 	 * The following recipes should ALWAYS define a custom save location.
 	 * If not, they fall on the minecraft namespace, overriding vanilla recipes instead of being alternatives.
@@ -137,7 +133,6 @@ public class CraftingRecipes
 				.unlockedBy("has_straw", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.STRAW.get()))
 				.save(output, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "packed_mud_from_straw"));
 	}
-
 	private static void recipesCanvasSigns(RecipeOutput output) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.CANVAS_SIGN.get(), 3)
 				.pattern("w#w")
@@ -157,7 +152,6 @@ public class CraftingRecipes
 				.define('#', ModItems.CANVAS.get())
 				.unlockedBy("has_canvas", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.CANVAS.get()))
 				.save(output);
-
 		canvasSignDyeing(output, ModItems.WHITE_CANVAS_SIGN.get(), ModItems.WHITE_HANGING_CANVAS_SIGN.get(), Tags.Items.DYES_WHITE);
 		canvasSignDyeing(output, ModItems.ORANGE_CANVAS_SIGN.get(), ModItems.ORANGE_HANGING_CANVAS_SIGN.get(), Tags.Items.DYES_ORANGE);
 		canvasSignDyeing(output, ModItems.MAGENTA_CANVAS_SIGN.get(), ModItems.MAGENTA_HANGING_CANVAS_SIGN.get(), Tags.Items.DYES_MAGENTA);
@@ -175,7 +169,6 @@ public class CraftingRecipes
 		canvasSignDyeing(output, ModItems.RED_CANVAS_SIGN.get(), ModItems.RED_HANGING_CANVAS_SIGN.get(), Tags.Items.DYES_RED);
 		canvasSignDyeing(output, ModItems.BLACK_CANVAS_SIGN.get(), ModItems.BLACK_HANGING_CANVAS_SIGN.get(), Tags.Items.DYES_BLACK);
 	}
-
 	private static void recipesBlocks(RecipeOutput output) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.STOVE.get())
 				.pattern("iii")
@@ -424,7 +417,6 @@ public class CraftingRecipes
 				.unlockedBy("has_canvas", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.CANVAS.get()))
 				.group("fd_tatami")
 				.save(output);
-
 		// BREAKING DOWN
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModItems.FULL_TATAMI_MAT.get(), 2)
 				.requires(ModItems.TATAMI.get())
@@ -435,7 +427,6 @@ public class CraftingRecipes
 				.requires(ModItems.FULL_TATAMI_MAT.get())
 				.unlockedBy("has_canvas", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.CANVAS.get()))
 				.save(output);
-
 		// COMBINING BACK
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, ModItems.FULL_TATAMI_MAT.get(), 1)
 				.requires(ModItems.HALF_TATAMI_MAT.get())
@@ -450,7 +441,6 @@ public class CraftingRecipes
 				.group("fd_tatami")
 				.save(output, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "tatami_block_from_full"));
 	}
-
 	private static void recipesTools(RecipeOutput output) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.FLINT_KNIFE.get())
 				.pattern("m")
@@ -484,7 +474,6 @@ public class CraftingRecipes
 				.unlocks("has_netherite_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(Items.NETHERITE_INGOT))
 				.save(output, FarmersDelight.MODID + ":netherite_knife_smithing");
 	}
-
 	private static void recipesMaterials(RecipeOutput output) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.CANVAS.get())
 				.pattern("##")
@@ -537,7 +526,6 @@ public class CraftingRecipes
 				.group("fd_rice")
 				.save(output);
 	}
-
 	private static void recipesFoodstuffs(RecipeOutput output) {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.TOMATO_SEEDS.get())
 				.requires(Ingredient.of(ModItems.TOMATO.get(), ModItems.ROTTEN_TOMATO.get()))
@@ -620,7 +608,6 @@ public class CraftingRecipes
 				.unlockedBy("has_fruits", InventoryChangeTrigger.TriggerInstance.hasItems(Items.MELON_SLICE, Items.SWEET_BERRIES, Items.APPLE, ModItems.PUMPKIN_SLICE.get()))
 				.save(output);
 	}
-
 	private static void recipesFoodBlocks(RecipeOutput output) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.APPLE_PIE.get(), 1)
 				.pattern("###")
@@ -676,7 +663,6 @@ public class CraftingRecipes
 				.group("fd_chocolate_pie")
 				.save(output, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "chocolate_pie_from_slices"));
 	}
-
 	private static void recipesCraftedMeals(RecipeOutput output) {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.MIXED_SALAD.get())
 				.requires(CommonTags.FOODS_LEAFY_GREEN)

@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.data;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -16,28 +15,23 @@ import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.tag.CommonTags;
 import vectorwing.farmersdelight.common.tag.CompatibilityTags;
 import vectorwing.farmersdelight.common.tag.ModTags;
-
 import org.jspecify.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
-
 public class ItemTags extends ItemTagsProvider
 {
 	public ItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
 		super(output, provider, blockTagProvider, FarmersDelight.MODID, existingFileHelper);
 	}
-
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		copy(ModTags.WILD_CROPS, ModTags.WILD_CROPS_ITEM);
 		copy(BlockTags.SMALL_FLOWERS, net.minecraft.tags.ItemTags.SMALL_FLOWERS);
-
 		this.registerMinecraftTags();
 		this.registerModTags();
 		this.registerNeoForgeTags();
 		this.registerCommonTags();
 		this.registerCompatibilityTags();
 	}
-
 	private void registerMinecraftTags() {
 		tag(net.minecraft.tags.ItemTags.BREAKS_DECORATED_POTS).addTag(ModTags.KNIVES);
 		tag(net.minecraft.tags.ItemTags.TALL_FLOWERS).add(ModItems.WILD_RICE.get());
@@ -48,7 +42,6 @@ public class ItemTags extends ItemTagsProvider
 				.add(ModItems.CABBAGE_SEEDS.get())
 				.add(ModItems.TOMATO_SEEDS.get())
 				.add(ModItems.ONION.get());
-
 		tag(net.minecraft.tags.ItemTags.DURABILITY_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
 		tag(net.minecraft.tags.ItemTags.WEAPON_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
 		tag(net.minecraft.tags.ItemTags.SHARP_WEAPON_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
@@ -56,7 +49,6 @@ public class ItemTags extends ItemTagsProvider
 		tag(net.minecraft.tags.ItemTags.SWORD_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
 		tag(net.minecraft.tags.ItemTags.MINING_ENCHANTABLE).addTag(ModTags.KNIVES);
 		tag(net.minecraft.tags.ItemTags.MINING_LOOT_ENCHANTABLE).addTag(ModTags.KNIVES);
-
 		tag(net.minecraft.tags.ItemTags.MEAT)
 				.add(ModItems.MINCED_BEEF.get())
 				.add(ModItems.BEEF_PATTY.get())
@@ -85,7 +77,6 @@ public class ItemTags extends ItemTagsProvider
 		tag(net.minecraft.tags.ItemTags.HORSE_TEMPT_ITEMS)
 				.add(ModItems.HORSE_FEED.get());
 	}
-
 	private void registerModTags() {
 		tag(ModTags.SNACKS).add(
 				ModItems.BARBECUE_STICK.get(),
@@ -214,7 +205,6 @@ public class ItemTags extends ItemTagsProvider
 				.addOptional(Identifier.parse("autumnity:turkey"))
 				.addOptional(Identifier.parse("autumnity:cooked_turkey"));
 	}
-
 	@SuppressWarnings("unchecked")
 	private void registerNeoForgeTags() {
 		// Add our custom tags to "common" tag groups
@@ -236,10 +226,8 @@ public class ItemTags extends ItemTagsProvider
 				.addTag(CommonTags.FOODS_DOUGH)
 				.addTag(CommonTags.FOODS_PASTA)
 				.addTag(CommonTags.FOODS_COOKED_EGG);
-
 		// TODO: FOODS_MILK will be deprecated in 1.3, but is used here for now to not break add-on compat.
 		tag(Tags.Items.DRINKS_MILK).add(ModItems.MILK_BOTTLE.get()).addTag(CommonTags.FOODS_MILK);
-
 		tag(Tags.Items.FOODS_VEGETABLE).add(ModItems.ONION.get(), ModItems.TOMATO.get());
 		tag(Tags.Items.FOODS_COOKIE).add(ModItems.HONEY_COOKIE.get(), ModItems.SWEET_BERRY_COOKIE.get());
 		tag(Tags.Items.FOODS_DOUGH).addTag(CommonTags.FOODS_DOUGH_WHEAT);
@@ -271,7 +259,6 @@ public class ItemTags extends ItemTagsProvider
 				.add(ModItems.APPLE_PIE_SLICE.get())
 				.add(ModItems.SWEET_BERRY_CHEESECAKE_SLICE.get())
 				.add(ModItems.CHOCOLATE_PIE_SLICE.get());
-
 		tag(Tags.Items.TOOLS).addTag(CommonTags.TOOLS_KNIFE);
 		tag(Tags.Items.ROPES).add(ModItems.ROPE.get());
 		tag(Tags.Items.SEEDS).add(ModItems.CABBAGE_SEEDS.get(), ModItems.RICE.get(), ModItems.TOMATO_SEEDS.get());
@@ -288,25 +275,20 @@ public class ItemTags extends ItemTagsProvider
 				CommonTags.STORAGE_BLOCKS_ITEM_STRAW
 		);
 	}
-
 	public void registerCommonTags() {
 		// TODO: Remove on 1.3
 		tag(CommonTags.FOODS_MILK).add(Items.MILK_BUCKET, ModItems.MILK_BOTTLE.get());
-
 		tag(CommonTags.CROPS_CABBAGE).add(ModItems.CABBAGE.get(), ModItems.CABBAGE_LEAF.get());
 		tag(CommonTags.CROPS_ONION).add(ModItems.ONION.get());
 		tag(CommonTags.CROPS_TOMATO).add(ModItems.TOMATO.get());
 		tag(CommonTags.CROPS_RICE).add(ModItems.RICE.get());
-
 		tag(CommonTags.FOODS_CABBAGE).add(ModItems.CABBAGE.get(), ModItems.CABBAGE_LEAF.get());
 		tag(CommonTags.FOODS_TOMATO).add(ModItems.TOMATO.get());
 		tag(CommonTags.FOODS_ONION).add(ModItems.ONION.get());
-
 		tag(CommonTags.FOODS_DOUGH_WHEAT).add(ModItems.WHEAT_DOUGH.get());
 		tag(CommonTags.CROPS_GRAIN).add(Items.WHEAT, ModItems.RICE.get());
 		tag(CommonTags.FOODS_PASTA).add(ModItems.RAW_PASTA.get());
 		tag(CommonTags.FOODS_LEAFY_GREEN).addTag(CommonTags.FOODS_CABBAGE);
-
 		tag(CommonTags.FOODS_RAW_BACON).add(ModItems.BACON.get());
 		tag(CommonTags.FOODS_RAW_BEEF).add(Items.BEEF, ModItems.MINCED_BEEF.get());
 		tag(CommonTags.FOODS_RAW_CHICKEN).add(Items.CHICKEN, ModItems.CHICKEN_CUTS.get());
@@ -315,7 +297,6 @@ public class ItemTags extends ItemTagsProvider
 		tag(CommonTags.FOODS_RAW_COD).add(Items.COD, ModItems.COD_SLICE.get());
 		tag(CommonTags.FOODS_RAW_SALMON).add(Items.SALMON, ModItems.SALMON_SLICE.get());
 		tag(CommonTags.FOODS_SAFE_RAW_FISH).addTag(Tags.Items.FOODS_RAW_FISH).remove(Items.PUFFERFISH);
-
 		tag(CommonTags.FOODS_COOKED_BACON).add(ModItems.COOKED_BACON.get());
 		tag(CommonTags.FOODS_COOKED_BEEF).add(Items.COOKED_BEEF, ModItems.BEEF_PATTY.get());
 		tag(CommonTags.FOODS_COOKED_CHICKEN).add(Items.COOKED_CHICKEN, ModItems.COOKED_CHICKEN_CUTS.get());
@@ -324,7 +305,6 @@ public class ItemTags extends ItemTagsProvider
 		tag(CommonTags.FOODS_COOKED_COD).add(Items.COOKED_COD, ModItems.COOKED_COD_SLICE.get());
 		tag(CommonTags.FOODS_COOKED_SALMON).add(Items.COOKED_SALMON, ModItems.COOKED_SALMON_SLICE.get());
 		tag(CommonTags.FOODS_COOKED_EGG).add(ModItems.FRIED_EGG.get());
-
 		tag(CommonTags.STORAGE_BLOCKS_ITEM_CARROT).add(ModItems.CARROT_CRATE.get());
 		tag(CommonTags.STORAGE_BLOCKS_ITEM_POTATO).add(ModItems.POTATO_CRATE.get());
 		tag(CommonTags.STORAGE_BLOCKS_ITEM_BEETROOT).add(ModItems.BEETROOT_CRATE.get());
@@ -334,10 +314,8 @@ public class ItemTags extends ItemTagsProvider
 		tag(CommonTags.STORAGE_BLOCKS_ITEM_RICE).add(ModItems.RICE_BAG.get());
 		tag(CommonTags.STORAGE_BLOCKS_ITEM_RICE_PANICLE).add(ModItems.RICE_BALE.get());
 		tag(CommonTags.STORAGE_BLOCKS_ITEM_STRAW).add(ModItems.STRAW_BALE.get());
-
 		tag(CommonTags.TOOLS_KNIFE).add(ModItems.FLINT_KNIFE.get(), ModItems.IRON_KNIFE.get(), ModItems.DIAMOND_KNIFE.get(), ModItems.GOLDEN_KNIFE.get(), ModItems.NETHERITE_KNIFE.get());
 	}
-
 	public void registerCompatibilityTags() {
 		tag(CompatibilityTags.CREATE_UPRIGHT_ON_BELT)
 				.addTag(ModTags.MEALS)
@@ -351,7 +329,6 @@ public class ItemTags extends ItemTagsProvider
 				.add(ModItems.APPLE_PIE.get())
 				.add(ModItems.SWEET_BERRY_CHEESECAKE.get())
 				.add(ModItems.CHOCOLATE_PIE.get());
-
 		tag(CompatibilityTags.CREATE_CA_PLANT_FOODS)
 				.add(ModItems.PUMPKIN_SLICE.get())
 				.add(ModItems.ROTTEN_TOMATO.get())
@@ -360,7 +337,6 @@ public class ItemTags extends ItemTagsProvider
 				.add(ModItems.SANDY_SHRUB.get())
 				.add(ModItems.BROWN_MUSHROOM_COLONY.get())
 				.add(ModItems.RED_MUSHROOM_COLONY.get());
-
 		tag(CompatibilityTags.ORIGINS_MEAT)
 				.add(ModItems.FRIED_EGG.get())
 				.add(ModItems.COD_SLICE.get())
@@ -368,7 +344,6 @@ public class ItemTags extends ItemTagsProvider
 				.add(ModItems.SALMON_SLICE.get())
 				.add(ModItems.COOKED_SALMON_SLICE.get())
 				.add(ModItems.BACON_AND_EGGS.get());
-
 		tag(CompatibilityTags.SERENE_SEASONS_AUTUMN_CROPS)
 				.add(ModItems.CABBAGE_SEEDS.get())
 				.add(ModItems.ONION.get())
@@ -380,7 +355,6 @@ public class ItemTags extends ItemTagsProvider
 				.add(ModItems.RICE.get());
 		tag(CompatibilityTags.SERENE_SEASONS_WINTER_CROPS)
 				.add(ModItems.CABBAGE_SEEDS.get());
-
 		tag(CompatibilityTags.TINKERS_CONSTRUCT_SEEDS).add(ModItems.ONION.get());
 	}
 }

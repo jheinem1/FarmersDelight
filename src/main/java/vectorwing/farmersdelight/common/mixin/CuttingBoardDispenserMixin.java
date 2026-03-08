@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.mixin;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
@@ -18,13 +17,11 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.block.entity.dispenser.CuttingBoardDispenseBehavior;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
-
 @Mixin(DispenserBlock.class)
 public abstract class CuttingBoardDispenserMixin
 {
 	@Shadow
 	protected abstract DispenseItemBehavior getDispenseMethod(Level level, ItemStack stack);
-
 	@Inject(
 			method = "dispenseFrom",
 			at = @At(

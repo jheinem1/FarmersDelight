@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.data.recipe;
-
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -12,30 +11,24 @@ import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.tag.CommonTags;
 import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.data.builder.CookingPotRecipeBuilder;
-
 import java.util.stream.Stream;
-
 public class CookingRecipes
 {
 	public static final int FAST_COOKING = 100;      // 5 seconds
 	public static final int NORMAL_COOKING = 200;    // 10 seconds
 	public static final int SLOW_COOKING = 400;      // 20 seconds
-
 	public static final float SMALL_EXP = 0.35F;
 	public static final float MEDIUM_EXP = 1.0F;
 	public static final float LARGE_EXP = 2.0F;
-
 	public static void register(RecipeOutput output) {
 		cookMiscellaneous(output);
 		cookMinecraftSoups(output);
 		cookMeals(output);
 	}
-
 	// TODO: Deprecate this if NeoForge removes melon_slice from the vegetables tag.
 	private static Ingredient vegetablesPatch() {
 		return DifferenceIngredient.of(Ingredient.of(Tags.Items.FOODS_VEGETABLE), Ingredient.of(Items.MELON_SLICE));
 	}
-
 	private static void cookMiscellaneous(RecipeOutput output) {
 		CookingPotRecipeBuilder.cookingPotRecipe(ModItems.HOT_COCOA.get(), 1, NORMAL_COOKING, MEDIUM_EXP)
 				.addIngredient(Tags.Items.DRINKS_MILK)
@@ -75,7 +68,6 @@ public class CookingRecipes
 				.setRecipeBookTab(CookingPotRecipeBookTab.MISC)
 				.build(output);
 	}
-
 	private static void cookMinecraftSoups(RecipeOutput output) {
 		CookingPotRecipeBuilder.cookingPotRecipe(Items.MUSHROOM_STEW, 1, NORMAL_COOKING, MEDIUM_EXP, Items.BOWL)
 				.addIngredient(Items.BROWN_MUSHROOM)
@@ -99,7 +91,6 @@ public class CookingRecipes
 				.setRecipeBookTab(CookingPotRecipeBookTab.MEALS)
 				.build(output);
 	}
-
 	private static void cookMeals(RecipeOutput output) {
 		CookingPotRecipeBuilder.cookingPotRecipe(ModItems.BAKED_COD_STEW.get(), 1, NORMAL_COOKING, MEDIUM_EXP)
 				.addIngredient(CommonTags.FOODS_RAW_COD)

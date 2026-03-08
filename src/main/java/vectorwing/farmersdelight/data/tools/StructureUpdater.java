@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.data.tools;
-
 /*
  *  BluSunrize
  *  Copyright (c) 2021
@@ -7,7 +6,6 @@ package vectorwing.farmersdelight.data.tools;
  *  This code is licensed under "Blu's License of Common Sense".
  *  Class written by malte0811 and BluSunrize, and used with malte's permission.
  */
-
 import com.google.common.hash.Hashing;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.datafixers.DataFixerUpper;
@@ -25,21 +23,18 @@ import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.util.datafix.DataFixers;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-
 import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
-
 public class StructureUpdater implements DataProvider
 {
 	private final String basePath;
 	private final String modid;
 	private final PackOutput output;
 	private final MultiPackResourceManager resources;
-
 	public StructureUpdater(
 			String basePath, String modid, ExistingFileHelper helper, PackOutput output
 	) {
@@ -55,7 +50,6 @@ public class StructureUpdater implements DataProvider
 			throw new RuntimeException(e);
 		}
 	}
-
 	@Override
 	public CompletableFuture<?> run(@Nonnull CachedOutput cache) {
 		try {
@@ -68,7 +62,6 @@ public class StructureUpdater implements DataProvider
 			return CompletableFuture.failedFuture(x);
 		}
 	}
-
 	private void process(Identifier loc, Resource resource, CachedOutput cache) throws IOException {
 		CompoundTag inputNBT = NbtIo.readCompressed(resource.open(), NbtAccounter.unlimitedHeap());
 		CompoundTag converted = updateNBT(inputNBT);
@@ -79,7 +72,6 @@ public class StructureUpdater implements DataProvider
 			writeNBTTo(loc, converted, cache);
 		}
 	}
-
 	private void writeNBTTo(Identifier loc, CompoundTag data, CachedOutput cache) throws IOException {
 		ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
 		NbtIo.writeCompressed(data, bytearrayoutputstream);
@@ -87,7 +79,6 @@ public class StructureUpdater implements DataProvider
 		Path outputPath = output.getOutputFolder().resolve("data/" + loc.getNamespace() + "/" + loc.getPath());
 		cache.writeIfNeeded(outputPath, bytes, Hashing.sha1().hashBytes(bytes));
 	}
-
 	private static CompoundTag updateNBT(CompoundTag nbt) {
 		final CompoundTag updatedNBT = DataFixTypes.STRUCTURE.updateToCurrentVersion(
 				DataFixers.getDataFixer(), nbt, nbt.getInt("DataVersion")
@@ -96,7 +87,6 @@ public class StructureUpdater implements DataProvider
 		template.load(BuiltInRegistries.BLOCK.asLookup(), updatedNBT);
 		return template.save(new CompoundTag());
 	}
-
 	@Nonnull
 	@Override
 	public String getName() {

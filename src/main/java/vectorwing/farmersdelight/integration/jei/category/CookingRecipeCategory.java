@@ -1,5 +1,5 @@
 package vectorwing.farmersdelight.integration.jei.category;
-
+import org.jspecify.annotations.NullMarked;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -10,7 +10,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -25,15 +24,13 @@ import vectorwing.farmersdelight.common.utility.ClientRenderUtils;
 import vectorwing.farmersdelight.common.utility.RecipeUtils;
 import vectorwing.farmersdelight.common.utility.TextUtils;
 import vectorwing.farmersdelight.integration.jei.FDRecipeTypes;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 @ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+@NullMarked
 public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<CookingPotRecipe>>
 {
 	protected final IDrawable heatIndicator;
@@ -43,7 +40,6 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 	private final Component title;
 	private final IDrawable background;
 	private final IDrawable icon;
-
 	public CookingRecipeCategory(IGuiHelper helper) {
 		title = TextUtils.getTranslation("jei.cooking");
 		Identifier widgetBackgroundImage = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/cooking_pot.png");
@@ -56,34 +52,28 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 		arrow = helper.drawableBuilder(interfaceImage, 176, 15, 24, 17)
 				.buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
 	}
-
 	@Override
 	public RecipeType<RecipeHolder<CookingPotRecipe>> getRecipeType() {
 		return FDRecipeTypes.COOKING;
 	}
-
 	@Override
 	public Component getTitle() {
 		return this.title;
 	}
-
 	@Override
 	public IDrawable getBackground() {
 		return this.background;
 	}
-
 	@Override
 	public IDrawable getIcon() {
 		return this.icon;
 	}
-
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CookingPotRecipe> holder, IFocusGroup focusGroup) {
 		CookingPotRecipe recipe = holder.value();
 		NonNullList<Ingredient> recipeIngredients = recipe.getIngredients();
 		ItemStack resultStack = RecipeUtils.getResultItem(recipe);
 		ItemStack containerStack = recipe.getOutputContainer();
-
 		int borderSlotSize = 18;
 		for (int row = 0; row < 2; ++row) {
 			for (int column = 0; column < 3; ++column) {
@@ -94,16 +84,12 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 				}
 			}
 		}
-
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 10).addItemStack(resultStack);
-
 		if (!containerStack.isEmpty()) {
 			builder.addSlot(RecipeIngredientRole.CATALYST, 63, 39).addItemStack(containerStack);
 		}
-
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 39).addItemStack(resultStack);
 	}
-
 	@Override
 	public void draw(RecipeHolder<CookingPotRecipe> holder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
 		arrow.draw(guiGraphics, 60, 9);
@@ -113,13 +99,11 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 			expIcon.draw(guiGraphics, 63, 21);
 		}
 	}
-
 	@Override
 	public List<Component> getTooltipStrings(RecipeHolder<CookingPotRecipe> holder, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
 		CookingPotRecipe recipe = holder.value();
 		if (ClientRenderUtils.isCursorInsideBounds(61, 2, 22, 28, mouseX, mouseY)) {
 			List<Component> tooltipStrings = new ArrayList<>();
-
 			int cookTime = recipe.getCookTime();
 			if (cookTime > 0) {
 				int cookTimeSeconds = cookTime / 20;
@@ -129,7 +113,6 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 			if (experience > 0) {
 				tooltipStrings.add(Component.translatable("gui.jei.category.smelting.experience", experience));
 			}
-
 			return tooltipStrings;
 		}
 		return Collections.emptyList();

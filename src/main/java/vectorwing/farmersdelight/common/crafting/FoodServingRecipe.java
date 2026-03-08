@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.crafting;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -11,19 +10,16 @@ import net.minecraft.world.level.Level;
 import vectorwing.farmersdelight.common.block.entity.CookingPotBlockEntity;
 import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.registry.ModRecipeSerializers;
-
 public class FoodServingRecipe extends CustomRecipe
 {
 	public FoodServingRecipe(CraftingBookCategory category) {
 		super(category);
 	}
-
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
 		ItemStack cookingPotStack = ItemStack.EMPTY;
 		ItemStack containerStack = ItemStack.EMPTY;
 		ItemStack secondStack = ItemStack.EMPTY;
-
 		for (int index = 0; index < input.size(); ++index) {
 			ItemStack selectedStack = input.getItem(index);
 			if (!selectedStack.isEmpty()) {
@@ -42,10 +38,8 @@ public class FoodServingRecipe extends CustomRecipe
 				}
 			}
 		}
-
 		return !cookingPotStack.isEmpty() && !secondStack.isEmpty() && secondStack.is(containerStack.getItem());
 	}
-
 	@Override
 	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
 		for (int i = 0; i < input.size(); ++i) {
@@ -56,14 +50,11 @@ public class FoodServingRecipe extends CustomRecipe
 				return resultStack;
 			}
 		}
-
 		return ItemStack.EMPTY;
 	}
-
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInput input) {
 		NonNullList<ItemStack> remainders = NonNullList.withSize(input.size(), ItemStack.EMPTY);
-
 		for (int i = 0; i < remainders.size(); ++i) {
 			ItemStack selectedStack = input.getItem(i);
 			if (selectedStack.hasCraftingRemainingItem()) {
@@ -76,15 +67,12 @@ public class FoodServingRecipe extends CustomRecipe
 				break;
 			}
 		}
-
 		return remainders;
 	}
-
 	@Override
 	public boolean canCraftInDimensions(int width, int height) {
 		return width >= 2 && height >= 2;
 	}
-
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return ModRecipeSerializers.FOOD_SERVING.get();

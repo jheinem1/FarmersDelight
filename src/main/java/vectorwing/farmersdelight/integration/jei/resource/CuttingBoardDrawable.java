@@ -1,4 +1,5 @@
 //package vectorwing.farmersdelight.integration.jei.resource;
+import org.jspecify.annotations.NullMarked;
 //
 //import com.mojang.blaze3d.vertex.PoseStack;
 //import mezz.jei.api.gui.drawable.IDrawable;
@@ -15,7 +16,7 @@
 //import java.util.function.Supplier;
 //
 //@ParametersAreNonnullByDefault
-//@MethodsReturnNonnullByDefault
+//@NullMarked
 //public class CuttingBoardDrawable implements IDrawable
 //{
 //	private final Supplier<ItemStack> supplier;

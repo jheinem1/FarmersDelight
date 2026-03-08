@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.data;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
@@ -13,16 +12,13 @@ import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.tag.CommonTags;
 import vectorwing.farmersdelight.common.tag.CompatibilityTags;
 import vectorwing.farmersdelight.common.tag.ModTags;
-
 import org.jspecify.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
-
 public class BlockTags extends BlockTagsProvider
 {
 	public BlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
 		super(output, lookupProvider, FarmersDelight.MODID, existingFileHelper);
 	}
-
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		this.registerModTags();
@@ -30,10 +26,8 @@ public class BlockTags extends BlockTagsProvider
 		this.registerNeoForgeTags();
 		this.registerCommonTags();
 		this.registerCompatibilityTags();
-
 		this.registerBlockMineables();
 	}
-
 	protected void registerBlockMineables() {
 		tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_AXE).add(
 				ModBlocks.BASKET.get(),
@@ -93,7 +87,6 @@ public class BlockTags extends BlockTagsProvider
 				.addTag(ModTags.STRAW_BLOCKS)
 				.addTag(CommonTags.MINEABLE_WITH_KNIFE);
 	}
-
 	protected void registerMinecraftTags() {
 		tag(net.minecraft.tags.BlockTags.CLIMBABLE).add(
 				ModBlocks.ROPE.get(),
@@ -203,7 +196,6 @@ public class BlockTags extends BlockTagsProvider
 				ModBlocks.RICE_CROP.get()
 		);
 	}
-
 	protected void registerNeoForgeTags() {
 		tag(Tags.Blocks.ROPES).add(ModBlocks.ROPE.get());
 		tag(Tags.Blocks.VILLAGER_FARMLANDS).add(ModBlocks.RICH_SOIL_FARMLAND.get());
@@ -219,7 +211,6 @@ public class BlockTags extends BlockTagsProvider
 				CommonTags.STORAGE_BLOCKS_STRAW
 		);
 	}
-
 	protected void registerCommonTags() {
 		tag(CommonTags.MINEABLE_WITH_KNIFE);
 		tag(CommonTags.STORAGE_BLOCKS_CARROT).add(ModBlocks.CARROT_CRATE.get());
@@ -232,7 +223,6 @@ public class BlockTags extends BlockTagsProvider
 		tag(CommonTags.STORAGE_BLOCKS_RICE_PANICLE).add(ModBlocks.RICE_BALE.get());
 		tag(CommonTags.STORAGE_BLOCKS_STRAW).add(ModBlocks.STRAW_BALE.get());
 	}
-
 	protected void registerModTags() {
 		tag(ModTags.TERRAIN)
 				.addTag(net.minecraft.tags.BlockTags.DIRT)
@@ -317,7 +307,6 @@ public class BlockTags extends BlockTagsProvider
 				Blocks.BLACK_CANDLE_CAKE);
 		tag(ModTags.CAMPFIRE_SIGNAL_SMOKE).add(ModBlocks.STRAW_BALE.get()).add(ModBlocks.RICE_BALE.get());
 	}
-
 	private void registerCompatibilityTags() {
 		tag(CompatibilityTags.CREATE_PASSIVE_BOILER_HEATERS).add(ModBlocks.STOVE.get());
 		tag(CompatibilityTags.CREATE_BRITTLE).add(
@@ -325,7 +314,6 @@ public class BlockTags extends BlockTagsProvider
 				ModBlocks.FULL_TATAMI_MAT.get(),
 				ModBlocks.HALF_TATAMI_MAT.get()
 		);
-
 		tag(CompatibilityTags.SERENE_SEASONS_AUTUMN_CROPS_BLOCK).add(
 				ModBlocks.CABBAGE_CROP.get(),
 				ModBlocks.ONION_CROP.get(),

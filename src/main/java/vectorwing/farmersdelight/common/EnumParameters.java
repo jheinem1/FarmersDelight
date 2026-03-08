@@ -1,14 +1,11 @@
 package vectorwing.farmersdelight.common;
-
 import net.minecraft.world.item.crafting.RecipeBookCategories;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.common.asm.enumextension.EnumProxy;
 import vectorwing.farmersdelight.common.registry.ModItems;
-
 import java.util.List;
 import java.util.function.Supplier;
-
 public class EnumParameters
 {
 	public static final EnumProxy<RecipeBookCategories> PROXY_COOKING_SEARCH = new EnumProxy<>(

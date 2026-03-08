@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.event;
-
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -16,10 +15,8 @@ import net.neoforged.neoforge.event.village.WandererTradesEvent;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.registry.ModItems;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
-
 @EventBusSubscriber(modid = FarmersDelight.MODID)
 @ParametersAreNonnullByDefault
 public class VillagerEvents
@@ -27,7 +24,6 @@ public class VillagerEvents
 	@SubscribeEvent
 	public static void onVillagerTrades(VillagerTradesEvent event) {
 		if (!Configuration.FARMERS_BUY_FD_CROPS.get()) return;
-
 		Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 		VillagerProfession profession = event.getType();
 		Identifier professionKey = BuiltInRegistries.VILLAGER_PROFESSION.getKey(profession);
@@ -39,7 +35,6 @@ public class VillagerEvents
 			trades.get(2).add(emeraldForItemsTrade(ModItems.RICE.get(), 20, 16, 5));
 		}
 	}
-
 	@SubscribeEvent
 	public static void onWandererTrades(WandererTradesEvent event) {
 		if (Configuration.WANDERING_TRADER_SELLS_FD_ITEMS.get()) {
@@ -50,11 +45,9 @@ public class VillagerEvents
 			trades.add(itemForEmeraldTrade(ModItems.ONION.get(), 1, 12));
 		}
 	}
-
 	public static BasicItemListing emeraldForItemsTrade(ItemLike item, int count, int maxTrades, int xp) {
 		return new BasicItemListing(new ItemStack(item, count), new ItemStack(Items.EMERALD), maxTrades, xp, 0.05F);
 	}
-
 	public static BasicItemListing itemForEmeraldTrade(ItemLike item, int maxTrades, int xp) {
 		return new BasicItemListing(1, new ItemStack(item), maxTrades, xp, 0.05F);
 	}

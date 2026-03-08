@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.integration.crafttweaker.managers;
-
 import com.blamejared.crafttweaker.api.CraftTweakerAPI;
 import com.blamejared.crafttweaker.api.CraftTweakerConstants;
 import com.blamejared.crafttweaker.api.action.recipe.ActionAddRecipe;
@@ -20,7 +19,6 @@ import vectorwing.farmersdelight.common.crafting.ingredient.ChanceResult;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 import vectorwing.farmersdelight.common.utility.ListUtils;
 import vectorwing.farmersdelight.integration.crafttweaker.actions.ActionRemoveCuttingBoardRecipe;
-
 /**
  * Farmer's Delight Cutting Board recipes.
  *
@@ -65,7 +63,6 @@ public class CuttingBoardRecipeManager implements IRecipeManager
                         BuiltInRegistries.SOUND_EVENT.getOptional(Identifier.parse(sound)))),
                 ""));
     }
-
     /**
      * Remove a cutting board recipe with multiple outputs.
      *
@@ -77,7 +74,6 @@ public class CuttingBoardRecipeManager implements IRecipeManager
     public void removeRecipe(IItemStack[] outputs) {
         CraftTweakerAPI.apply(new ActionRemoveCuttingBoardRecipe(this, outputs));
     }
-
     @Override
     public RecipeType<CuttingBoardRecipe> getRecipeType() {
         return ModRecipeTypes.CUTTING.get();

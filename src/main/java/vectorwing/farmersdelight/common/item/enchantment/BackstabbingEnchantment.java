@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.item.enchantment;
-
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -16,7 +15,6 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.registry.ModDataComponents;
-
 public class BackstabbingEnchantment
 {
 	/**
@@ -31,12 +29,10 @@ public class BackstabbingEnchantment
 		}
 		return false;
 	}
-
 	public static float getBackstabbingDamagePerLevel(float amount, int level) {
 		float multiplier = ((level * 0.2F) + 1.2F);
 		return amount * multiplier;
 	}
-
 	@EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.GAME)
 	public static class BackstabbingEvent
 	{
@@ -53,7 +49,6 @@ public class BackstabbingEnchantment
 					EnchantmentHelper.runIterationOnItem(weapon, (enchantment, powerLevel) -> {
 						enchantment.value().modifyDamageFilteredValue(ModDataComponents.BACKSTABBING.get(), serverLevel, powerLevel, weapon, attacker, event.getSource(), dmg);
 					});
-
 					if (preModifiedDamage != dmg.getValue()) {
 						event.setAmount(dmg.getValue());
 						serverLevel.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.BLOCKS, 1.0F, 1.0F);

@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.client.event;
-
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,9 +14,7 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.FoodValues;
-
 import java.util.List;
-
 @EventBusSubscriber(modid = FarmersDelight.MODID, value = Dist.CLIENT)
 public class TooltipEvents
 {
@@ -26,10 +23,8 @@ public class TooltipEvents
 		if (!Configuration.VANILLA_SOUP_EXTRA_EFFECTS.get() || !Configuration.FOOD_EFFECT_TOOLTIP.get()) {
 			return;
 		}
-
 		Item food = event.getItemStack().getItem();
 		FoodProperties soupEffects = FoodValues.VANILLA_SOUP_EFFECTS.get(food);
-
 		if (soupEffects != null) {
 			List<Component> tooltip = event.getToolTip();
 			for (FoodProperties.PossibleEffect effect : soupEffects.effects()) {

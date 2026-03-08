@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.item;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -34,31 +33,24 @@ import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.common.utility.ItemUtils;
-
 import java.util.Set;
-
 public class KnifeItem extends DiggerItem
 {
 	public static final Set<ItemAbility> KNIFE_ACTIONS = Set.of(ItemAbilities.SHEARS_CARVE, ItemAbilities.SWORD_DIG);
-
 	public KnifeItem(Tier tier, Properties properties) {
 		super(tier, ModTags.MINEABLE_WITH_KNIFE, properties);
 	}
-
 	@Override
 	public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
 		return !player.isCreative();
 	}
-
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		return true;
 	}
-
 	public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
 	}
-
 	@Override
 	public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
 		if (enchantment.is(Enchantments.SWEEPING_EDGE)) {
@@ -66,7 +58,6 @@ public class KnifeItem extends DiggerItem
 		}
 		return super.isPrimaryItemFor(stack, enchantment);
 	}
-
 	@Override
 	public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
 		if (enchantment.is(Enchantments.SWEEPING_EDGE)) {
@@ -74,11 +65,9 @@ public class KnifeItem extends DiggerItem
 		}
 		return super.supportsEnchantment(stack, enchantment);
 	}
-
 	public boolean canPerformAction(ItemStack stack, ItemAbility toolAction) {
 		return KNIFE_ACTIONS.contains(toolAction);
 	}
-
 	@EventBusSubscriber(modid = FarmersDelight.MODID, bus = EventBusSubscriber.Bus.GAME)
 	public static class KnifeEvents
 	{
@@ -90,20 +79,16 @@ public class KnifeItem extends DiggerItem
 				event.setStrength(event.getOriginalStrength() - 0.1F);
 			}
 		}
-
 		@SubscribeEvent
 		public static void onCakeInteraction(PlayerInteractEvent.RightClickBlock event) {
 			ItemStack toolStack = event.getEntity().getItemInHand(event.getHand());
-
 			if (!toolStack.is(ModTags.KNIVES)) {
 				return;
 			}
-
 			Level level = event.getLevel();
 			BlockPos pos = event.getPos();
 			BlockState state = event.getLevel().getBlockState(pos);
 			Block block = state.getBlock();
-
 			if (state.is(ModTags.DROPS_CAKE_SLICE)) {
 				level.setBlock(pos, Blocks.CAKE.defaultBlockState().setValue(CakeBlock.BITES, 1), 3);
 				Block.dropResources(state, level, pos);
@@ -111,11 +96,9 @@ public class KnifeItem extends DiggerItem
 						pos.getX(), pos.getY() + 0.2, pos.getZ() + 0.5,
 						-0.05, 0, 0);
 				level.playSound(null, pos, SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 0.8F, 0.8F);
-
 				event.setCancellationResult(InteractionResult.SUCCESS);
 				event.setCanceled(true);
 			}
-
 			if (block == Blocks.CAKE) {
 				int bites = state.getValue(CakeBlock.BITES);
 				if (bites < 6) {
@@ -127,13 +110,11 @@ public class KnifeItem extends DiggerItem
 						pos.getX() + (bites * 0.1), pos.getY() + 0.2, pos.getZ() + 0.5,
 						-0.05, 0, 0);
 				level.playSound(null, pos, SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 0.8F, 0.8F);
-
 				event.setCancellationResult(InteractionResult.SUCCESS);
 				event.setCanceled(true);
 			}
 		}
 	}
-
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Level level = context.getLevel();
@@ -141,7 +122,6 @@ public class KnifeItem extends DiggerItem
 		BlockPos pos = context.getClickedPos();
 		BlockState state = level.getBlockState(pos);
 		Direction facing = context.getClickedFace();
-
 		if (state.getBlock() == Blocks.PUMPKIN && toolStack.is(ModTags.KNIVES)) {
 			Player player = context.getPlayer();
 			if (player != null && !level.isClientSide) {

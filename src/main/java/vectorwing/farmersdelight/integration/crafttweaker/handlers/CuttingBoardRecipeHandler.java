@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.integration.crafttweaker.handlers;
-
 import com.blamejared.crafttweaker.api.ingredient.IIngredient;
 import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStack;
@@ -19,15 +18,12 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import vectorwing.farmersdelight.common.crafting.ingredient.ChanceResult;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 @IRecipeHandler.For(CuttingBoardRecipe.class)
 public class CuttingBoardRecipeHandler implements IRecipeHandler<CuttingBoardRecipe>
 {
-
     @Override
     public String dumpToCommandString(IRecipeManager<? super CuttingBoardRecipe> manager, RegistryAccess registryAccess, RecipeHolder<CuttingBoardRecipe> recipe) {
         return String.format(
@@ -43,15 +39,12 @@ public class CuttingBoardRecipeHandler implements IRecipeHandler<CuttingBoardRec
                 recipe.value().getSoundEvent().map(BuiltInRegistries.SOUND_EVENT::getKey)
         );
     }
-
     @Override
     public <U extends Recipe<?>> boolean doesConflict(IRecipeManager<? super CuttingBoardRecipe> manager, CuttingBoardRecipe firstRecipe, U secondRecipe) {
         return firstRecipe.equals(secondRecipe);
     }
-
     @Override
     public Optional<IDecomposedRecipe> decompose(IRecipeManager<? super CuttingBoardRecipe> manager, RegistryAccess registryAccess, CuttingBoardRecipe recipe) {
-
         final IDecomposedRecipe decomposedRecipe = IDecomposedRecipe
                 .builder()
                 .with(BuiltinRecipeComponents.Input.INGREDIENTS, recipe.getIngredients().stream().map(IIngredient::fromIngredient).toList())
@@ -67,7 +60,6 @@ public class CuttingBoardRecipeHandler implements IRecipeHandler<CuttingBoardRec
         }
         return Optional.of(decomposedRecipe);
     }
-
     @Override
     public Optional<CuttingBoardRecipe> recompose(IRecipeManager<? super CuttingBoardRecipe> manager, RegistryAccess registryAccess, IDecomposedRecipe recipe) {
         final String group = recipe.getOrThrowSingle(BuiltinRecipeComponents.Metadata.GROUP);
@@ -82,5 +74,4 @@ public class CuttingBoardRecipeHandler implements IRecipeHandler<CuttingBoardRec
         final Ingredient input = ingredientArray[0].asVanillaIngredient();
         return Optional.of(new CuttingBoardRecipe(group, input, tool.asVanillaIngredient(), stackedResults, sound));
     }
-
 }

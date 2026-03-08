@@ -1,12 +1,9 @@
 package vectorwing.farmersdelight.common.block.entity.inventory;
-
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
-
 import javax.annotation.Nonnull;
 import org.jspecify.annotations.Nullable;
-
 public class CookingPotItemHandler implements IItemHandler
 {
 	private static final int SLOTS_INPUT = 6;
@@ -14,28 +11,23 @@ public class CookingPotItemHandler implements IItemHandler
 	private static final int SLOT_MEAL_OUTPUT = 8;
 	private final IItemHandler itemHandler;
 	private final Direction side;
-
 	public CookingPotItemHandler(IItemHandler itemHandler, @Nullable Direction side) {
 		this.itemHandler = itemHandler;
 		this.side = side;
 	}
-
 	@Override
 	public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
 		return itemHandler.isItemValid(slot, stack);
 	}
-
 	@Override
 	public int getSlots() {
 		return itemHandler.getSlots();
 	}
-
 	@Override
 	@Nonnull
 	public ItemStack getStackInSlot(int slot) {
 		return itemHandler.getStackInSlot(slot);
 	}
-
 	@Override
 	@Nonnull
 	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
@@ -45,7 +37,6 @@ public class CookingPotItemHandler implements IItemHandler
 			return slot == SLOT_CONTAINER_INPUT ? itemHandler.insertItem(slot, stack, simulate) : stack;
 		}
 	}
-
 	@Override
 	@Nonnull
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -55,7 +46,6 @@ public class CookingPotItemHandler implements IItemHandler
 			return slot == SLOT_MEAL_OUTPUT ? itemHandler.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
 		}
 	}
-
 	@Override
 	public int getSlotLimit(int slot) {
 		return itemHandler.getSlotLimit(slot);

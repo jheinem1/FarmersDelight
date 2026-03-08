@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.block;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -20,50 +19,40 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import org.jspecify.annotations.Nullable;
-
 @SuppressWarnings("deprecation")
 public class SafetyNetBlock extends Block implements SimpleWaterloggedBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 7.0D, 0.0D, 16.0D, 9.0D, 16.0D);
-
 	public SafetyNetBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
 	}
-
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(WATERLOGGED);
 	}
-
 	@Nullable
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
 		return this.defaultBlockState().setValue(WATERLOGGED, fluid.getType() == Fluids.WATER);
 	}
-
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
 		if (stateIn.getValue(WATERLOGGED)) {
 			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
-
 		return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
 	}
-
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
-
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return SHAPE;
 	}
-
 	@Override
 	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entityIn, float fallDistance) {
 		if (entityIn.isSuppressingBounce()) {
@@ -72,7 +61,6 @@ public class SafetyNetBlock extends Block implements SimpleWaterloggedBlock
 			entityIn.causeFallDamage(fallDistance, 0.0F, level.damageSources().fall());
 		}
 	}
-
 	@Override
 	public void updateEntityAfterFallOn(BlockGetter level, Entity entityIn) {
 		if (entityIn.isSuppressingBounce()) {
@@ -81,7 +69,6 @@ public class SafetyNetBlock extends Block implements SimpleWaterloggedBlock
 			this.bounceEntity(entityIn);
 		}
 	}
-
 	private void bounceEntity(Entity entityIn) {
 		Vec3 vec3d = entityIn.getDeltaMovement();
 		if (vec3d.y < 0.0D) {

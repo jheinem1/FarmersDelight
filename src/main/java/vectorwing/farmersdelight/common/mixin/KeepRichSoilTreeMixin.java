@@ -1,5 +1,4 @@
 package vectorwing.farmersdelight.common.mixin;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
@@ -11,9 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
-
 import java.util.function.BiConsumer;
-
 @Mixin(TrunkPlacer.class)
 public class KeepRichSoilTreeMixin
 {

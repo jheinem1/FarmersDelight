@@ -1,7 +1,5 @@
 @ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+@NullMarked
 package vectorwing.farmersdelight.client.renderer;
-
-import net.minecraft.MethodsReturnNonnullByDefault;
-
+import org.jspecify.annotations.NullMarked;
 import javax.annotation.ParametersAreNonnullByDefault;
