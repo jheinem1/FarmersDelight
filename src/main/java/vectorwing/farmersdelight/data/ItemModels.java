@@ -102,7 +102,9 @@ public class ItemModels extends JsonAssetProvider
 	}
 
 	private void blockBasedModel(Map<Path, JsonElement> files, Item item, String suffix) {
-		writeItemModel(files, itemName(item), parentModel(resourceBlock(itemName(item) + suffix).toString()));
+		String name = itemName(item);
+		writeItemModel(files, name, parentModel(resourceBlock(name + suffix).toString()));
+		writeItemDefinition(files, name);
 	}
 
 	private void itemGeneratedModel(Map<Path, JsonElement> files, Item item, String texture) {
@@ -110,12 +112,14 @@ public class ItemModels extends JsonAssetProvider
 	}
 
 	private void itemModel(Map<Path, JsonElement> files, Item item, String parent, String texture) {
+		String name = itemName(item);
 		JsonObject json = new JsonObject();
 		json.addProperty("parent", parent);
 		JsonObject textures = new JsonObject();
 		textures.addProperty("layer0", texture);
 		json.add("textures", textures);
-		writeItemModel(files, itemName(item), json);
+		writeItemModel(files, name, json);
+		writeItemDefinition(files, name);
 	}
 
 	private JsonObject parentModel(String parent) {
@@ -126,6 +130,15 @@ public class ItemModels extends JsonAssetProvider
 
 	private void writeItemModel(Map<Path, JsonElement> files, String name, JsonObject json) {
 		files.put(this.itemModelPathProvider.json(Identifier.fromNamespaceAndPath(FarmersDelight.MODID, name)), json);
+	}
+
+	private void writeItemDefinition(Map<Path, JsonElement> files, String name) {
+		JsonObject json = new JsonObject();
+		JsonObject model = new JsonObject();
+		model.addProperty("type", "minecraft:model");
+		model.addProperty("model", FarmersDelight.MODID + ":item/" + name);
+		json.add("model", model);
+		files.put(this.itemDefinitionPathProvider.json(Identifier.fromNamespaceAndPath(FarmersDelight.MODID, name)), json);
 	}
 
 	private String itemName(Item item) {

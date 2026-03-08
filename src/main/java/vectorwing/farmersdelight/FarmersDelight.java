@@ -32,6 +32,7 @@ public class FarmersDelight
 		modEventBus.addListener(CuttingBoardBlockEntity::registerCapabilities);
 		if (FMLEnvironment.getDist().isClient()) {
 			modEventBus.addListener(ClientSetupEvents::init);
+			modEventBus.addListener(ClientSetupEvents::registerSpecialModelRenderers);
 			modEventBus.addListener(ClientSetupEvents::registerCustomTooltipRenderers);
 			modEventBus.addListener(ClientSetupEvents::registerGuiLayers);
 			modEventBus.addListener(ClientSetupEvents::onRegisterRenderers);

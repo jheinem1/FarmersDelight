@@ -51,6 +51,7 @@ public class ModItems
 	}
 	public static Item.Properties skilletItem() {
 		return basicItem()
+				.useBlockDescriptionPrefix()
 				.stacksTo(1)
 				.durability(SkilletItem.SKILLET_TIER.durability())
 				.repairable(SkilletItem.SKILLET_TIER.repairItems())

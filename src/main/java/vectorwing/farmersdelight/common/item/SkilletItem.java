@@ -53,6 +53,7 @@ public class SkilletItem extends BlockItem
 	public SkilletItem(Block block, Item.Properties properties) {
 		super(block, properties);
 	}
+
 	public static ItemAttributeModifiers createAttributes(ToolMaterial tier, float attackDamage, float attackSpeed) {
 		return ItemAttributeModifiers.builder()
 				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.attackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)

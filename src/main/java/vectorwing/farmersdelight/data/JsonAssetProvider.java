@@ -15,12 +15,14 @@ abstract class JsonAssetProvider implements DataProvider
 	private final String name;
 	protected final PackOutput.PathProvider blockStatePathProvider;
 	protected final PackOutput.PathProvider blockModelPathProvider;
+	protected final PackOutput.PathProvider itemDefinitionPathProvider;
 	protected final PackOutput.PathProvider itemModelPathProvider;
 
 	protected JsonAssetProvider(String name, PackOutput output) {
 		this.name = name;
 		this.blockStatePathProvider = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "blockstates");
 		this.blockModelPathProvider = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "models/block");
+		this.itemDefinitionPathProvider = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "items");
 		this.itemModelPathProvider = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "models/item");
 	}
 
