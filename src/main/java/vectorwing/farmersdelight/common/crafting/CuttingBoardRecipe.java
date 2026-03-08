@@ -15,7 +15,10 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -35,6 +38,7 @@ public class CuttingBoardRecipe implements Recipe<CuttingBoardRecipeInput>
 	private final Ingredient tool;
 	private final NonNullList<ChanceResult> results;
 	private final Optional<SoundEvent> soundEvent;
+	private PlacementInfo placementInfo;
 	public CuttingBoardRecipe(String group, Ingredient input, Ingredient tool, NonNullList<ChanceResult> results, Optional<SoundEvent> soundEvent) {
 		this.group = group;
 		this.input = input;
@@ -55,10 +59,10 @@ public class CuttingBoardRecipe implements Recipe<CuttingBoardRecipeInput>
 		return true;
 	}
 	@Override
-	public String getGroup() {
+	public String group() {
 		return this.group;
 	}
-	@Override
+
 	public NonNullList<Ingredient> getIngredients() {
 		NonNullList<Ingredient> nonnulllist = NonNullList.create();
 		nonnulllist.add(this.input);
@@ -67,7 +71,6 @@ public class CuttingBoardRecipe implements Recipe<CuttingBoardRecipeInput>
 	public Ingredient getTool() {
 		return this.tool;
 	}
-	@Override
 	public ItemStack getResultItem(HolderLookup.Provider provider) {
 		return this.results.getFirst().stack();
 	}
@@ -96,16 +99,23 @@ public class CuttingBoardRecipe implements Recipe<CuttingBoardRecipeInput>
 		return 1;
 	}
 	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= this.getMaxInputCount();
-	}
-	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<? extends Recipe<CuttingBoardRecipeInput>> getSerializer() {
 		return ModRecipeSerializers.CUTTING.get();
 	}
 	@Override
-	public RecipeType<?> getType() {
+	public RecipeType<? extends Recipe<CuttingBoardRecipeInput>> getType() {
 		return ModRecipeTypes.CUTTING.get();
+	}
+	@Override
+	public PlacementInfo placementInfo() {
+		if (this.placementInfo == null) {
+			this.placementInfo = PlacementInfo.create(this.input);
+		}
+		return this.placementInfo;
+	}
+	@Override
+	public RecipeBookCategory recipeBookCategory() {
+		return RecipeBookCategories.CRAFTING_MISC;
 	}
 	@Override
 	public boolean equals(Object o) {
@@ -128,15 +138,15 @@ public class CuttingBoardRecipe implements Recipe<CuttingBoardRecipeInput>
 		return result;
 	}
 	public static class Serializer implements RecipeSerializer<CuttingBoardRecipe>
-	{
+		{
 		public static final StreamCodec<RegistryFriendlyByteBuf, CuttingBoardRecipe> STREAM_CODEC =
 				StreamCodec.of(CuttingBoardRecipe.Serializer::toNetwork, CuttingBoardRecipe.Serializer::fromNetwork);
-		private static final MapCodec<CuttingBoardRecipe> CODEC = RecordCodecBuilder.mapCodec(
-				inst -> inst.group(Codec.STRING.optionalFieldOf("group", "").forGetter(CuttingBoardRecipe::getGroup),
-								Ingredient.LIST_CODEC_NONEMPTY.fieldOf("ingredients").flatXmap(ingredients -> {
-									if (ingredients.isEmpty()) {
-										return DataResult.error(() -> "No ingredients for cutting recipe");
-									}
+			private static final MapCodec<CuttingBoardRecipe> CODEC = RecordCodecBuilder.mapCodec(
+					inst -> inst.group(Codec.STRING.optionalFieldOf("group", "").forGetter(CuttingBoardRecipe::group),
+									Codec.list(Ingredient.CODEC).fieldOf("ingredients").flatXmap(ingredients -> {
+										if (ingredients.isEmpty()) {
+											return DataResult.error(() -> "No ingredients for cutting recipe");
+										}
 									if (ingredients.size() > 1) {
 										return DataResult.error(
 												() -> "Too many ingredients for cutting recipe! Please define only one ingredient");
@@ -164,20 +174,21 @@ public class CuttingBoardRecipe implements Recipe<CuttingBoardRecipeInput>
 						.apply(inst, CuttingBoardRecipe::new));
 		public Serializer() {
 		}
-		public static CuttingBoardRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+			public static CuttingBoardRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
 			String groupIn = buffer.readUtf(32767);
 			Ingredient inputItemIn = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
 			Ingredient toolIn = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
 			int i = buffer.readVarInt();
-			NonNullList<ChanceResult> resultsIn = NonNullList.withSize(i, ChanceResult.EMPTY);
-			resultsIn.replaceAll(ignored -> ChanceResult.read(buffer));
-			Optional<SoundEvent> soundEventIn = Optional.empty();
-			if (buffer.readBoolean()) {
-				Optional<Holder.Reference<SoundEvent>> holder = BuiltInRegistries.SOUND_EVENT.getHolder(buffer.readResourceKey(Registries.SOUND_EVENT));
-				if (holder.isPresent() && holder.get().isBound()) {
-					soundEventIn = Optional.of(holder.get().value());
+				NonNullList<ChanceResult> resultsIn = NonNullList.withSize(i, ChanceResult.EMPTY);
+				resultsIn.replaceAll(ignored -> ChanceResult.read(buffer));
+				Optional<SoundEvent> soundEventIn = Optional.empty();
+				if (buffer.readBoolean()) {
+					ResourceKey<SoundEvent> soundKey = buffer.readResourceKey(Registries.SOUND_EVENT);
+					SoundEvent soundEvent = BuiltInRegistries.SOUND_EVENT.getValue(soundKey);
+					if (soundEvent != null) {
+						soundEventIn = Optional.of(soundEvent);
+					}
 				}
-			}
 			return new CuttingBoardRecipe(groupIn, inputItemIn, toolIn, resultsIn, soundEventIn);
 		}
 		public static void toNetwork(RegistryFriendlyByteBuf buffer, CuttingBoardRecipe recipe) {

@@ -64,7 +64,7 @@ public class RopeBlock extends IronBarsBlock
 					} else {
 						reelingPos.move(Direction.UP);
 						level.destroyBlock(reelingPos, false, player);
-						return InteractionResult.sidedSuccess(level.isClientSide);
+						return InteractionResult.sidedSuccess(level.isClientSide());
 					}
 				}
 			}

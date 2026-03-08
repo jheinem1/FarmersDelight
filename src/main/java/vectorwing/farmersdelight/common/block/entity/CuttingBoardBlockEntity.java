@@ -1,8 +1,6 @@
 package vectorwing.farmersdelight.common.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,14 +18,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.block.CuttingBoardBlock;
+import vectorwing.farmersdelight.common.block.entity.inventory.LegacyItemHandlerResourceHandler;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipeInput;
 import vectorwing.farmersdelight.common.registry.ModAdvancements;
@@ -55,22 +55,22 @@ public class CuttingBoardBlockEntity extends SyncedBlockEntity
 	@SubscribeEvent
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		event.registerBlockEntity(
-				Capabilities.ItemHandler.BLOCK,
+				Capabilities.Item.BLOCK,
 				ModBlockEntityTypes.CUTTING_BOARD.get(),
-				(be, context) -> be.getInventory()
+				(be, context) -> new LegacyItemHandlerResourceHandler(be.getInventory())
 		);
 	}
 	@Override
-	public void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
-		super.loadAdditional(compound, registries);
-		isItemCarvingBoard = compound.getBoolean("IsItemCarved");
-		inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
+	public void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		isItemCarvingBoard = input.getBooleanOr("IsItemCarved", false);
+		input.readChild("Inventory", inventory);
 	}
 	@Override
-	public void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
-		super.saveAdditional(compound, registries);
-		compound.put("Inventory", inventory.serializeNBT(registries));
-		compound.putBoolean("IsItemCarved", isItemCarvingBoard);
+	public void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		output.putChild("Inventory", inventory);
+		output.putBoolean("IsItemCarved", isItemCarvingBoard);
 	}
 	public boolean processStoredItemUsingTool(ItemStack toolStack, @Nullable Player player) {
 		if (level == null) return false;
@@ -84,10 +84,10 @@ public class CuttingBoardBlockEntity extends SyncedBlockEntity
 						worldPosition.getX() + 0.5 + (direction.getStepX() * 0.2), worldPosition.getY() + 0.2, worldPosition.getZ() + 0.5 + (direction.getStepZ() * 0.2),
 						direction.getStepX() * 0.2F, 0.0F, direction.getStepZ() * 0.2F);
 			}
-			if (!level.isClientSide) {
-				toolStack.hurtAndBreak(1, (ServerLevel) level, player, (item) -> {
-				});
-			}
+				if (!level.isClientSide()) {
+					toolStack.hurtAndBreak(1, (ServerLevel) level, player, (item) -> {
+					});
+				}
 			playProcessingSound(recipe.value().getSoundEvent().orElse(null), toolStack, getStoredItem());
 			removeItem();
 			if (player instanceof ServerPlayer) {
@@ -97,8 +97,8 @@ public class CuttingBoardBlockEntity extends SyncedBlockEntity
 		return matchingRecipe.isPresent();
 	}
 	private Optional<RecipeHolder<CuttingBoardRecipe>> getMatchingRecipe(ItemStack toolStack, @Nullable Player player) {
-		if (level == null) return Optional.empty();
-		Optional<RecipeHolder<CuttingBoardRecipe>> recipe = quickCheck.getRecipeFor(new CuttingBoardRecipeInput(getStoredItem(), toolStack), level);
+		if (!(level instanceof ServerLevel serverLevel)) return Optional.empty();
+		Optional<RecipeHolder<CuttingBoardRecipe>> recipe = quickCheck.getRecipeFor(new CuttingBoardRecipeInput(getStoredItem(), toolStack), serverLevel);
 		if (recipe.isPresent()) {
 			if (recipe.get().value().getTool().test(toolStack)) {
 				return recipe;

@@ -66,7 +66,7 @@ public class PieBlock extends Block
 		return InteractionResult.PASS;
 	}
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			if (consumeBite(level, pos, state, player).consumesAction()) {
 				return InteractionResult.SUCCESS;
 			}
@@ -88,7 +88,7 @@ public class PieBlock extends Block
 			if (sliceFood != null) {
 				playerIn.getFoodData().eat(sliceFood);
 				Consumable consumable = sliceStack.get(DataComponents.CONSUMABLE);
-				if (!level.isClientSide) {
+				if (!level.isClientSide()) {
 					for (ApplyStatusEffectsConsumeEffect effect : FoodValues.getStatusEffectEntries(consumable)) {
 						effect.apply(level, sliceStack, playerIn);
 					}

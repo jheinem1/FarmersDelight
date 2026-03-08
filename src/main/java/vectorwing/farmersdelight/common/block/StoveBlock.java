@@ -68,11 +68,11 @@ public class StoveBlock extends BaseEntityBlock
 			} else if (heldStack.is(Tags.Items.BUCKETS_WATER)) {
 				if (!level.isClientSide()) {
 					level.playSound(null, pos, SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.BLOCKS, 1.0F, 1.0F);
-				}
-				extinguish(state, level, pos);
-				if (!player.isCreative()) {
-					player.setItemInHand(hand, heldStack.getCraftingRemainingItem());
-				}
+					}
+					extinguish(state, level, pos);
+					if (!player.isCreative()) {
+						player.setItemInHand(hand, heldStack.getItem().getCraftingRemainder());
+					}
 				return InteractionResult.SUCCESS;
 			}
 		} else {
@@ -98,7 +98,7 @@ public class StoveBlock extends BaseEntityBlock
 			}
 			Optional<RecipeHolder<CampfireCookingRecipe>> recipe = stoveEntity.getMatchingRecipe(heldStack);
 			if (recipe.isPresent()) {
-				if (!level.isClientSide && stoveEntity.addItem(player.getAbilities().instabuild ? heldStack.copy() : heldStack, recipe.get(), stoveSlot)) {
+				if (!level.isClientSide() && stoveEntity.addItem(player.getAbilities().instabuild ? heldStack.copy() : heldStack, recipe.get(), stoveSlot)) {
 					return InteractionResult.SUCCESS;
 				}
 				return InteractionResult.CONSUME;
@@ -172,7 +172,7 @@ public class StoveBlock extends BaseEntityBlock
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
 		if (state.getValue(LIT)) {
-			return createTickerHelper(blockEntityType, ModBlockEntityTypes.STOVE.get(), level.isClientSide
+			return createTickerHelper(blockEntityType, ModBlockEntityTypes.STOVE.get(), level.isClientSide()
 					? StoveBlockEntity::animationTick
 					: StoveBlockEntity::cookingTick);
 		}

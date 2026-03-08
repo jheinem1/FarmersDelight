@@ -163,7 +163,7 @@ public class KnifeItem extends Item
 
 		if (state.getBlock() == Blocks.PUMPKIN && toolStack.is(ModTags.KNIVES)) {
 			Player player = context.getPlayer();
-			if (player != null && !level.isClientSide) {
+			if (player != null && !level.isClientSide()) {
 				Direction direction = facing.getAxis() == Direction.Axis.Y ? player.getDirection().getOpposite() : facing;
 				level.playSound(null, pos, SoundEvents.PUMPKIN_CARVE, SoundSource.BLOCKS, 1.0F, 1.0F);
 				level.setBlock(pos, Blocks.CARVED_PUMPKIN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, direction), 11);
@@ -178,7 +178,7 @@ public class KnifeItem extends Item
 				level.addFreshEntity(itemEntity);
 				toolStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
 			}
-			return level.isClientSide ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
+			return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
 		}
 
 		return InteractionResult.PASS;

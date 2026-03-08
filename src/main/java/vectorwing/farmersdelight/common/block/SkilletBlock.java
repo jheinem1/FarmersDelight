@@ -64,7 +64,7 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		BlockEntity tileEntity = level.getBlockEntity(pos);
 		if (tileEntity instanceof SkilletBlockEntity skilletEntity) {
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				ItemStack heldStack = player.getItemInHand(hand);
 				EquipmentSlot heldSlot = hand.equals(InteractionHand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 				if (heldStack.isEmpty()) {
@@ -165,7 +165,7 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 	}
 	@Nullable
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntity) {
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			return createTickerHelper(blockEntity, ModBlockEntityTypes.SKILLET.get(), SkilletBlockEntity::animationTick);
 		} else {
 			return createTickerHelper(blockEntity, ModBlockEntityTypes.SKILLET.get(), SkilletBlockEntity::cookingTick);

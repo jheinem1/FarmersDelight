@@ -4,9 +4,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import vectorwing.farmersdelight.common.block.entity.CookingPotBlockEntity;
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-@ParametersAreNonnullByDefault
+@SuppressWarnings("removal")
 public class CookingPotResultSlot extends SlotItemHandler
 {
 	public final CookingPotBlockEntity tileEntity;
@@ -22,7 +20,6 @@ public class CookingPotResultSlot extends SlotItemHandler
 		return false;
 	}
 	@Override
-	@Nonnull
 	public ItemStack remove(int amount) {
 		if (this.hasItem()) {
 			this.removeCount += Math.min(amount, this.getItem().getCount());
@@ -41,8 +38,8 @@ public class CookingPotResultSlot extends SlotItemHandler
 	}
 	@Override
 	protected void checkTakeAchievements(ItemStack stack) {
-		stack.onCraftedBy(this.player.level(), this.player, this.removeCount);
-		if (!this.player.level().isClientSide) {
+		stack.onCraftedBy(this.player, this.removeCount);
+		if (!this.player.level().isClientSide()) {
 			tileEntity.awardUsedRecipes(this.player, tileEntity.getDroppableInventory());
 		}
 		this.removeCount = 0;

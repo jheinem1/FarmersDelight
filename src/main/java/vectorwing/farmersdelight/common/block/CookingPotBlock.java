@@ -66,7 +66,7 @@ public class CookingPotBlock extends Block implements SimpleWaterloggedBlock, En
 			level.setBlockAndUpdate(pos, state.setValue(SUPPORT, state.getValue(SUPPORT).equals(CookingPotSupport.HANDLE)
 					? getTrayState(level, pos) : CookingPotSupport.HANDLE));
 			level.playSound(null, pos, SoundEvents.LANTERN_PLACE, SoundSource.BLOCKS, 0.7F, 1.0F);
-		} else if (!level.isClientSide) {
+		} else if (!level.isClientSide()) {
 			BlockEntity tileEntity = level.getBlockEntity(pos);
 			if (tileEntity instanceof CookingPotBlockEntity cookingPotEntity) {
 				ItemStack servingStack = cookingPotEntity.useHeldItemOnMeal(heldStack);
@@ -189,7 +189,7 @@ public class CookingPotBlock extends Block implements SimpleWaterloggedBlock, En
 	}
 	@Nullable
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntity) {
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			return createTickerHelper(blockEntity, ModBlockEntityTypes.COOKING_POT.get(), CookingPotBlockEntity::animationTick);
 		}
 		return createTickerHelper(blockEntity, ModBlockEntityTypes.COOKING_POT.get(), CookingPotBlockEntity::cookingTick);

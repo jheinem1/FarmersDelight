@@ -94,7 +94,7 @@ public class CuttingBoardRenderer implements BlockEntityRenderer<CuttingBoardBlo
 	}
 
 	private static float getCarvedPoseAngle(Item toolItem) {
-		if (toolItem instanceof PickaxeItem || toolItem instanceof HoeItem) {
+		if (toolItem instanceof HoeItem) {
 			return 225.0F;
 		}
 		if (toolItem instanceof TridentItem) {

@@ -35,7 +35,7 @@ public class OrganicCompostBlock extends Block
 	@Override
 	@SuppressWarnings("deprecation")
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (level.isClientSide) return;
+		if (level.isClientSide()) return;
 		float chance = 0F;
 		boolean hasWater = false;
 		int maxLight = 0;

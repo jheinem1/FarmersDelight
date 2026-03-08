@@ -211,7 +211,7 @@ public class SkilletItem extends BlockItem
 		return super.isValidRepairItem(toRepair, repair);
 	}
 	public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
-		if (!level.isClientSide && state.getDestroySpeed(level, pos) != 0.0F) {
+		if (!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0F) {
 			stack.hurtAndBreak(1, entity, EquipmentSlot.MAINHAND);
 		}
 		return true;

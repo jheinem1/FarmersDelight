@@ -69,7 +69,7 @@ public class FeastBlock extends Block
 	}
 	@Override
 	public InteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			if (this.takeServing(level, pos, state, player, hand).consumesAction()) {
 				return InteractionResult.SUCCESS;
 			}
@@ -83,26 +83,27 @@ public class FeastBlock extends Block
 			level.destroyBlock(pos, true);
 			return InteractionResult.SUCCESS;
 		}
-		ItemStack serving = this.getServingItem(state);
-		ItemStack heldStack = player.getItemInHand(hand);
-		if (servings > 0) {
-			if (!serving.hasCraftingRemainingItem() || ItemStack.isSameItem(heldStack, serving.getCraftingRemainingItem())) {
-				level.setBlock(pos, state.setValue(getServingsProperty(), servings - 1), 3);
-				if (!player.getAbilities().instabuild && serving.hasCraftingRemainingItem()) {
-					heldStack.shrink(1);
-				}
+			ItemStack serving = this.getServingItem(state);
+			ItemStack heldStack = player.getItemInHand(hand);
+			if (servings > 0) {
+				ItemStack remainder = serving.getItem().getCraftingRemainder();
+				if (remainder.isEmpty() || ItemStack.isSameItem(heldStack, remainder)) {
+					level.setBlock(pos, state.setValue(getServingsProperty(), servings - 1), 3);
+					if (!player.getAbilities().instabuild && !remainder.isEmpty()) {
+						heldStack.shrink(1);
+					}
 				if (!player.getInventory().add(serving)) {
 					player.drop(serving, false);
 				}
 				if (level.getBlockState(pos).getValue(getServingsProperty()) == 0 && !this.hasLeftovers) {
 					level.removeBlock(pos, false);
 				}
-				level.playSound(null, pos, SoundEvents.ARMOR_EQUIP_GENERIC.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
-				return InteractionResult.SUCCESS;
-			} else {
-				player.displayClientMessage(TextUtils.getTranslation("block.feast.use_container", serving.getCraftingRemainingItem().getHoverName()), true);
+					level.playSound(null, pos, SoundEvents.ARMOR_EQUIP_GENERIC.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
+					return InteractionResult.SUCCESS;
+				} else {
+					player.displayClientMessage(TextUtils.getTranslation("block.feast.use_container", remainder.getHoverName()), true);
+				}
 			}
-		}
 		return InteractionResult.PASS;
 	}
 	@Override

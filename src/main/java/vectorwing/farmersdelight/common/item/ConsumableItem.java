@@ -41,10 +41,10 @@ public class ConsumableItem extends Item
 	}
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity consumer) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			this.affectConsumer(stack, level, consumer);
 		}
-		ItemStack containerStack = stack.getCraftingRemainingItem();
+		ItemStack containerStack = stack.getItem().getCraftingRemainder();
 		if (stack.getFoodProperties(consumer) != null) {
 			super.finishUsingItem(stack, level, consumer);
 		} else {
