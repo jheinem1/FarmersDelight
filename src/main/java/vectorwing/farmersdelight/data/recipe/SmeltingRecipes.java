@@ -8,10 +8,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import vectorwing.farmersdelight.FarmersDelight;
+import vectorwing.farmersdelight.data.FDRecipeProvider;
 import vectorwing.farmersdelight.common.registry.ModItems;
 public class SmeltingRecipes
 {
-	public static void register(RecipeOutput output) {
+	public static void register(FDRecipeProvider output) {
 		foodSmeltingRecipes("fried_egg", Items.EGG, ModItems.FRIED_EGG.get(), 0.35F, output);
 		foodSmeltingRecipes("beef_patty", ModItems.MINCED_BEEF.get(), ModItems.BEEF_PATTY.get(), 0.35F, output);
 		foodSmeltingRecipes("cooked_chicken_cuts", ModItems.CHICKEN_CUTS.get(), ModItems.COOKED_CHICKEN_CUTS.get(), 0.35F, output);

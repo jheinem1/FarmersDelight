@@ -65,9 +65,13 @@ public class RichSoilBlock extends Block
 	}
 	@Override
 	public TriState canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, BlockState plantState) {
-		return TriState.DEFAULT;
-		// TODO: Figure out how to correctly configure Rich Soil's plant compatibility, since PlantType was removed
-//		PlantType plantType = plantState.getPlantType(world, pos.relative(facing));
-//		return plantType != PlantType.CROP && plantType != PlantType.NETHER && plantType != PlantType.WATER;
+		if (facing != Direction.UP) {
+			return TriState.DEFAULT;
+		}
+		Block plant = plantState.getBlock();
+		if (PlantSupport.isWaterPlant(plant) || PlantSupport.isNetherPlant(plant) || PlantSupport.isCropLike(plant)) {
+			return TriState.FALSE;
+		}
+		return PlantSupport.isPlainsPlant(plant) ? TriState.TRUE : TriState.DEFAULT;
 	}
 }

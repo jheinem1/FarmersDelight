@@ -45,6 +45,7 @@ public class BuddingBushBlock extends BushBlock
 			Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D)};
 	public BuddingBushBlock(Properties properties) {
 		super(properties);
+		this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0));
 	}
 	@Override
 	@SuppressWarnings("unchecked")

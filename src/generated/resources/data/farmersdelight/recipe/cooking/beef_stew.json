@@ -2,15 +2,9 @@
   "type": "farmersdelight:cooking",
   "experience": 1.0,
   "ingredients": [
-    {
-      "tag": "c:foods/raw_beef"
-    },
-    {
-      "item": "minecraft:carrot"
-    },
-    {
-      "item": "minecraft:potato"
-    }
+    "#c:foods/raw_beef",
+    "minecraft:carrot",
+    "minecraft:potato"
   ],
   "recipe_book_tab": "meals",
   "result": {

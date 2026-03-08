@@ -84,10 +84,14 @@ public class RichSoilFarmlandBlock extends FarmBlock
 	}
 	@Override
 	public TriState canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, BlockState plantState) {
-//		PlantType plantType = plantable.getPlantType(world, pos.relative(facing));
-//		return plantType == PlantType.CROP || plantType == PlantType.PLAINS;
-		// TODO: Revisit this method to filter out plants correctly. Also, there's a chance Rich Soil Farmland won't need it anymore.
-		if (plantState.getBlock() instanceof CropBlock) {
+		if (facing != Direction.UP) {
+			return TriState.DEFAULT;
+		}
+		Block plant = plantState.getBlock();
+		if (PlantSupport.isWaterPlant(plant) || PlantSupport.isNetherPlant(plant)) {
+			return TriState.FALSE;
+		}
+		if (PlantSupport.isCropLike(plant) || PlantSupport.isPlainsPlant(plant)) {
 			return TriState.TRUE;
 		}
 		return TriState.DEFAULT;

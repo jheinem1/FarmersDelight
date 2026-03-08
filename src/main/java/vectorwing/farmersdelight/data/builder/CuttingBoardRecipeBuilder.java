@@ -87,12 +87,7 @@ public class CuttingBoardRecipeBuilder implements RecipeBuilder
 		save(output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, location.getPath())));
 	}
 	public void build(RecipeOutput outputIn, String save) {
-		Identifier resourcelocation = BuiltInRegistries.ITEM.getKey(getResult());
-		if ((Identifier.parse(save)).equals(resourcelocation)) {
-			throw new IllegalStateException("Cutting Recipe " + save + " should remove its 'save' argument");
-		} else {
-			this.build(outputIn, ResourceKey.create(Registries.RECIPE, Identifier.parse(save)));
-		}
+		this.build(outputIn, ResourceKey.create(Registries.RECIPE, Identifier.parse(save)));
 	}
 	public void build(RecipeOutput output, ResourceKey<net.minecraft.world.item.crafting.Recipe<?>> id) {
 		save(output, id);

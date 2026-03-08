@@ -6,15 +6,9 @@
   },
   "experience": 1.0,
   "ingredients": [
-    {
-      "item": "minecraft:beetroot"
-    },
-    {
-      "item": "minecraft:beetroot"
-    },
-    {
-      "item": "minecraft:beetroot"
-    }
+    "minecraft:beetroot",
+    "minecraft:beetroot",
+    "minecraft:beetroot"
   ],
   "recipe_book_tab": "meals",
   "result": {

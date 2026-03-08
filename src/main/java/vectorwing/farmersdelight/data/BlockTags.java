@@ -1,7 +1,10 @@
 package vectorwing.farmersdelight.data;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagEntry;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -15,6 +18,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 public class BlockTags extends BlockTagsProvider
 {
+	private static final TagKey<net.minecraft.world.level.block.Block> TALL_FLOWERS = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("tall_flowers"));
+
 	public BlockTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
 		super(output, lookupProvider, FarmersDelight.MODID);
 	}
@@ -184,6 +189,7 @@ public class BlockTags extends BlockTagsProvider
 				ModBlocks.WILD_TOMATOES.get(),
 				ModBlocks.WILD_ONIONS.get()
 		);
+		tag(TALL_FLOWERS).add(ModBlocks.WILD_RICE.get());
 		tag(net.minecraft.tags.BlockTags.DIRT).add(
 				ModBlocks.RICH_SOIL.get());
 		tag(net.minecraft.tags.BlockTags.MAINTAINS_FARMLAND).add(
@@ -253,7 +259,8 @@ public class BlockTags extends BlockTagsProvider
 						ModBlocks.STOVE.get())
 				.addTag(ModTags.TRAY_HEAT_SOURCES);
 		tag(ModTags.HEAT_CONDUCTORS).add(
-						Blocks.HOPPER);
+						Blocks.HOPPER)
+				.add(TagEntry.optionalElement(Identifier.fromNamespaceAndPath(CompatibilityTags.CREATE, "chute")));
 		tag(ModTags.COMPOST_ACTIVATORS).add(
 				Blocks.BROWN_MUSHROOM,
 				Blocks.RED_MUSHROOM,

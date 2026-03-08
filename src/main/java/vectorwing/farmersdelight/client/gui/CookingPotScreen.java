@@ -2,7 +2,8 @@ package vectorwing.farmersdelight.client.gui;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.navigation.ScreenPosition;
+import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -17,14 +18,14 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CookingPotScreen extends AbstractContainerScreen<CookingPotMenu>
+public class CookingPotScreen extends AbstractRecipeBookScreen<CookingPotMenu>
 {
 	private static final Identifier BACKGROUND_TEXTURE = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/cooking_pot.png");
 	private static final Rectangle HEAT_ICON = new Rectangle(47, 55, 17, 15);
 	private static final Rectangle PROGRESS_ARROW = new Rectangle(89, 25, 0, 17);
 
 	public CookingPotScreen(CookingPotMenu screenContainer, Inventory inv, Component titleIn) {
-		super(screenContainer, inv, titleIn);
+		super(screenContainer, new CookingPotRecipeBookComponent(screenContainer), inv, titleIn);
 	}
 
 	@Override
@@ -34,8 +35,12 @@ public class CookingPotScreen extends AbstractContainerScreen<CookingPotMenu>
 	}
 
 	@Override
+	protected ScreenPosition getRecipeBookButtonPosition() {
+		return new ScreenPosition(this.leftPos + 6, this.topPos + 7);
+	}
+
+	@Override
 	public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(gui, mouseX, mouseY, partialTicks);
 		super.render(gui, mouseX, mouseY, partialTicks);
 		this.renderMealDisplayTooltip(gui, mouseX, mouseY);
 		this.renderHeatIndicatorTooltip(gui, mouseX, mouseY);

@@ -11,6 +11,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import vectorwing.farmersdelight.FarmersDelight;
+import vectorwing.farmersdelight.common.registry.ModDamageTypes;
 import vectorwing.farmersdelight.data.loot.FDBlockLoot;
 import vectorwing.farmersdelight.data.tools.StructureUpdater;
 import java.util.Collections;
@@ -23,17 +24,29 @@ public class DataGenerators
 {
 	@SubscribeEvent
 	public static void gatherServerData(GatherDataEvent.Server event) {
+		registerServerProviders(event);
+	}
+
+	@SubscribeEvent
+	public static void gatherClientData(GatherDataEvent.Client event) {
+		registerServerProviders(event);
+		PackOutput output = event.getGenerator().getPackOutput();
+		event.addProvider(new BlockStates(output));
+		event.addProvider(new ItemModels(output));
+	}
+
+	private static void registerServerProviders(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
 		PackOutput output = generator.getPackOutput();
-		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 		RegistrySetBuilder registrySetBuilder = new RegistrySetBuilder()
+				.add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
 				.add(Registries.ENCHANTMENT, ModEnchantments::bootstrap);
+		event.createDatapackRegistryObjects(registrySetBuilder, Set.of(FarmersDelight.MODID));
+		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 		event.createBlockAndItemTags(BlockTags::new, ItemTags::new);
 		event.addProvider(new EntityTags(output, lookupProvider));
 		event.addProvider(new DamageTypeTags(output, lookupProvider, FarmersDelight.MODID));
-		event.createDatapackRegistryObjects(registrySetBuilder, Set.of(FarmersDelight.MODID));
-		CompletableFuture<HolderLookup.Provider> builtinLookupProvider = event.getLookupProvider();
-		event.addProvider(new EnchantmentTags(output, builtinLookupProvider));
+		event.addProvider(new EnchantmentTags(output, lookupProvider));
 		event.addProvider(new Recipes(output, lookupProvider));
 		event.addProvider(new DataMaps(output, lookupProvider));
 		event.addProvider(new Advancements(output, lookupProvider));
@@ -41,11 +54,5 @@ public class DataGenerators
 				new LootTableProvider.SubProviderEntry(FDBlockLoot::new, LootContextParamSets.BLOCK)
 		), lookupProvider));
 		event.addProvider(new StructureUpdater("structures/village/houses", FarmersDelight.MODID, event.getResourceManager(PackType.SERVER_DATA), output));
-	}
-	@SubscribeEvent
-	public static void gatherClientData(GatherDataEvent.Client event) {
-		PackOutput output = event.getGenerator().getPackOutput();
-		event.addProvider(new BlockStates(output));
-		event.addProvider(new ItemModels(output));
 	}
 }

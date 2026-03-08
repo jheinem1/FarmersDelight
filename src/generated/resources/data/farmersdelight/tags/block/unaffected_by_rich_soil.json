@@ -14,7 +14,6 @@
     "farmersdelight:sandy_shrub",
     "farmersdelight:brown_mushroom_colony",
     "farmersdelight:red_mushroom_colony",
-    "#farmersdelight:wild_crops",
-    "#minecraft:tall_flowers"
+    "#farmersdelight:wild_crops"
   ]
 }

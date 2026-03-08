@@ -11,14 +11,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import org.jspecify.annotations.Nullable;
 import vectorwing.farmersdelight.common.block.state.CanvasSign;
 import vectorwing.farmersdelight.common.registry.ModBlockEntityTypes;
-import org.jspecify.annotations.Nullable;
+import vectorwing.farmersdelight.common.registry.ModBlocks;
 public class StandingCanvasSignBlock extends StandingSignBlock implements CanvasSign
 {
 	private final DyeColor backgroundColor;
 	public StandingCanvasSignBlock(@Nullable DyeColor backgroundColor) {
-		super(WoodType.SPRUCE, Properties.ofFullCopy(Blocks.SPRUCE_SIGN));
+		super(WoodType.SPRUCE, ModBlocks.idProps(Properties.ofFullCopy(Blocks.SPRUCE_SIGN)));
 		this.backgroundColor = backgroundColor;
 	}
 	@Nullable

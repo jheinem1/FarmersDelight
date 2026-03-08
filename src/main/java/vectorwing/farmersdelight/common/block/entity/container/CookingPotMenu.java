@@ -1,26 +1,36 @@
 package vectorwing.farmersdelight.common.block.entity.container;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.recipebook.ServerPlaceRecipe;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.RecipeBookMenu;
+import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.entity.player.StackedItemContents;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import vectorwing.farmersdelight.common.block.entity.CookingPotBlockEntity;
+import vectorwing.farmersdelight.common.crafting.CookingPotRecipe;
+import vectorwing.farmersdelight.common.crafting.CookingPotRecipeInput;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 import vectorwing.farmersdelight.common.registry.ModMenuTypes;
 import vectorwing.farmersdelight.common.tag.ModTags;
 
 import java.util.Objects;
+import java.util.stream.IntStream;
 
-public class CookingPotMenu extends AbstractContainerMenu
+public class CookingPotMenu extends RecipeBookMenu
 {
+	public static final int INPUT_SLOT_COUNT = 6;
+	public static final int RESULT_SLOT = 8;
 	public final CookingPotBlockEntity blockEntity;
 	public final ItemStackHandler inventory;
 	private final ContainerData cookingPotData;
@@ -133,5 +143,41 @@ public class CookingPotMenu extends AbstractContainerMenu
 
 	public boolean isHeated() {
 		return this.blockEntity.isHeated();
+	}
+
+	@Override
+	public PostPlaceAction handlePlacement(boolean useMaxItems, boolean isCreative, RecipeHolder<?> recipe, ServerLevel level, Inventory playerInventory) {
+		return ServerPlaceRecipe.placeRecipe(new ServerPlaceRecipe.CraftingMenuAccess<CookingPotRecipe>() {
+			@Override
+			public void fillCraftSlotsStackedContents(StackedItemContents stackedItemContents) {
+				CookingPotMenu.this.fillCraftSlotsStackedContents(stackedItemContents);
+			}
+
+			@Override
+			public void clearCraftingContent() {
+				for (int i = 0; i < INPUT_SLOT_COUNT; i++) {
+					CookingPotMenu.this.slots.get(i).set(ItemStack.EMPTY);
+				}
+			}
+
+			@Override
+			public boolean recipeMatches(RecipeHolder<CookingPotRecipe> recipeHolder) {
+				return recipeHolder.value().matches(new CookingPotRecipeInput(IntStream.range(0, INPUT_SLOT_COUNT)
+						.mapToObj(CookingPotMenu.this.inventory::getStackInSlot)
+						.toList()), level);
+			}
+		}, 3, 2, this.slots.subList(0, INPUT_SLOT_COUNT), this.slots.subList(0, INPUT_SLOT_COUNT), playerInventory, (RecipeHolder<CookingPotRecipe>) recipe, useMaxItems, isCreative);
+	}
+
+	@Override
+	public void fillCraftSlotsStackedContents(StackedItemContents stackedItemContents) {
+		for (int i = 0; i < INPUT_SLOT_COUNT; i++) {
+			stackedItemContents.accountSimpleStack(this.inventory.getStackInSlot(i));
+		}
+	}
+
+	@Override
+	public RecipeBookType getRecipeBookType() {
+		return RecipeBookType.valueOf("FARMERSDELIGHT_COOKING");
 	}
 }

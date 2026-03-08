@@ -9,22 +9,26 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-	import net.minecraft.world.item.crafting.Ingredient;
-	import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeBookCategories;
 import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.util.RecipeMatcher;
 import org.jspecify.annotations.Nullable;
 import vectorwing.farmersdelight.client.recipebook.CookingPotRecipeBookTab;
+import vectorwing.farmersdelight.common.crafting.display.CookingPotRecipeDisplay;
 import vectorwing.farmersdelight.common.registry.ModItems;
+import vectorwing.farmersdelight.common.registry.ModRecipeBookCategories;
 import vectorwing.farmersdelight.common.registry.ModRecipeSerializers;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CookingPotRecipe implements Recipe<CookingPotRecipeInput>
 {
@@ -131,7 +135,22 @@ public class CookingPotRecipe implements Recipe<CookingPotRecipeInput>
 
 	@Override
 	public RecipeBookCategory recipeBookCategory() {
-		return RecipeBookCategories.CRAFTING_MISC;
+		if (this.tab == CookingPotRecipeBookTab.MEALS) {
+			return ModRecipeBookCategories.COOKING_MEALS.get();
+		}
+		if (this.tab == CookingPotRecipeBookTab.DRINKS) {
+			return ModRecipeBookCategories.COOKING_DRINKS.get();
+		}
+		return ModRecipeBookCategories.COOKING_MISC.get();
+	}
+
+	@Override
+	public List<RecipeDisplay> display() {
+		return List.of(new CookingPotRecipeDisplay(
+				this.inputItems.stream().map(Ingredient::display).toList(),
+				new SlotDisplay.ItemStackSlotDisplay(this.output),
+				new SlotDisplay.ItemSlotDisplay(ModItems.COOKING_POT.get())
+		));
 	}
 
 	public ItemStack getToastSymbol() {

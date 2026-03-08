@@ -1,8 +1,10 @@
 package vectorwing.farmersdelight.data;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Item;
@@ -20,6 +22,9 @@ import org.jspecify.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 public class ItemTags extends ItemTagsProvider
 {
+	private static final TagKey<Item> SWORD_ENCHANTABLE = TagKey.create(Registries.ITEM, Identifier.withDefaultNamespace("enchantable/sword"));
+	private static final TagKey<Item> TALL_FLOWERS = TagKey.create(Registries.ITEM, Identifier.withDefaultNamespace("tall_flowers"));
+
 	public ItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider) {
 		super(output, provider, FarmersDelight.MODID);
 	}
@@ -27,6 +32,7 @@ public class ItemTags extends ItemTagsProvider
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		copyBlockTagItems(ModTags.WILD_CROPS_ITEM, ModItems.SANDY_SHRUB.get(), ModItems.WILD_BEETROOTS.get(), ModItems.WILD_CABBAGES.get(), ModItems.WILD_CARROTS.get(), ModItems.WILD_ONIONS.get(), ModItems.WILD_POTATOES.get(), ModItems.WILD_TOMATOES.get(), ModItems.WILD_RICE.get());
 		copyBlockTagItems(net.minecraft.tags.ItemTags.SMALL_FLOWERS, ModItems.WILD_BEETROOTS.get(), ModItems.WILD_CABBAGES.get(), ModItems.WILD_CARROTS.get(), ModItems.WILD_ONIONS.get(), ModItems.WILD_POTATOES.get(), ModItems.WILD_TOMATOES.get());
+		copyBlockTagItems(TALL_FLOWERS, ModItems.WILD_RICE.get());
 		this.registerMinecraftTags();
 		this.registerModTags();
 		this.registerNeoForgeTags();
@@ -43,6 +49,7 @@ public class ItemTags extends ItemTagsProvider
 				.add(ModItems.TOMATO_SEEDS.get())
 				.add(ModItems.ONION.get());
 		tag(net.minecraft.tags.ItemTags.DURABILITY_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
+		tag(SWORD_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
 		tag(net.minecraft.tags.ItemTags.WEAPON_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
 		tag(net.minecraft.tags.ItemTags.SHARP_WEAPON_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
 		tag(net.minecraft.tags.ItemTags.FIRE_ASPECT_ENCHANTABLE).addTag(ModTags.KNIVES).add(ModItems.SKILLET.get());
@@ -197,8 +204,10 @@ public class ItemTags extends ItemTagsProvider
 				.add(ModItems.WARPED_CABINET.get());
 		tag(ModTags.CABINETS).addTag(ModTags.WOODEN_CABINETS);
 		tag(ModTags.OFFHAND_EQUIPMENT).addTag(Tags.Items.TOOLS_SHIELD);
+		tag(ModTags.OFFHAND_EQUIPMENT).add(TagEntry.optionalElement(Identifier.fromNamespaceAndPath(CompatibilityTags.CREATE, "extendo_grip")));
 		tag(ModTags.SERVING_CONTAINERS).add(Items.BOWL, Items.GLASS_BOTTLE, Items.BUCKET);
 		tag(ModTags.FLAT_ON_CUTTING_BOARD).add(Items.TRIDENT, Items.SPYGLASS);
+		tag(ModTags.FLINT_TOOL_MATERIALS).add(Items.FLINT);
 	}
 	@SuppressWarnings("unchecked")
 	private void registerNeoForgeTags() {

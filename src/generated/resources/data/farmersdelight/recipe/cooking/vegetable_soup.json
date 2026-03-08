@@ -2,18 +2,10 @@
   "type": "farmersdelight:cooking",
   "experience": 1.0,
   "ingredients": [
-    {
-      "item": "minecraft:carrot"
-    },
-    {
-      "item": "minecraft:potato"
-    },
-    {
-      "item": "minecraft:beetroot"
-    },
-    {
-      "tag": "c:foods/leafy_green"
-    }
+    "minecraft:carrot",
+    "minecraft:potato",
+    "minecraft:beetroot",
+    "#c:foods/leafy_green"
   ],
   "recipe_book_tab": "meals",
   "result": {

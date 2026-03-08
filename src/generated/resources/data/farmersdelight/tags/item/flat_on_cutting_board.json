@@ -1,18 +1,6 @@
 {
   "values": [
     "minecraft:trident",
-    "minecraft:spyglass",
-    {
-      "id": "supplementaries:quiver",
-      "required": false
-    },
-    {
-      "id": "autumnity:turkey",
-      "required": false
-    },
-    {
-      "id": "autumnity:cooked_turkey",
-      "required": false
-    }
+    "minecraft:spyglass"
   ]
 }

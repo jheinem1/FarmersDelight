@@ -56,7 +56,7 @@ public class CookingPotRecipeBuilder implements RecipeBuilder
 		return new CookingPotRecipeBuilder(mainResult, count, cookingTime, experience, container);
 	}
 	public CookingPotRecipeBuilder addIngredient(TagKey<Item> tagIn) {
-		return addIngredient(Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(tagIn)));
+		throw new UnsupportedOperationException("Use addIngredient(Ingredient) with a datagen registry-backed tag ingredient");
 	}
 	public CookingPotRecipeBuilder addIngredient(ItemLike itemIn) {
 		return addIngredient(itemIn, 1);

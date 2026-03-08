@@ -1,6 +1,11 @@
 package vectorwing.farmersdelight.common.registry;
 import com.google.common.collect.Sets;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -8,25 +13,41 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.FoodValues;
 import vectorwing.farmersdelight.common.item.*;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.function.Supplier;
+
 @SuppressWarnings("unused")
 public class ModItems
 {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, FarmersDelight.MODID);
+	private static final ThreadLocal<ResourceKey<Item>> REGISTERING_ITEM = new ThreadLocal<>();
 	public static LinkedHashSet<Supplier<Item>> CREATIVE_TAB_ITEMS = Sets.newLinkedHashSet();
+
 	public static Supplier<Item> registerWithTab(final String name, final Supplier<Item> supplier) {
-		Supplier<Item> block = ITEMS.register(name, supplier);
-		CREATIVE_TAB_ITEMS.add(block);
-		return block;
+		Supplier<Item> item = ITEMS.register(name, (Identifier id) -> {
+			REGISTERING_ITEM.set(ResourceKey.create(Registries.ITEM, id));
+			try {
+				return supplier.get();
+			} finally {
+				REGISTERING_ITEM.remove();
+			}
+		});
+		CREATIVE_TAB_ITEMS.add(item);
+		return item;
 	}
+
 	// Helper methods
+	public static Item.Properties idProps(Item.Properties properties) {
+		ResourceKey<Item> key = REGISTERING_ITEM.get();
+		if (key != null) {
+			properties.setId(key);
+		}
+		return properties;
+	}
+
 	public static Item.Properties basicItem() {
-		return new Item.Properties();
+		return idProps(new Item.Properties());
 	}
 	public static Item.Properties knifeItem(ToolMaterial material) {
-		return new Item.Properties();
+		return idProps(new Item.Properties());
 	}
 	public static Item.Properties skilletItem() {
 		return basicItem()
@@ -37,13 +58,13 @@ public class ModItems
 				.attributes(SkilletItem.createAttributes(SkilletItem.SKILLET_TIER, 5.0F, -3.1F));
 	}
 	public static Item.Properties foodItem(FoodProperties food) {
-		return FoodValues.applyConsumable(new Item.Properties(), food);
+		return FoodValues.applyConsumable(idProps(new Item.Properties()), food);
 	}
 	public static Item.Properties bowlFoodItem(FoodProperties food) {
-		return FoodValues.applyConsumable(new Item.Properties(), food).craftRemainder(Items.BOWL).stacksTo(16);
+		return FoodValues.applyConsumable(idProps(new Item.Properties()), food).craftRemainder(Items.BOWL).stacksTo(16);
 	}
 	public static Item.Properties drinkItem() {
-		return new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).stacksTo(16);
+		return idProps(new Item.Properties()).craftRemainder(Items.GLASS_BOTTLE).stacksTo(16);
 	}
 	// Blocks
 	public static final Supplier<Item> STOVE = registerWithTab("stove",
@@ -238,7 +259,7 @@ public class ModItems
 		}
 	});
 	public static final Supplier<Item> ROTTEN_TOMATO = registerWithTab("rotten_tomato",
-			() -> new RottenTomatoItem(new Item.Properties().stacksTo(16)));
+			() -> new RottenTomatoItem(idProps(new Item.Properties()).stacksTo(16)));
 	// Foodstuffs
 	public static final Supplier<Item> FRIED_EGG = registerWithTab("fried_egg",
 			() -> new Item(foodItem(FoodValues.FRIED_EGG)));

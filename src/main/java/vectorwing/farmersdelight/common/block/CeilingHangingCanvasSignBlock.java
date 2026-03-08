@@ -12,14 +12,15 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import org.jspecify.annotations.Nullable;
 import vectorwing.farmersdelight.common.block.state.CanvasSign;
 import vectorwing.farmersdelight.common.registry.ModBlockEntityTypes;
-import org.jspecify.annotations.Nullable;
+import vectorwing.farmersdelight.common.registry.ModBlocks;
 public class CeilingHangingCanvasSignBlock extends CeilingHangingSignBlock implements CanvasSign
 {
 	private final DyeColor backgroundColor;
 	public CeilingHangingCanvasSignBlock(@Nullable DyeColor backgroundColor) {
-		super(WoodType.SPRUCE, BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_HANGING_SIGN));
+		super(WoodType.SPRUCE, ModBlocks.idProps(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_HANGING_SIGN)));
 		this.backgroundColor = backgroundColor;
 	}
 	@Nullable

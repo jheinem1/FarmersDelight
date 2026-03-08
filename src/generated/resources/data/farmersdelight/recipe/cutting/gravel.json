@@ -1,9 +1,7 @@
 {
   "type": "farmersdelight:cutting",
   "ingredients": [
-    {
-      "item": "minecraft:gravel"
-    }
+    "minecraft:gravel"
   ],
   "result": [
     {
@@ -20,8 +18,5 @@
       }
     }
   ],
-  "tool": {
-    "type": "farmersdelight:item_ability",
-    "action": "shovel_dig"
-  }
+  "tool": "#minecraft:shovels"
 }

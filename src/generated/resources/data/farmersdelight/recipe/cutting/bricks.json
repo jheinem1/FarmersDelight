@@ -1,9 +1,7 @@
 {
   "type": "farmersdelight:cutting",
   "ingredients": [
-    {
-      "item": "minecraft:bricks"
-    }
+    "minecraft:bricks"
   ],
   "result": [
     {
@@ -13,8 +11,5 @@
       }
     }
   ],
-  "tool": {
-    "type": "farmersdelight:item_ability",
-    "action": "pickaxe_dig"
-  }
+  "tool": "#minecraft:pickaxes"
 }

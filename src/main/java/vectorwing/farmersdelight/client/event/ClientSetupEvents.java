@@ -1,6 +1,7 @@
 package vectorwing.farmersdelight.client.event;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -12,11 +13,25 @@ import vectorwing.farmersdelight.client.gui.CookingPotTooltip;
 import vectorwing.farmersdelight.client.gui.HUDOverlays;
 import vectorwing.farmersdelight.client.particle.StarParticle;
 import vectorwing.farmersdelight.client.particle.SteamParticle;
+import vectorwing.farmersdelight.client.recipebook.CookingPotSearchRecipeBookCategory;
 import vectorwing.farmersdelight.client.renderer.*;
 import vectorwing.farmersdelight.common.registry.*;
 public class ClientSetupEvents
 {
 	public static void init(final FMLClientSetupEvent event) {
+	}
+
+	@SubscribeEvent
+	public static void registerRecipeBookSearchCategories(RegisterRecipeBookSearchCategoriesEvent event) {
+		event.register(CookingPotSearchRecipeBookCategory.COOKING_SEARCH,
+				ModRecipeBookCategories.COOKING_MEALS.get(),
+				ModRecipeBookCategories.COOKING_DRINKS.get(),
+				ModRecipeBookCategories.COOKING_MISC.get());
+	}
+
+	@SubscribeEvent
+	public static void registerSpecialModelRenderers(RegisterSpecialModelRendererEvent event) {
+		event.register(Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "skillet"), SkilletSpecialRenderer.Unbaked.MAP_CODEC);
 	}
 	@SubscribeEvent
 	public static void registerCustomTooltipRenderers(RegisterClientTooltipComponentFactoriesEvent event) {
@@ -44,19 +59,4 @@ public class ClientSetupEvents
 		event.registerSpriteSet(ModParticleTypes.STAR.get(), StarParticle.Factory::new);
 		event.registerSpriteSet(ModParticleTypes.STEAM.get(), SteamParticle.Factory::new);
 	}
-//	@SubscribeEvent
-//	public static void onModelRegister(ModelEvent.RegisterAdditional event) {
-//		event.register(new ModelResourceLocation(Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "skillet_cooking"), "inventory"));
-//	}
-	// TODO: I hate the skillet model so much...
-//	@SubscribeEvent
-//	public static void onModelBake(ModelEvent.ModifyBakingResult event) {
-//		Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
-//
-//		ModelResourceLocation skilletLocation = new ModelResourceLocation(Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "skillet"), "inventory");
-//		BakedModel skilletModel = modelRegistry.get(skilletLocation);
-//		ModelResourceLocation skilletCookingLocation = new ModelResourceLocation(Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "skillet_cooking"), "inventory");
-//		BakedModel skilletCookingModel = modelRegistry.get(skilletCookingLocation);
-//		modelRegistry.put(skilletLocation, new SkilletModel(event.getModelBakery(), skilletModel, skilletCookingModel));
-//	}
 }

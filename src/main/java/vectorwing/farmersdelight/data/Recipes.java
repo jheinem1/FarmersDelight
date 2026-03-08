@@ -1,24 +1,37 @@
 package vectorwing.farmersdelight.data;
 import org.jspecify.annotations.NullMarked;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import vectorwing.farmersdelight.data.recipe.CookingRecipes;
+import vectorwing.farmersdelight.data.recipe.CraftingRecipes;
+import vectorwing.farmersdelight.data.recipe.CuttingRecipes;
+import vectorwing.farmersdelight.data.recipe.SmeltingRecipes;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.concurrent.CompletableFuture;
 @ParametersAreNonnullByDefault
 @NullMarked
-public class Recipes implements DataProvider
+public class Recipes extends RecipeProvider.Runner
 {
 	public Recipes(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-	}
-	@Override
-	public CompletableFuture<?> run(CachedOutput output) {
-		return CompletableFuture.completedFuture(null);
+		super(output, registries);
 	}
 
 	@Override
 	public String getName() {
 		return "Farmer's Delight Recipes";
+	}
+
+	@Override
+	protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, net.minecraft.data.recipes.RecipeOutput output) {
+		return new FDRecipeProvider(registries, output) {
+			@Override
+			protected void buildRecipes() {
+				CraftingRecipes.register(this);
+				SmeltingRecipes.register(this);
+				CookingRecipes.register(this);
+				CuttingRecipes.register(this);
+			}
+		};
 	}
 }
