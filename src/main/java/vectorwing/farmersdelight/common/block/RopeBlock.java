@@ -56,7 +56,7 @@ public class RopeBlock extends IronBarsBlock
 		if (Configuration.ENABLE_ROPE_REELING.get() && player.isSecondaryUseActive()) {
 			if (player.getAbilities().mayBuild && (player.getAbilities().instabuild || player.getInventory().add(new ItemStack(this.asItem())))) {
 				BlockPos.MutableBlockPos reelingPos = pos.mutable().move(Direction.DOWN);
-				int minBuildHeight = level.getMinBuildHeight();
+				int minBuildHeight = level.getMinY();
 				while (reelingPos.getY() >= minBuildHeight) {
 					BlockState blockStateBelow = level.getBlockState(reelingPos);
 					if (blockStateBelow.is(this)) {
@@ -64,7 +64,7 @@ public class RopeBlock extends IronBarsBlock
 					} else {
 						reelingPos.move(Direction.UP);
 						level.destroyBlock(reelingPos, false, player);
-						return InteractionResult.sidedSuccess(level.isClientSide());
+						return InteractionResult.SUCCESS;
 					}
 				}
 			}
@@ -98,9 +98,9 @@ public class RopeBlock extends IronBarsBlock
 		return useContext.getItemInHand().getItem() == this.asItem();
 	}
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, net.minecraft.util.RandomSource random) {
 		if (state.getValue(WATERLOGGED)) {
-			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			scheduledTickAccess.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 		boolean tiedToBell = state.getValue(TIED_TO_BELL);
 		if (facing == Direction.UP) {
@@ -108,7 +108,7 @@ public class RopeBlock extends IronBarsBlock
 		}
 		return facing.getAxis().isHorizontal()
 				? state.setValue(TIED_TO_BELL, tiedToBell).setValue(PROPERTY_BY_DIRECTION.get(facing), this.attachsTo(facingState, facingState.isFaceSturdy(level, facingPos, facing.getOpposite())))
-				: super.updateShape(state.setValue(TIED_TO_BELL, tiedToBell), facing, facingState, level, currentPos, facingPos);
+				: super.updateShape(state.setValue(TIED_TO_BELL, tiedToBell), level, scheduledTickAccess, currentPos, facing, facingPos, facingState, random);
 	}
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

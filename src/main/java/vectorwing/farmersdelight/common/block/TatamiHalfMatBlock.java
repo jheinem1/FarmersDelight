@@ -23,7 +23,7 @@ public class TatamiHalfMatBlock extends HorizontalDirectionalBlock
 		super(properties);
 	}
 	@Override
-	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+	public MapCodec<? extends HorizontalDirectionalBlock> codec() {
 		return CODEC;
 	}
 	@Override
@@ -31,8 +31,8 @@ public class TatamiHalfMatBlock extends HorizontalDirectionalBlock
 		return SHAPE;
 	}
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		return !stateIn.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+	public BlockState updateShape(BlockState stateIn, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, net.minecraft.util.RandomSource random) {
+		return !stateIn.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, level, scheduledTickAccess, currentPos, facing, facingPos, facingState, random);
 	}
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {

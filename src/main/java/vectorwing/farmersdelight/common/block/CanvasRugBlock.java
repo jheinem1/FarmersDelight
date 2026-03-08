@@ -17,7 +17,7 @@ public class CanvasRugBlock extends Block
 		return SHAPE;
 	}
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+	protected boolean propagatesSkylightDown(BlockState state) {
 		return true;
 	}
 }

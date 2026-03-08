@@ -159,6 +159,13 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
 		output.putChild("Inventory", inventory);
 		output.store("RecipesUsed", RECIPES_USED_CODEC, usedRecipeTracker);
 	}
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		super.preRemoveSideEffects(pos, state);
+		if (level != null) {
+			getUsedRecipesAndPopExperience(level, Vec3.atCenterOf(pos));
+		}
+	}
 	public ItemStack getAsItem() {
 		ItemStack stack = new ItemStack(ModItems.COOKING_POT.get());
 		stack.applyComponents(collectComponents());

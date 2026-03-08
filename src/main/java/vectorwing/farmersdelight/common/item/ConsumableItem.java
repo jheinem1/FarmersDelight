@@ -6,10 +6,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import java.util.function.Consumer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.Item.TooltipContext;
+import net.minecraft.world.item.Item.TooltipDisplay;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import vectorwing.farmersdelight.common.Configuration;
@@ -45,7 +49,7 @@ public class ConsumableItem extends Item
 			this.affectConsumer(stack, level, consumer);
 		}
 		ItemStack containerStack = stack.getItem().getCraftingRemainder();
-		if (stack.getFoodProperties(consumer) != null) {
+		if (stack.has(DataComponents.FOOD)) {
 			super.finishUsingItem(stack, level, consumer);
 		} else {
 			Player player = consumer instanceof Player ? (Player) consumer : null;
@@ -76,14 +80,14 @@ public class ConsumableItem extends Item
 	public void affectConsumer(ItemStack stack, Level level, LivingEntity consumer) {
 	}
 	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag isAdvanced) {
+	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltip, TooltipFlag isAdvanced) {
 		if (Configuration.FOOD_EFFECT_TOOLTIP.get()) {
 			if (this.hasCustomTooltip) {
 				MutableComponent textEmpty = TextUtils.getTranslation("tooltip." + BuiltInRegistries.ITEM.getKey(this).getPath());
-				tooltip.add(textEmpty.withStyle(ChatFormatting.BLUE));
+				tooltip.accept(textEmpty.withStyle(ChatFormatting.BLUE));
 			}
 			if (this.hasFoodEffectTooltip) {
-				TextUtils.addFoodEffectTooltip(stack, tooltip::add, 1.0F, context.tickRate());
+				TextUtils.addFoodEffectTooltip(stack, tooltip, 1.0F, context.tickRate());
 			}
 		}
 	}

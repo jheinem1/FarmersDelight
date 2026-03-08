@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -165,6 +166,13 @@ public class CuttingBoardBlockEntity extends SyncedBlockEntity
 	}
 	public boolean isItemCarvingBoard() {
 		return isItemCarvingBoard;
+	}
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		super.preRemoveSideEffects(pos, state);
+		if (level != null && !isEmpty()) {
+			Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), getStoredItem().copy());
+		}
 	}
 	@Override
 	public void setRemoved() {

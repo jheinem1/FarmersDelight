@@ -6,7 +6,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -15,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -57,7 +55,7 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(SUPPORT, false).setValue(WATERLOGGED, false));
 	}
 	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
+	public MapCodec<? extends BaseEntityBlock> codec() {
 		return CODEC;
 	}
 	@Override
@@ -92,17 +90,6 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 	public RenderShape getRenderShape(BlockState pState) {
 		return RenderShape.MODEL;
 	}
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock()) {
-			BlockEntity tileEntity = level.getBlockEntity(pos);
-			if (tileEntity instanceof SkilletBlockEntity) {
-				Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), ((SkilletBlockEntity) tileEntity).getInventory().getStackInSlot(0));
-			}
-			super.onRemove(state, level, pos, newState, isMoving);
-		}
-	}
-	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return SHAPE;
 	}
@@ -120,9 +107,9 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 				.setValue(SUPPORT, getTrayState(context.getLevel(), context.getClickedPos()));
 	}
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, net.minecraft.util.RandomSource random) {
 		if (state.getValue(WATERLOGGED)) {
-			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			scheduledTickAccess.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 		if (facing.getAxis().equals(Direction.Axis.Y)) {
 			return state.setValue(SUPPORT, getTrayState(level, currentPos));
@@ -130,11 +117,11 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 		return state;
 	}
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+	protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
 		if (level.getBlockEntity(pos) instanceof SkilletBlockEntity skillet) {
 			return skillet.getSkilletAsItem();
 		}
-		return super.getCloneItemStack(level, pos, state);
+		return super.getCloneItemStack(level, pos, state, includeData);
 	}
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -171,7 +158,7 @@ public class SkilletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 			return createTickerHelper(blockEntity, ModBlockEntityTypes.SKILLET.get(), SkilletBlockEntity::cookingTick);
 		}
 	}
-	private boolean getTrayState(LevelAccessor world, BlockPos pos) {
+	private boolean getTrayState(LevelReader world, BlockPos pos) {
 		return world.getBlockState(pos.below()).is(ModTags.TRAY_HEAT_SOURCES);
 	}
 	/**

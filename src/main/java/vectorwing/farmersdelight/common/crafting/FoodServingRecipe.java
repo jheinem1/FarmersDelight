@@ -70,12 +70,12 @@ public class FoodServingRecipe extends CustomRecipe
 		}
 		return remainders;
 	}
-	@Override
 	public boolean canCraftInDimensions(int width, int height) {
 		return width >= 2 && height >= 2;
 	}
 	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return ModRecipeSerializers.FOOD_SERVING.get();
+	@SuppressWarnings("unchecked")
+	public RecipeSerializer<FoodServingRecipe> getSerializer() {
+		return (RecipeSerializer<FoodServingRecipe>) ModRecipeSerializers.FOOD_SERVING.get();
 	}
 }

@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import java.util.function.Consumer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
@@ -17,6 +18,8 @@ import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item.TooltipContext;
+import net.minecraft.world.item.Item.TooltipDisplay;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -34,9 +37,9 @@ import java.util.List;
 public class DogFoodItem extends ConsumableItem
 {
 	public static final List<MobEffectInstance> EFFECTS = Lists.newArrayList(
-			new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 6000, 0),
-			new MobEffectInstance(MobEffects.DAMAGE_BOOST, 6000, 0),
-			new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 6000, 0));
+			new MobEffectInstance(MobEffects.SPEED, 6000, 0),
+			new MobEffectInstance(MobEffects.STRENGTH, 6000, 0),
+			new MobEffectInstance(MobEffects.RESISTANCE, 6000, 0));
 	public DogFoodItem(Properties properties) {
 		super(properties);
 	}
@@ -56,7 +59,7 @@ public class DogFoodItem extends ConsumableItem
 					for (MobEffectInstance effect : EFFECTS) {
 						entity.addEffect(new MobEffectInstance(effect));
 					}
-					entity.level().playSound(null, target.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.8F, 0.8F);
+					entity.level().playSound(null, target.blockPosition(), SoundEvents.GENERIC_EAT.value(), SoundSource.PLAYERS, 0.8F, 0.8F);
 					for (int i = 0; i < 5; ++i) {
 						double xSpeed = MathUtils.RAND.nextGaussian() * 0.02D;
 						double ySpeed = MathUtils.RAND.nextGaussian() * 0.02D;
@@ -75,12 +78,12 @@ public class DogFoodItem extends ConsumableItem
 		}
 	}
 	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag isAdvanced) {
+	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltip, TooltipFlag isAdvanced) {
 		if (!Configuration.FOOD_EFFECT_TOOLTIP.get()) {
 			return;
 		}
 		MutableComponent textWhenFeeding = TextUtils.getTranslation("tooltip.dog_food.when_feeding");
-		tooltip.add(textWhenFeeding.withStyle(ChatFormatting.GRAY));
+		tooltip.accept(textWhenFeeding.withStyle(ChatFormatting.GRAY));
 		for (MobEffectInstance effectInstance : EFFECTS) {
 			MutableComponent effectDescription = Component.literal(" ");
 			MutableComponent effectName = Component.translatable(effectInstance.getDescriptionId());
@@ -92,7 +95,7 @@ public class DogFoodItem extends ConsumableItem
 			if (effectInstance.getDuration() > 20) {
 				effectDescription.append(" (").append(MobEffectUtil.formatDuration(effectInstance, 1.0F, context.tickRate())).append(")");
 			}
-			tooltip.add(effectDescription.withStyle(effect.getCategory().getTooltipFormatting()));
+			tooltip.accept(effectDescription.withStyle(effect.getCategory().getTooltipFormatting()));
 		}
 	}
 	@Override

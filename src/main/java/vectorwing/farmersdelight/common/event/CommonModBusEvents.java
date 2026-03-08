@@ -19,8 +19,10 @@ public class CommonModBusEvents
 		}
 		if (Configuration.ENABLE_STACKABLE_SOUP_ITEMS.get()) {
 			Configuration.SOUP_ITEM_LIST.get().forEach((key) -> {
-				Item item = BuiltInRegistries.ITEM.get(Identifier.parse(key));
-				event.modify(item, (builder) -> builder.set(DataComponents.MAX_STACK_SIZE, 16));
+				Item item = BuiltInRegistries.ITEM.getValue(Identifier.parse(key));
+				if (item != null) {
+					event.modify(item, (builder) -> builder.set(DataComponents.MAX_STACK_SIZE, 16));
+				}
 			});
 		}
 		if (Configuration.RABBIT_STEW_BUFF.get()) {

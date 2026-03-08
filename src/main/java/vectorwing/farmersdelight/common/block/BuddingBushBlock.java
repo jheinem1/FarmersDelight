@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.item.ItemStack;
@@ -46,8 +47,9 @@ public class BuddingBushBlock extends BushBlock
 		super(properties);
 	}
 	@Override
-	protected MapCodec<? extends BushBlock> codec() {
-		return CODEC;
+	@SuppressWarnings("unchecked")
+	public MapCodec<BushBlock> codec() {
+		return (MapCodec<BushBlock>) (MapCodec<?>) CODEC;
 	}
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
@@ -152,17 +154,17 @@ public class BuddingBushBlock extends BushBlock
 		return level.getRawBrightness(pos, 0) >= 8;
 	}
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (entity instanceof Ravager && EventHooks.canEntityGrief(level, entity)) {
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean intersects) {
+		if (level instanceof ServerLevel serverLevel && entity instanceof Ravager && EventHooks.canEntityGrief(serverLevel, entity)) {
 			level.destroyBlock(pos, true, entity);
 		}
-		super.entityInside(state, level, pos, entity);
+		super.entityInside(state, level, pos, entity, applier, intersects);
 	}
 	protected ItemLike getBaseSeedId() {
 		return ModItems.TOMATO_SEEDS.get();
 	}
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+	protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
 		return new ItemStack(getBaseSeedId());
 	}
 	@Override

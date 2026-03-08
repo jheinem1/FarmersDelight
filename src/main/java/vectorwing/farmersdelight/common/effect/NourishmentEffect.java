@@ -1,6 +1,7 @@
 package vectorwing.farmersdelight.common.effect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
@@ -15,19 +16,16 @@ public class NourishmentEffect extends MobEffect
 	public NourishmentEffect() {
 		super(MobEffectCategory.BENEFICIAL, 15971072);
 	}
-	public boolean applyEffectTick(LivingEntity entity, int amplifier) {
-		if (!entity.getCommandSenderWorld().isClientSide() && entity instanceof Player player) {
+	@Override
+	public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
+		if (entity instanceof Player player) {
 			FoodData foodData = player.getFoodData();
 			boolean isPlayerHealingWithHunger =
-					player.level().getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION)
+					level.getGameRules().get(GameRules.NATURAL_HEALTH_REGENERATION)
 							&& player.isHurt()
 							&& foodData.getFoodLevel() >= 18;
 			if (!isPlayerHealingWithHunger) {
-				float exhaustion = foodData.getExhaustionLevel();
-				float reduction = Math.min(exhaustion, 4.0F);
-				if (exhaustion > 0.0F) {
-					player.causeFoodExhaustion(-reduction);
-				}
+				player.causeFoodExhaustion(-Math.min(4.0F, foodData.getSaturationLevel()));
 			}
 		}
 		return true;

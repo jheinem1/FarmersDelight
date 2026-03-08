@@ -19,11 +19,11 @@ public class BuddingTomatoBlock extends BuddingBushBlock implements Bonemealable
 		super(properties);
 	}
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, net.minecraft.util.RandomSource random) {
 		if (state.getValue(BuddingBushBlock.AGE) == 4) {
-			level.setBlock(currentPos, ModBlocks.TOMATO_CROP.get().defaultBlockState(), 3);
+			return ModBlocks.TOMATO_CROP.get().defaultBlockState();
 		}
-		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+		return super.updateShape(state, level, scheduledTickAccess, currentPos, facing, facingPos, facingState, random);
 	}
 	@Override
 	public boolean canGrowPastMaxAge() {

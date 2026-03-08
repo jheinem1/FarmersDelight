@@ -1,5 +1,6 @@
 package vectorwing.farmersdelight.common.registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -14,5 +15,5 @@ public class ModEntityTypes
 					.sized(0.25F, 0.25F)
 					.clientTrackingRange(4)
 					.updateInterval(10)
-					.build("rotten_tomato")));
+					.build(net.minecraft.resources.ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "rotten_tomato")))));
 }

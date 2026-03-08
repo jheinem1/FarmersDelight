@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -33,7 +31,7 @@ public class CabinetBlock extends BaseEntityBlock
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false));
 	}
 	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
+	public MapCodec<? extends BaseEntityBlock> codec() {
 		return CODEC;
 	}
 	@Override
@@ -47,15 +45,8 @@ public class CabinetBlock extends BaseEntityBlock
 		return InteractionResult.SUCCESS;
 	}
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock()) {
-			BlockEntity tileEntity = level.getBlockEntity(pos);
-			if (tileEntity instanceof Container) {
-				Containers.dropContents(level, pos, (Container) tileEntity);
-				level.updateNeighbourForOutputSignal(pos, this);
-			}
-			super.onRemove(state, level, pos, newState, isMoving);
-		}
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		net.minecraft.world.Containers.updateNeighboursAfterDestroy(state, level, pos);
 	}
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -78,7 +69,7 @@ public class CabinetBlock extends BaseEntityBlock
 		return true;
 	}
 	@Override
-	public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+	protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos, Direction direction) {
 		return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
 	}
 	@Nullable

@@ -25,7 +25,7 @@ public class VillagerEvents
 		if (!Configuration.FARMERS_BUY_FD_CROPS.get()) return;
 		Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 		ResourceKey<VillagerProfession> profession = event.getType();
-		if (profession.location().getPath().equals("farmer")) {
+		if (profession.identifier().getPath().equals("farmer")) {
 			trades.get(1).add(emeraldForItemsTrade(ModItems.ONION.get(), 26, 16, 2));
 			trades.get(1).add(emeraldForItemsTrade(ModItems.TOMATO.get(), 26, 16, 2));
 			trades.get(2).add(emeraldForItemsTrade(ModItems.CABBAGE.get(), 16, 16, 5));

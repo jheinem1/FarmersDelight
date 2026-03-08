@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.Containers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -122,6 +123,13 @@ public class SkilletBlockEntity extends SyncedBlockEntity implements HeatableBlo
 		output.putInt("CookTimeTotal", cookingTimeTotal);
 		if (!skilletStack.isEmpty()) {
 			output.store("Skillet", ItemStack.OPTIONAL_CODEC, skilletStack);
+		}
+	}
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		super.preRemoveSideEffects(pos, state);
+		if (level != null && hasStoredStack()) {
+			Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), getStoredStack().copy());
 		}
 	}
 	public ItemStack getSkilletAsItem() {

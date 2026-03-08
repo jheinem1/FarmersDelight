@@ -100,7 +100,7 @@ public class CuttingBoardRecipe implements Recipe<CuttingBoardRecipeInput>
 	}
 	@Override
 	public RecipeSerializer<? extends Recipe<CuttingBoardRecipeInput>> getSerializer() {
-		return ModRecipeSerializers.CUTTING.get();
+		return (RecipeSerializer<? extends Recipe<CuttingBoardRecipeInput>>) ModRecipeSerializers.CUTTING.get();
 	}
 	@Override
 	public RecipeType<? extends Recipe<CuttingBoardRecipeInput>> getType() {
@@ -122,7 +122,7 @@ public class CuttingBoardRecipe implements Recipe<CuttingBoardRecipeInput>
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		CuttingBoardRecipe that = (CuttingBoardRecipe) o;
-		if (!getGroup().equals(that.getGroup())) return false;
+		if (!group().equals(that.group())) return false;
 		if (!input.equals(that.input)) return false;
 		if (!getTool().equals(that.getTool())) return false;
 		if (!getResults().equals(that.getResults())) return false;
@@ -130,7 +130,7 @@ public class CuttingBoardRecipe implements Recipe<CuttingBoardRecipeInput>
 	}
 	@Override
 	public int hashCode() {
-		int result = (getGroup() != null ? getGroup().hashCode() : 0);
+		int result = (group() != null ? group().hashCode() : 0);
 		result = 31 * result + input.hashCode();
 		result = 31 * result + getTool().hashCode();
 		result = 31 * result + getResults().hashCode();

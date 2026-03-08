@@ -45,7 +45,7 @@ import java.util.Set;
 public class KnifeItem extends Item
 {
 	private static final Identifier FD_ATTACK_KNOCKBACK_ID = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "knife_attack_knockback");
-	public static final Set<ItemAbility> KNIFE_ACTIONS = Set.of(ItemAbilities.SHEARS_CARVE, ItemAbilities.SWORD_DIG);
+	public static final Set<ItemAbility> KNIFE_ACTIONS = Set.of(ItemAbilities.SHEARS_CARVE);
 
 	public KnifeItem(ToolMaterial material, Properties properties) {
 		super(material.applyToolProperties(properties, ModTags.MINEABLE_WITH_KNIFE, 0.5F, -2.0F, 0.0F)
@@ -176,7 +176,7 @@ public class KnifeItem extends Item
 						0.05D,
 						0.05D * direction.getStepZ() + level.random.nextDouble() * 0.02D);
 				level.addFreshEntity(itemEntity);
-				toolStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
+				toolStack.hurtAndBreak(1, player, context.getHand());
 			}
 			return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
 		}

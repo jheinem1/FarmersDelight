@@ -12,6 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -61,12 +62,13 @@ public class MushroomColonyBlock extends BushBlock implements BonemealableBlock
 		return COLONY_AGE;
 	}
 	@Override
-	protected MapCodec<? extends BushBlock> codec() {
-		return CODEC;
+	@SuppressWarnings("unchecked")
+	public MapCodec<BushBlock> codec() {
+		return (MapCodec<BushBlock>) (MapCodec<?>) CODEC;
 	}
 	@Override
 	protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-		return state.isSolidRender(level, pos);
+		return state.isSolidRender();
 	}
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
@@ -79,11 +81,11 @@ public class MushroomColonyBlock extends BushBlock implements BonemealableBlock
 	public InteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		int age = state.getValue(COLONY_AGE);
 		if (age > 0 && heldStack.is(Tags.Items.TOOLS_SHEAR)) {
-			popResource(level, pos, getCloneItemStack(level, pos, state));
+			popResource(level, pos, getCloneItemStack(level, pos, state, false));
 			level.playSound(null, pos, SoundEvents.MOOSHROOM_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.setBlock(pos, state.setValue(COLONY_AGE, age - 1), 2);
 			if (!level.isClientSide()) {
-				heldStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+				heldStack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
 			}
 			return InteractionResult.SUCCESS;
 		}
@@ -102,7 +104,7 @@ public class MushroomColonyBlock extends BushBlock implements BonemealableBlock
 		}
 	}
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+	protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
 		return new ItemStack(this.mushroomType.value());
 	}
 	@Override

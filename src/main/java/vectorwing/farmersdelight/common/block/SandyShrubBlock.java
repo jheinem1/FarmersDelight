@@ -24,8 +24,9 @@ public class SandyShrubBlock extends BushBlock implements IShearable, Bonemealab
 		super(properties);
 	}
 	@Override
-	protected MapCodec<? extends BushBlock> codec() {
-		return CODEC;
+	@SuppressWarnings("unchecked")
+	public MapCodec<BushBlock> codec() {
+		return (MapCodec<BushBlock>) (MapCodec<?>) CODEC;
 	}
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
@@ -45,7 +46,7 @@ public class SandyShrubBlock extends BushBlock implements IShearable, Bonemealab
 	}
 	@Override
 	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-		level.registryAccess().registry(Registries.CONFIGURED_FEATURE).flatMap((value) -> value.getHolder(WildCropGeneration.FEATURE_PATCH_SANDY_SHRUB)).ifPresent((value) -> {
+		level.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(WildCropGeneration.FEATURE_PATCH_SANDY_SHRUB).ifPresent((value) -> {
 			value.value().place(level, level.getChunkSource().getGenerator(), random, pos.above());
 		});
 	}

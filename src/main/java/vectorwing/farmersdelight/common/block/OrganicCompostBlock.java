@@ -66,7 +66,7 @@ public class OrganicCompostBlock extends Block
 		return true;
 	}
 	@Override
-	public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+	protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos, net.minecraft.core.Direction direction) {
 		return (getMaxCompostingStage() + 1 - blockState.getValue(COMPOSTING));
 	}
 	@Override

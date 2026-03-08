@@ -10,7 +10,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -52,8 +51,8 @@ public class CuttingBoardBlock extends BaseEntityBlock implements SimpleWaterlog
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 	}
 	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
-		return null;
+	public MapCodec<? extends BaseEntityBlock> codec() {
+		return CODEC;
 	}
 	@Override
 	public RenderShape getRenderShape(BlockState pState) {
@@ -108,16 +107,8 @@ public class CuttingBoardBlock extends BaseEntityBlock implements SimpleWaterlog
 		return InteractionResult.PASS;
 	}
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() == newState.getBlock()) {
-			return;
-		}
-		BlockEntity tileEntity = level.getBlockEntity(pos);
-		if (tileEntity instanceof CuttingBoardBlockEntity cuttingBoard) {
-			Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), cuttingBoard.getStoredItem());
-			level.updateNeighbourForOutputSignal(pos, this);
-		}
-		super.onRemove(state, level, pos, newState, isMoving);
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		net.minecraft.world.Containers.updateNeighboursAfterDestroy(state, level, pos);
 	}
 	@Override
 	public boolean isPossibleToRespawnInThis(BlockState state) {
@@ -130,13 +121,13 @@ public class CuttingBoardBlock extends BaseEntityBlock implements SimpleWaterlog
 				.setValue(WATERLOGGED, fluid.getType() == Fluids.WATER);
 	}
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, net.minecraft.util.RandomSource random) {
 		if (stateIn.getValue(WATERLOGGED)) {
-			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			scheduledTickAccess.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 		return facing == Direction.DOWN && !stateIn.canSurvive(level, currentPos)
 				? Blocks.AIR.defaultBlockState()
-				: super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+				: super.updateShape(stateIn, level, scheduledTickAccess, currentPos, facing, facingPos, facingState, random);
 	}
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
@@ -157,7 +148,7 @@ public class CuttingBoardBlock extends BaseEntityBlock implements SimpleWaterlog
 		return true;
 	}
 	@Override
-	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+	protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 		if (blockEntity instanceof CuttingBoardBlockEntity) {
 			return !((CuttingBoardBlockEntity) blockEntity).isEmpty() ? 15 : 0;
@@ -199,7 +190,7 @@ public class CuttingBoardBlock extends BaseEntityBlock implements SimpleWaterlog
 			ItemStack heldStack = player.getMainHandItem();
 			BlockEntity tileEntity = level.getBlockEntity(event.getPos());
 			if (player.isSecondaryUseActive() && !heldStack.isEmpty() && tileEntity instanceof CuttingBoardBlockEntity) {
-				if (heldStack.getItem() instanceof TieredItem ||
+				if (heldStack.is(ModTags.KNIVES) ||
 						heldStack.getItem() instanceof TridentItem ||
 						heldStack.getItem() instanceof ShearsItem) {
 					boolean success = ((CuttingBoardBlockEntity) tileEntity).carveToolOnBoard(player.getAbilities().instabuild ? heldStack.copy() : heldStack);

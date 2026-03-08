@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -63,7 +62,7 @@ public class BasketBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, false));
 	}
 	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
+	public MapCodec<? extends BaseEntityBlock> codec() {
 		return CODEC;
 	}
 	@Override
@@ -71,7 +70,7 @@ public class BasketBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
 		return COLLISION_SHAPE_FACING.get(state.getValue(FACING));
 	}
 	@Override
-	public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+	protected VoxelShape getOcclusionShape(BlockState state) {
 		return RENDER_SHAPE;
 	}
 	@Override
@@ -93,21 +92,15 @@ public class BasketBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
 		return InteractionResult.SUCCESS;
 	}
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock()) {
-			BlockEntity tileEntity = level.getBlockEntity(pos);
-			if (tileEntity instanceof Container) {
-				Containers.dropContents(level, pos, (Container) tileEntity);
-				level.updateNeighbourForOutputSignal(pos, this);
-			}
-			super.onRemove(state, level, pos, newState, isMoving);
-		}
+	protected void affectNeighborsAfterRemoval(BlockState state, net.minecraft.server.level.ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		Containers.updateNeighboursAfterDestroy(state, level, pos);
 	}
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	@Override
+	public BlockState updateShape(BlockState state, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, net.minecraft.util.RandomSource random) {
 		if (state.getValue(WATERLOGGED)) {
-			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			scheduledTickAccess.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
-		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+		return super.updateShape(state, level, scheduledTickAccess, currentPos, facing, facingPos, facingState, random);
 	}
 	@Override
 	public FluidState getFluidState(BlockState state) {
@@ -115,7 +108,7 @@ public class BasketBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
 	}
 	// --- HOPPER STUFF ---
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, net.minecraft.world.level.redstone.Orientation orientation, boolean isMoving) {
 		boolean isPowered = !level.hasNeighborSignal(pos);
 		if (isPowered != state.getValue(ENABLED)) {
 			level.setBlock(pos, state.setValue(ENABLED, isPowered), 4);
@@ -127,7 +120,7 @@ public class BasketBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
 		return true;
 	}
 	@Override
-	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+	protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
 		return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
 	}
 	@Override
@@ -143,7 +136,8 @@ public class BasketBlock extends BaseEntityBlock implements SimpleWaterloggedBlo
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
-	public boolean useShapeForLightOcclusion(BlockState state) {
+	@Override
+	protected boolean useShapeForLightOcclusion(BlockState state) {
 		return true;
 	}
 	@Override

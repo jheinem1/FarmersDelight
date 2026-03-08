@@ -84,7 +84,7 @@ public class PieBlock extends Block
 			return InteractionResult.PASS;
 		} else {
 			ItemStack sliceStack = this.getPieSliceItem();
-			FoodProperties sliceFood = sliceStack.getItem().getFoodProperties(sliceStack, playerIn);
+			FoodProperties sliceFood = sliceStack.get(DataComponents.FOOD);
 			if (sliceFood != null) {
 				playerIn.getFoodData().eat(sliceFood);
 				Consumable consumable = sliceStack.get(DataComponents.CONSUMABLE);
@@ -100,7 +100,7 @@ public class PieBlock extends Block
 			} else {
 				level.removeBlock(pos, false);
 			}
-			level.playSound(null, pos, SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.8F, 0.8F);
+			level.playSound(null, pos, SoundEvents.GENERIC_EAT.value(), SoundSource.PLAYERS, 0.8F, 0.8F);
 			return InteractionResult.SUCCESS;
 		}
 	}
@@ -121,8 +121,8 @@ public class PieBlock extends Block
 		return InteractionResult.SUCCESS;
 	}
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		return facing == Direction.DOWN && !stateIn.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+	public BlockState updateShape(BlockState stateIn, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, net.minecraft.util.RandomSource random) {
+		return facing == Direction.DOWN && !stateIn.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, level, scheduledTickAccess, currentPos, facing, facingPos, facingState, random);
 	}
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
@@ -133,7 +133,7 @@ public class PieBlock extends Block
 		builder.add(FACING, BITES);
 	}
 	@Override
-	public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+	protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos, Direction direction) {
 		return getMaxBites() - blockState.getValue(BITES);
 	}
 	@Override

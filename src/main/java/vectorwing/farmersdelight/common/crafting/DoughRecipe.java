@@ -51,12 +51,12 @@ public class DoughRecipe extends CustomRecipe
 		}
 		return remainders;
 	}
-	@Override
 	public boolean canCraftInDimensions(int width, int height) {
 		return width >= 2 && height >= 2;
 	}
 	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return ModRecipeSerializers.DOUGH.get();
+	@SuppressWarnings("unchecked")
+	public RecipeSerializer<DoughRecipe> getSerializer() {
+		return (RecipeSerializer<DoughRecipe>) ModRecipeSerializers.DOUGH.get();
 	}
 }

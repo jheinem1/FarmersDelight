@@ -54,16 +54,16 @@ public class StoveBlock extends BaseEntityBlock
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
 	}
 	@Override
-	protected MapCodec<? extends BaseEntityBlock> codec() {
+	public MapCodec<? extends BaseEntityBlock> codec() {
 		return CODEC;
 	}
 	@Override
 	protected InteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		Item heldItem = heldStack.getItem();
 		if (state.getValue(LIT)) {
-			if (heldStack.canPerformAction(ItemAbilities.SHOVEL_DIG)) {
+			if (heldStack.canPerformAction(ItemAbilities.SHOVEL_DOUSE)) {
 				extinguish(state, level, pos);
-				heldStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+				heldStack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? net.minecraft.world.entity.EquipmentSlot.MAINHAND : net.minecraft.world.entity.EquipmentSlot.OFFHAND);
 				return InteractionResult.SUCCESS;
 			} else if (heldStack.is(Tags.Items.BUCKETS_WATER)) {
 				if (!level.isClientSide()) {
@@ -79,7 +79,7 @@ public class StoveBlock extends BaseEntityBlock
 			if (heldItem instanceof FlintAndSteelItem) {
 				level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, MathUtils.RAND.nextFloat() * 0.4F + 0.8F);
 				level.setBlock(pos, state.setValue(BlockStateProperties.LIT, Boolean.TRUE), 11);
-				heldStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+				heldStack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? net.minecraft.world.entity.EquipmentSlot.MAINHAND : net.minecraft.world.entity.EquipmentSlot.OFFHAND);
 				return InteractionResult.SUCCESS;
 			} else if (heldItem instanceof FireChargeItem) {
 				level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, (MathUtils.RAND.nextFloat() - MathUtils.RAND.nextFloat()) * 0.2F + 1.0F);
@@ -128,16 +128,6 @@ public class StoveBlock extends BaseEntityBlock
 			entity.hurt(ModDamageTypes.getSimpleDamageSource(level, ModDamageTypes.STOVE_BURN), 1.0F);
 		}
 		super.stepOn(level, pos, state, entity);
-	}
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock()) {
-			BlockEntity tileEntity = level.getBlockEntity(pos);
-			if (tileEntity instanceof StoveBlockEntity) {
-				ItemUtils.dropItems(level, pos, ((StoveBlockEntity) tileEntity).getInventory());
-			}
-			super.onRemove(state, level, pos, newState, isMoving);
-		}
 	}
 	@Override
 	protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {

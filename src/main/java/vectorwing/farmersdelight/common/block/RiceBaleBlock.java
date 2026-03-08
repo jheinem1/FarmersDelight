@@ -21,7 +21,7 @@ public class RiceBaleBlock extends Block
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP));
 	}
 	@Override
-	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entityIn, float fallDistance) {
+	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entityIn, double fallDistance) {
 		entityIn.causeFallDamage(fallDistance, 0.2F, level.damageSources().fall());
 	}
 	@Override

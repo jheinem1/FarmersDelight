@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -25,7 +24,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -57,7 +55,7 @@ public class CookingPotBlock extends Block implements SimpleWaterloggedBlock, En
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(SUPPORT, CookingPotSupport.NONE).setValue(WATERLOGGED, false));
 	}
 	@Override
-	protected MapCodec<? extends Block> codec() {
+	public MapCodec<? extends Block> codec() {
 		return CODEC;
 	}
 	@Override
@@ -109,24 +107,24 @@ public class CookingPotBlock extends Block implements SimpleWaterloggedBlock, En
 		return state.setValue(SUPPORT, getTrayState(level, pos));
 	}
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, net.minecraft.util.RandomSource random) {
 		if (state.getValue(WATERLOGGED)) {
-			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			scheduledTickAccess.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 		if (facing.getAxis().equals(Direction.Axis.Y) && !state.getValue(SUPPORT).equals(CookingPotSupport.HANDLE)) {
 			return state.setValue(SUPPORT, getTrayState(level, currentPos));
 		}
 		return state;
 	}
-	private CookingPotSupport getTrayState(LevelAccessor level, BlockPos pos) {
+	private CookingPotSupport getTrayState(LevelReader level, BlockPos pos) {
 		if (level.getBlockState(pos.below()).is(ModTags.TRAY_HEAT_SOURCES)) {
 			return CookingPotSupport.TRAY;
 		}
 		return CookingPotSupport.NONE;
 	}
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
-		ItemStack stack = super.getCloneItemStack(level, pos, state);
+	protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
+		ItemStack stack = super.getCloneItemStack(level, pos, state, includeData);
 		Optional<CookingPotBlockEntity> cookingPot = level.getBlockEntity(pos, ModBlockEntityTypes.COOKING_POT.get());
 		if (cookingPot.isPresent()) {
 			stack = cookingPot.get().getAsItem();
@@ -134,16 +132,8 @@ public class CookingPotBlock extends Block implements SimpleWaterloggedBlock, En
 		return stack;
 	}
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock()) {
-			BlockEntity tileEntity = level.getBlockEntity(pos);
-			if (tileEntity instanceof CookingPotBlockEntity cookingPotEntity) {
-				Containers.dropContents(level, pos, cookingPotEntity.getDroppableInventory());
-				cookingPotEntity.getUsedRecipesAndPopExperience(level, Vec3.atCenterOf(pos));
-				level.updateNeighbourForOutputSignal(pos, this);
-			}
-			super.onRemove(state, level, pos, newState, isMoving);
-		}
+	protected void affectNeighborsAfterRemoval(BlockState state, net.minecraft.server.level.ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		Containers.updateNeighboursAfterDestroy(state, level, pos);
 	}
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -170,7 +160,7 @@ public class CookingPotBlock extends Block implements SimpleWaterloggedBlock, En
 		return true;
 	}
 	@Override
-	public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+	protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos, Direction direction) {
 		BlockEntity tileEntity = level.getBlockEntity(pos);
 		if (tileEntity instanceof CookingPotBlockEntity) {
 			ItemStackHandler inventory = ((CookingPotBlockEntity) tileEntity).getInventory();

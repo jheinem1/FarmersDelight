@@ -31,7 +31,7 @@ public class TatamiMatBlock extends HorizontalDirectionalBlock
 		this.registerDefaultState(this.getStateDefinition().any().setValue(PART, BedPart.FOOT));
 	}
 	@Override
-	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+	public MapCodec<TatamiMatBlock> codec() {
 		return CODEC;
 	}
 	private static Direction getDirectionToOther(BedPart part, Direction direction) {
@@ -50,11 +50,11 @@ public class TatamiMatBlock extends HorizontalDirectionalBlock
 		return RenderShape.MODEL;
 	}
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, net.minecraft.util.RandomSource random) {
 		if (facing == getDirectionToOther(stateIn.getValue(PART), stateIn.getValue(FACING))) {
 			return stateIn.canSurvive(level, currentPos) && facingState.is(this) && facingState.getValue(PART) != stateIn.getValue(PART) ? stateIn : Blocks.AIR.defaultBlockState();
 		} else {
-			return !stateIn.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+			return !stateIn.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, level, scheduledTickAccess, currentPos, facing, facingPos, facingState, random);
 		}
 	}
 	@Override
@@ -82,7 +82,7 @@ public class TatamiMatBlock extends HorizontalDirectionalBlock
 		if (!level.isClientSide()) {
 			BlockPos facingPos = pos.relative(state.getValue(FACING));
 			level.setBlock(facingPos, state.setValue(PART, BedPart.HEAD), 3);
-			level.blockUpdated(pos, Blocks.AIR);
+			level.updateNeighborsAt(pos, Blocks.AIR);
 			state.updateNeighbourShapes(level, pos, 3);
 		}
 	}

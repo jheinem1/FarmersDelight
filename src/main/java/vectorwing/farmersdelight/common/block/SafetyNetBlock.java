@@ -39,11 +39,11 @@ public class SafetyNetBlock extends Block implements SimpleWaterloggedBlock
 		return this.defaultBlockState().setValue(WATERLOGGED, fluid.getType() == Fluids.WATER);
 	}
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, net.minecraft.world.level.LevelReader level, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, net.minecraft.util.RandomSource random) {
 		if (stateIn.getValue(WATERLOGGED)) {
-			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			scheduledTickAccess.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
-		return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+		return super.updateShape(stateIn, level, scheduledTickAccess, currentPos, facing, facingPos, facingState, random);
 	}
 	@Override
 	public FluidState getFluidState(BlockState state) {
@@ -54,7 +54,7 @@ public class SafetyNetBlock extends Block implements SimpleWaterloggedBlock
 		return SHAPE;
 	}
 	@Override
-	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entityIn, float fallDistance) {
+	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entityIn, double fallDistance) {
 		if (entityIn.isSuppressingBounce()) {
 			super.fallOn(level, state, pos, entityIn, fallDistance);
 		} else {
@@ -62,9 +62,9 @@ public class SafetyNetBlock extends Block implements SimpleWaterloggedBlock
 		}
 	}
 	@Override
-	public void updateEntityAfterFallOn(BlockGetter level, Entity entityIn) {
+	public void updateEntityMovementAfterFallOn(BlockGetter level, Entity entityIn) {
 		if (entityIn.isSuppressingBounce()) {
-			super.updateEntityAfterFallOn(level, entityIn);
+			super.updateEntityMovementAfterFallOn(level, entityIn);
 		} else {
 			this.bounceEntity(entityIn);
 		}
