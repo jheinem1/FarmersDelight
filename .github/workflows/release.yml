@@ -3,11 +3,14 @@ name: Release
 on:
   push:
     tags:
-      - "v*"
+      - "*"
+  release:
+    types:
+      - published
   workflow_dispatch:
     inputs:
       tag_name:
-        description: "Release tag to create or update, for example v1.21.11-1.2.10a"
+        description: "Release tag to create or update, for example 1.21.11-2026-03-08"
         required: true
       release_name:
         description: "Optional release title"
@@ -50,6 +53,8 @@ jobs:
         run: |
           if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
             tag_name="${GITHUB_REF_NAME}"
+          elif [[ "${GITHUB_EVENT_NAME}" == "release" ]]; then
+            tag_name="${{ github.event.release.tag_name }}"
           else
             tag_name="${{ github.event.inputs.tag_name }}"
           fi
