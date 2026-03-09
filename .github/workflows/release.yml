@@ -44,9 +44,6 @@ jobs:
       - name: Ensure Gradle wrapper is executable
         run: chmod +x ./gradlew
 
-      - name: Build mod jar
-        run: ./gradlew clean build
-
       - name: Resolve release metadata
         id: release_meta
         shell: bash
@@ -64,6 +61,23 @@ jobs:
             release_name="${tag_name}"
           fi
 
+          minecraft_version="$(grep '^minecraft_version=' gradle.properties | cut -d= -f2)"
+          artifact_version="${tag_name}"
+          if [[ "${artifact_version}" == "${minecraft_version}-"* ]]; then
+            artifact_version="${artifact_version#${minecraft_version}-}"
+          fi
+
+          echo "tag_name=${tag_name}" >> "${GITHUB_OUTPUT}"
+          echo "release_name=${release_name}" >> "${GITHUB_OUTPUT}"
+          echo "artifact_version=${artifact_version}" >> "${GITHUB_OUTPUT}"
+
+      - name: Build mod jar
+        run: ./gradlew clean build -Partifact_version=${{ steps.release_meta.outputs.artifact_version }}
+
+      - name: Resolve release jar
+        id: release_jar
+        shell: bash
+        run: |
           shopt -s nullglob
           jars=(build/libs/*.jar)
           release_jars=()
@@ -83,8 +97,6 @@ jobs:
             exit 1
           fi
 
-          echo "tag_name=${tag_name}" >> "${GITHUB_OUTPUT}"
-          echo "release_name=${release_name}" >> "${GITHUB_OUTPUT}"
           echo "jar_path=${release_jars[0]}" >> "${GITHUB_OUTPUT}"
 
       - name: Publish GitHub release
@@ -94,4 +106,4 @@ jobs:
           name: ${{ steps.release_meta.outputs.release_name }}
           generate_release_notes: true
           prerelease: ${{ github.event.inputs.prerelease == 'true' }}
-          files: ${{ steps.release_meta.outputs.jar_path }}
+          files: ${{ steps.release_jar.outputs.jar_path }}

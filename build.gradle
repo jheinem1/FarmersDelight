@@ -10,7 +10,8 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = "${minecraft_version}-${mod_version}"
+def artifactVersion = providers.gradleProperty('artifact_version').orElse(mod_version).get()
+version = "${minecraft_version}-${artifactVersion}"
 group = 'vectorwing.farmersdelight' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 
 repositories {
