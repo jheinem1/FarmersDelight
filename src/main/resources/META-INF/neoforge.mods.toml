@@ -41,3 +41,10 @@ config = "${mod_id}.mixins.json"
     versionRange = "[14.0.6,)"
     ordering = "NONE"
     side = "BOTH"
+
+[[dependencies.${mod_id}]]
+    modId = "jei"
+    type = "optional"
+    versionRange = "[19.8.2.99,)"
+    ordering = "BEFORE"
+    side = "CLIENT"

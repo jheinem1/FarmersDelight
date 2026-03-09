@@ -2,6 +2,7 @@ package vectorwing.farmersdelight.integration.jei.category;
 import org.jspecify.annotations.NullMarked;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -13,7 +14,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -42,8 +43,8 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 	private final IDrawable icon;
 	public CookingRecipeCategory(IGuiHelper helper) {
 		title = TextUtils.getTranslation("jei.cooking");
-		ResourceLocation widgetBackgroundImage = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/cooking_pot.png");
-		ResourceLocation interfaceImage = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/cooking_pot.png");
+		Identifier widgetBackgroundImage = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/cooking_pot.png");
+		Identifier interfaceImage = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/cooking_pot.png");
 		background = helper.createDrawable(widgetBackgroundImage, 0, 0, 116, 56);
 		icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.COOKING_POT.get()));
 		heatIndicator = helper.createDrawable(interfaceImage, 176, 0, 17, 15);
@@ -61,12 +62,16 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 		return this.title;
 	}
 	@Override
-	public IDrawable getBackground() {
-		return this.background;
-	}
-	@Override
 	public IDrawable getIcon() {
 		return this.icon;
+	}
+	@Override
+	public int getWidth() {
+		return 116;
+	}
+	@Override
+	public int getHeight() {
+		return 56;
 	}
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CookingPotRecipe> holder, IFocusGroup focusGroup) {
@@ -86,12 +91,13 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 		}
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 10).addItemStack(resultStack);
 		if (!containerStack.isEmpty()) {
-			builder.addSlot(RecipeIngredientRole.CATALYST, 63, 39).addItemStack(containerStack);
+			builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 63, 39).addItemStack(containerStack);
 		}
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 39).addItemStack(resultStack);
 	}
 	@Override
 	public void draw(RecipeHolder<CookingPotRecipe> holder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		background.draw(guiGraphics, 0, 0);
 		arrow.draw(guiGraphics, 60, 9);
 		heatIndicator.draw(guiGraphics, 18, 39);
 		timeIcon.draw(guiGraphics, 64, 2);
@@ -100,21 +106,18 @@ public class CookingRecipeCategory implements IRecipeCategory<RecipeHolder<Cooki
 		}
 	}
 	@Override
-	public List<Component> getTooltipStrings(RecipeHolder<CookingPotRecipe> holder, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+	public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<CookingPotRecipe> holder, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
 		CookingPotRecipe recipe = holder.value();
 		if (ClientRenderUtils.isCursorInsideBounds(61, 2, 22, 28, mouseX, mouseY)) {
-			List<Component> tooltipStrings = new ArrayList<>();
 			int cookTime = recipe.getCookTime();
 			if (cookTime > 0) {
 				int cookTimeSeconds = cookTime / 20;
-				tooltipStrings.add(Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds));
+				tooltip.add(Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds));
 			}
 			float experience = recipe.getExperience();
 			if (experience > 0) {
-				tooltipStrings.add(Component.translatable("gui.jei.category.smelting.experience", experience));
+				tooltip.add(Component.translatable("gui.jei.category.smelting.experience", experience));
 			}
-			return tooltipStrings;
 		}
-		return Collections.emptyList();
 	}
 }

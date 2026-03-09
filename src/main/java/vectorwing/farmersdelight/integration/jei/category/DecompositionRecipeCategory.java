@@ -3,6 +3,7 @@ import org.jspecify.annotations.NullMarked;
 import com.google.common.collect.ImmutableList;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -11,12 +12,10 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
@@ -36,7 +35,6 @@ import java.util.stream.Collectors;
 @NullMarked
 public class DecompositionRecipeCategory implements IRecipeCategory<DecompositionDummy>
 {
-	public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "decomposition");
 	private static final int slotSize = 22;
 	private final Component title;
 	private final IDrawable background;
@@ -46,7 +44,7 @@ public class DecompositionRecipeCategory implements IRecipeCategory<Decompositio
 	private final ItemStack richSoil;
 	public DecompositionRecipeCategory(IGuiHelper helper) {
 		title = TextUtils.getTranslation("jei.decomposition");
-		ResourceLocation backgroundImage = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/decomposition.png");
+		Identifier backgroundImage = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/decomposition.png");
 		background = helper.createDrawable(backgroundImage, 0, 0, 118, 80);
 		organicCompost = new ItemStack(ModBlocks.ORGANIC_COMPOST.get());
 		richSoil = new ItemStack(ModItems.RICH_SOIL.get());
@@ -62,12 +60,16 @@ public class DecompositionRecipeCategory implements IRecipeCategory<Decompositio
 		return this.title;
 	}
 	@Override
-	public IDrawable getBackground() {
-		return this.background;
-	}
-	@Override
 	public IDrawable getIcon() {
 		return this.icon;
+	}
+	@Override
+	public int getWidth() {
+		return 118;
+	}
+	@Override
+	public int getHeight() {
+		return 80;
 	}
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, DecompositionDummy recipe, IFocusGroup focusGroup) {
@@ -80,20 +82,20 @@ public class DecompositionRecipeCategory implements IRecipeCategory<Decompositio
 	}
 	@Override
 	public void draw(DecompositionDummy recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		this.background.draw(guiGraphics, 0, 0);
 		this.slotIcon.draw(guiGraphics, 63, 53);
 	}
 	@Override
-	public List<Component> getTooltipStrings(DecompositionDummy recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+	public void getTooltip(ITooltipBuilder tooltip, DecompositionDummy recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
 		if (ClientRenderUtils.isCursorInsideBounds(40, 38, 11, 11, mouseX, mouseY)) {
-			return ImmutableList.of(translateKey(".light"));
+			tooltip.addAll(ImmutableList.of(translateKey(".light")));
 		}
 		if (ClientRenderUtils.isCursorInsideBounds(53, 38, 11, 11, mouseX, mouseY)) {
-			return ImmutableList.of(translateKey(".fluid"));
+			tooltip.addAll(ImmutableList.of(translateKey(".fluid")));
 		}
 		if (ClientRenderUtils.isCursorInsideBounds(67, 38, 11, 11, mouseX, mouseY)) {
-			return ImmutableList.of(translateKey(".accelerators"));
+			tooltip.addAll(ImmutableList.of(translateKey(".accelerators")));
 		}
-		return Collections.emptyList();
 	}
 	private static MutableComponent translateKey(@Nonnull String suffix) {
 		return Component.translatable(FarmersDelight.MODID + ".jei.decomposition" + suffix);

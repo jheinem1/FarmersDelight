@@ -13,7 +13,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import vectorwing.farmersdelight.FarmersDelight;
@@ -36,7 +36,7 @@ public class CuttingRecipeCategory implements IRecipeCategory<RecipeHolder<Cutti
 	private final IDrawable icon;
 	public CuttingRecipeCategory(IGuiHelper helper) {
 		title = TextUtils.getTranslation("jei.cutting");
-		ResourceLocation backgroundImage = ResourceLocation.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/cutting_board.png");
+		Identifier backgroundImage = Identifier.fromNamespaceAndPath(FarmersDelight.MODID, "textures/gui/jei/cutting_board.png");
 		slot = helper.createDrawable(backgroundImage, 0, 58, 18, 18);
 		slotChance = helper.createDrawable(backgroundImage, 18, 58, 18, 18);
 		background = helper.createDrawable(backgroundImage, 0, 0, 117, 57);
@@ -51,12 +51,16 @@ public class CuttingRecipeCategory implements IRecipeCategory<RecipeHolder<Cutti
 		return this.title;
 	}
 	@Override
-	public IDrawable getBackground() {
-		return this.background;
-	}
-	@Override
 	public IDrawable getIcon() {
 		return this.icon;
+	}
+	@Override
+	public int getWidth() {
+		return 117;
+	}
+	@Override
+	public int getHeight() {
+		return 57;
 	}
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CuttingBoardRecipe> holder, IFocusGroup focusGroup) {
@@ -73,17 +77,18 @@ public class CuttingRecipeCategory implements IRecipeCategory<RecipeHolder<Cutti
 			int index = i;
 			builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_GRID_X + xOffset, OUTPUT_GRID_Y + yOffset)
 					.addItemStack(recipeOutputs.get(i).stack())
-					.addTooltipCallback((slotView, tooltip) -> {
+					.addRichTooltipCallback((slotView, tooltip) -> {
 						ChanceResult output = recipeOutputs.get(index);
 						float chance = output.chance();
 						if (chance != 1)
-							tooltip.add(1, TextUtils.getTranslation("jei.chance", chance < 0.01 ? "<1" : (int) (chance * 100))
+							tooltip.add(TextUtils.getTranslation("jei.chance", chance < 0.01 ? "<1" : (int) (chance * 100))
 									.withStyle(ChatFormatting.GOLD));
 					});
 		}
 	}
 	@Override
 	public void draw(RecipeHolder<CuttingBoardRecipe> holder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		background.draw(guiGraphics, 0, 0);
 		CuttingBoardRecipe recipe = holder.value();
 		NonNullList<ChanceResult> recipeOutputs = recipe.getRollableResults();
 		int size = recipe.getResults().size();

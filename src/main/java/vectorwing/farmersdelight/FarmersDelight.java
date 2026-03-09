@@ -16,6 +16,7 @@ import vectorwing.farmersdelight.common.block.entity.CookingPotBlockEntity;
 import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
 import vectorwing.farmersdelight.common.event.CommonModBusEvents;
 import vectorwing.farmersdelight.common.registry.*;
+import vectorwing.farmersdelight.integration.jei.JEIPluginBootstrap;
 import vectorwing.farmersdelight.common.world.VillageStructures;
 import vectorwing.farmersdelight.common.world.WildCropGeneration;
 @Mod(FarmersDelight.MODID)
@@ -31,6 +32,7 @@ public class FarmersDelight
 		modEventBus.addListener(CookingPotBlockEntity::registerCapabilities);
 		modEventBus.addListener(CuttingBoardBlockEntity::registerCapabilities);
 		if (FMLEnvironment.getDist().isClient()) {
+			JEIPluginBootstrap.ensurePluginDiscovery();
 			modEventBus.addListener(ClientSetupEvents::init);
 			modEventBus.addListener(ClientSetupEvents::registerSpecialModelRenderers);
 			modEventBus.addListener(ClientSetupEvents::registerCustomTooltipRenderers);
