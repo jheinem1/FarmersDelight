@@ -19,6 +19,7 @@ import vectorwing.farmersdelight.common.utility.TextUtils;
 import vectorwing.farmersdelight.integration.jei.category.CookingRecipeCategory;
 import vectorwing.farmersdelight.integration.jei.category.CuttingRecipeCategory;
 import vectorwing.farmersdelight.integration.jei.category.DecompositionRecipeCategory;
+import vectorwing.farmersdelight.integration.jei.category.FoodServingRecipeCategory;
 import vectorwing.farmersdelight.integration.jei.resource.DecompositionDummy;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -34,6 +35,7 @@ public class JEIPlugin implements IModPlugin
 		registry.addRecipeCategories(new CookingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
 		registry.addRecipeCategories(new CuttingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
 		registry.addRecipeCategories(new DecompositionRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+		registry.addRecipeCategories(new FoodServingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
 	}
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
@@ -41,6 +43,7 @@ public class JEIPlugin implements IModPlugin
 		registration.addRecipes(FDRecipeTypes.COOKING, modRecipes.getCookingPotRecipes());
 		registration.addRecipes(FDRecipeTypes.CUTTING, modRecipes.getCuttingBoardRecipes());
 		registration.addRecipes(FDRecipeTypes.DECOMPOSITION, ImmutableList.of(new DecompositionDummy()));
+		registration.addRecipes(FDRecipeTypes.FOOD_SERVING, modRecipes.getFoodServingRecipes());
 		registration.addRecipes(RecipeTypes.CRAFTING, modRecipes.getSpecialWheatDoughRecipe());
 		registration.addIngredientInfo(new ItemStack(ModItems.WHEAT_DOUGH.get()), VanillaTypes.ITEM_STACK, TextUtils.getTranslation("jei.info.dough"));
 		registration.addIngredientInfo(new ItemStack(ModItems.STRAW.get()), VanillaTypes.ITEM_STACK, TextUtils.getTranslation("jei.info.straw"));
@@ -62,6 +65,7 @@ public class JEIPlugin implements IModPlugin
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		registration.addRecipeCatalyst(new ItemStack(ModItems.COOKING_POT.get()), FDRecipeTypes.COOKING);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.COOKING_POT.get()), FDRecipeTypes.FOOD_SERVING);
 		registration.addRecipeCatalyst(new ItemStack(ModItems.CUTTING_BOARD.get()), FDRecipeTypes.CUTTING);
 		registration.addRecipeCatalyst(new ItemStack(ModItems.STOVE.get()), RecipeTypes.CAMPFIRE_COOKING);
 		registration.addRecipeCatalyst(new ItemStack(ModItems.SKILLET.get()), RecipeTypes.CAMPFIRE_COOKING);

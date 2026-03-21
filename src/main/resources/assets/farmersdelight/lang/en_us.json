@@ -344,6 +344,8 @@
   "farmersdelight.jei.decomposition.light": "Sped up by sunlight",
   "farmersdelight.jei.decomposition.fluid": "Sped up by adjacent water",
   "farmersdelight.jei.decomposition.accelerators": "Sped up by adjacent activators (see below)",
+  "farmersdelight.jei.food_serving": "Food Serving",
+  "farmersdelight.jei.food_serving.remainder": "The cooking pot is returned with one fewer serving stored inside.",
 
   "farmersdelight.jei.info.dough": "Wheat can be turned into Dough by crafting it with a Water Bucket. But don't worry, the bucket's water won't be depleted!",
   "farmersdelight.jei.info.straw": "A dry plant fiber used in crafting. Obtained by cutting grassy crops and plants with a Knife.",

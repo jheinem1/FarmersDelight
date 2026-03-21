@@ -12,6 +12,7 @@ import net.neoforged.neoforge.common.crafting.IngredientType;
 import vectorwing.farmersdelight.common.registry.ModIngredientTypes;
 import org.jspecify.annotations.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 import java.util.stream.Stream;
 /**
  * Ingredient that checks if the given stack can perform a ItemAbility from Forge.
@@ -24,7 +25,7 @@ public class ItemAbilityIngredient implements ICustomIngredient
 			inst.group(ItemAbility.CODEC.fieldOf("action").forGetter(ItemAbilityIngredient::getItemAbility)
 			).apply(inst, ItemAbilityIngredient::new));
 	protected final ItemAbility itemAbility;
-	protected Stream<Holder<Item>> items;
+	protected List<Holder<Item>> items;
 	public ItemAbilityIngredient(ItemAbility itemAbility) {
 		this.itemAbility = itemAbility;
 	}
@@ -32,7 +33,8 @@ public class ItemAbilityIngredient implements ICustomIngredient
 		if (this.items == null) {
 			items = BuiltInRegistries.ITEM.stream()
 					.filter(item -> new ItemStack(item).canPerformAction(itemAbility))
-					.map(BuiltInRegistries.ITEM::wrapAsHolder);
+					.map(BuiltInRegistries.ITEM::wrapAsHolder)
+					.toList();
 		}
 	}
 	@Override
@@ -42,7 +44,7 @@ public class ItemAbilityIngredient implements ICustomIngredient
 	@Override
 	public Stream<Holder<Item>> items() {
 		dissolve();
-		return items;
+		return items.stream();
 	}
 	@Override
 	public boolean isSimple() {
