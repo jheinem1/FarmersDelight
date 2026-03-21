@@ -251,6 +251,37 @@ Relevant files:
 
 If your addon has dynamic item rendering, check whether it should move from custom item-extension rendering to the newer special-model pipeline.
 
+### Static item model JSONs also needed a resource-format cleanup
+
+One easy-to-miss client-side breakage was older item model JSONs still using unnamespaced vanilla parents like:
+
+- `"parent": "item/generated"`
+- `"parent": "item/handheld"`
+
+On 1.21.11, those should be updated to the explicit vanilla ids:
+
+- `"parent": "minecraft:item/generated"`
+- `"parent": "minecraft:item/handheld"`
+
+If this is missed, the mod may load but many simple item textures will render as missing purple-black checkerboards in inventories and JEI even though the texture PNG files are present.
+
+Also note that 1.21.11 expects item asset definition files under `assets/<modid>/items/<item>.json` for normal items. These point at the existing model json, for example:
+
+```json
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "<modid>:item/<item>"
+  }
+}
+```
+
+If a port still only has `assets/<modid>/models/item/*.json` and no matching `assets/<modid>/items/*.json`, the item name may appear correctly while the rendered icon/model falls back to the missing-texture checkerboard.
+
+### Extension mod takeaway
+
+Do a resource sweep for item model parent ids and the newer `assets/<modid>/items` definitions, not just Java/API changes. This is easy to miss because it does not show up during compile time.
+
 ## 9. Block and item registration had to supply ids through properties
 
 One of the more invasive codebase-wide changes was the block registration rewrite.
@@ -271,6 +302,33 @@ Relevant files:
 ### Extension mod takeaway
 
 If your addon registers many custom blocks or block items, expect registration helpers to need structural changes, not just import fixes.
+
+### Static property objects can still break registration even after compile succeeds
+
+One easy trap for addon ports is creating `Item.Properties` or `BlockBehaviour.Properties` too early and assuming setting ids later will be enough.
+
+On 1.21.11, the effective id must already be present while the item or block is being constructed. Two common failure modes were:
+
+- `java.lang.NullPointerException: Block id not set`
+- `java.lang.NullPointerException: Item id not set`
+
+In practice, this means:
+
+- do not rely on old `DeferredRegister.create(...).register(name, () -> new Block(...))` patterns for blocks
+- do not build `BlockItem` or other items from `Item.Properties` objects that were finalized during static initialization
+- use the 1.21.11-safe registration helpers like `DeferredRegister.Blocks`, `registerBlock`, `registerSimpleBlock`, `DeferredRegister.Items`, `registerItem`, and `registerSimpleBlockItem`, or explicitly apply `properties.setId(...)` inside the registration callback right before construction
+
+The important detail is timing: compiling successfully is not proof that registration is correct. If the properties object exists before the registry key is bound, you can still crash during mod loading.
+
+### Compatibility shims should stay compile-time only unless you are patching a dependency in isolation
+
+Temporary shims for renamed classes like old `ResourceLocation` APIs can still be useful while porting or while waiting for upstream libraries. But if those shims live under `net.minecraft.*`, shipping them inside your mod jar can cause module split-package failures at launch.
+
+Typical symptom:
+
+- `java.lang.module.ResolutionException: Modules <modid> and minecraft export package net.minecraft.resources`
+
+Use those shims only as an isolated compile-time compatibility layer, or patch the call sites/dependencies to the real 1.21.11 types before packaging the final mod jar.
 
 ## 10. Datagen changed heavily
 
